@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vendor Portal React POC - Manage Campaigns Port</title>
+    <style type="text/css">
+      :root {
+        --bg: #f6f8fb;
+        --card: #fff;
+        --ink: #1f2a44;
+        --muted: #667085;
+        --line: #d9e2ec;
+        --brand: #173b57;
+        --accent: #2557a7;
+        --success: #067647;
+        --warning: #b54708;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.5;
+        margin: 0;
+      }
+
+      .page {
+        margin: 0 auto;
+        max-width: 1180px;
+        padding: 40px 32px;
+      }
+
+      h1, h2, h3, p { margin-top: 0; }
+
+      h1 {
+        color: var(--brand);
+        font-size: clamp(32px, 4vw, 48px);
+        line-height: 1.05;
+        margin-bottom: 16px;
+      }
+
+      h2 {
+        color: var(--brand);
+        font-size: 18px;
+        line-height: 1.2;
+        margin-bottom: 16px;
+      }
+
+      h3 {
+        color: var(--brand);
+        font-size: 13px;
+        letter-spacing: .08em;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+
+      code {
+        background: #eef4ff;
+        border: 1px solid #d6e4ff;
+        border-radius: 5px;
+        color: #173b57;
+        padding: 2px 5px;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      li { margin-bottom: 10px; }
+      li:last-child { margin-bottom: 0; }
+
+      .hero,
+      .card,
+      .tabs {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+
+      .hero {
+        box-shadow: 0 18px 48px rgba(31, 42, 68, .08);
+        margin-bottom: 24px;
+        padding: 32px;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 15px;
+        margin-bottom: 0;
+        max-width: 820px;
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .card-accent {
+        border-top: 4px solid var(--accent);
+      }
+
+      .card-success {
+        border-top: 4px solid var(--success);
+      }
+
+      .card-warning {
+        border-top: 4px solid var(--warning);
+        margin-bottom: 24px;
+      }
+
+      .comparison-grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-bottom: 20px;
+      }
+
+      .comparison-panel {
+        background: #f8fafc;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 16px;
+      }
+
+      .comparison-panel p,
+      .callout p {
+        margin-bottom: 0;
+      }
+
+      .matrix {
+        border-collapse: collapse;
+        margin: 16px 0 20px;
+        width: 100%;
+      }
+
+      .matrix th,
+      .matrix td {
+        border: 1px solid var(--line);
+        padding: 12px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .matrix th {
+        background: #eef4ff;
+        color: var(--brand);
+        font-size: 13px;
+      }
+
+      .callout {
+        background: #fff8eb;
+        border: 1px solid #f5c76b;
+        border-radius: 8px;
+        margin-top: 16px;
+        padding: 16px;
+      }
+
+      .tabs {
+        overflow: hidden;
+      }
+
+      .tab-input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .tab-list {
+        background: #f8fafc;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        gap: 4px;
+        padding: 12px 12px 0;
+      }
+
+      .tab-label {
+        border: 1px solid transparent;
+        border-radius: 8px 8px 0 0;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 700;
+        padding: 12px 16px;
+      }
+
+      .tab-panel {
+        display: none;
+        padding: 24px;
+      }
+
+      #tab-learnings:checked ~ .tab-list label[for="tab-learnings"],
+      #tab-tasks:checked ~ .tab-list label[for="tab-tasks"],
+      #tab-tailwind:checked ~ .tab-list label[for="tab-tailwind"] {
+        background: var(--card);
+        border-color: var(--line);
+        border-bottom-color: var(--card);
+        color: var(--brand);
+      }
+
+      #tab-learnings:checked ~ .tab-panels #panel-learnings,
+      #tab-tasks:checked ~ .tab-panels #panel-tasks,
+      #tab-tailwind:checked ~ .tab-panels #panel-tailwind {
+        display: block;
+      }
+
+      .learning-grid {
+        display: grid;
+        gap: 24px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      @media (max-width: 860px) {
+        .page { padding: 24px 16px; }
+        .comparison-grid, .learning-grid { grid-template-columns: 1fr; }
+        .tab-list {
+          flex-direction: column;
+          padding: 12px;
+        }
+        .tab-label {
+          border-radius: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="hero">
+        <h1>Vendor Portal React POC - Manage Campaigns Port</h1>
+        <p class="meta">Created for the Rails route <code>https://my.g2.test/g2-seller-solutions/ppc</code>. The record tracks implementation work, adjustments from visual review, and integration learnings from porting the Vendor Portal screen into UE.</p>
+      </div>
+
+      <div class="card card-warning">
+        <h2>Open Follow-Up</h2>
+        <ul>
+          <li>If this approach is accepted, split the compatibility UI primitives into smaller files and add focused Jest coverage for table sorting and draft deletion.</li>
+          <li>Resolve or bypass the current TypeScript 4.6 incompatibility with newer <code>@sinclair/typebox</code> declarations if full <code>tsc</code> validation becomes required.</li>
+        </ul>
+      </div>
+
+      <div class="tabs">
+        <input class="tab-input" type="radio" name="report-tab" id="tab-learnings" checked>
+        <input class="tab-input" type="radio" name="report-tab" id="tab-tasks">
+        <input class="tab-input" type="radio" name="report-tab" id="tab-tailwind">
+
+        <div class="tab-list">
+          <label class="tab-label" for="tab-learnings">Learnings</label>
+          <label class="tab-label" for="tab-tasks">Tasks And Achievements</label>
+          <label class="tab-label" for="tab-tailwind">Tailwind Comparison</label>
+        </div>
+
+        <div class="tab-panels">
+          <div class="tab-panel" id="panel-learnings">
+            <div class="learning-grid">
+              <div class="card card-success">
+                <h2>Realizations</h2>
+                <ul>
+                  <li>UE already had a React + TypeScript Webpack proof point, so the lowest-risk path was to add a sibling entry instead of introducing a new frontend build system.</li>
+                  <li>The source route relies on React Router framework APIs plus design-system dependencies such as Radix, TanStack Table, Base UI, and class-variance-authority. Those packages are not currently present in UE.</li>
+                  <li>For this POC, preserving the component usage shape mattered more than preserving the exact data-loading implementation, so loader/action responses were modeled as local mocked data and event dispatches.</li>
+                  <li>Links to other Vendor Portal routes were intentionally converted into mocked toast interactions so the page stays focused on UI and React behavior.</li>
+                </ul>
+              </div>
+
+              <div class="card card-accent">
+                <h2>Learnings</h2>
+                <ul>
+                  <li>Imported UI components can come across as a compatibility layer first, then be swapped for real shared packages later if the POC graduates.</li>
+                  <li>Tailwind class names from Vendor Portal do not map one-to-one to UE's stylesheet surface, so the POC injects scoped CSS under <code>vp-</code> classes to approximate the visual layout without global churn.</li>
+                  <li>UE's Webpack loader excludes paths containing <code>vendor</code>, so POC source files live under <code>webpack/assets/javascripts/vp_poc</code> even though the bundle remains named <code>vendor_portal_ppc_entry</code>.</li>
+                  <li>A future production port should decide between vendoring the design-system dependency graph, publishing shared UI packages, or implementing a more deliberate UE adapter layer.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="panel-tasks">
+            <div class="card card-accent">
+              <h2>Tasks And Achievements</h2>
+              <ul>
+                <li>Mapped the Vendor Portal route <code>app/routes/ppc/routes/manage-campaigns/index.tsx</code> to the existing UE PPC endpoint.</li>
+                <li>Added a dedicated Webpack entry, <code>vendor_portal_ppc_entry</code>, mounted by <code>app/views/vendor_admin/ppc/show.html.slim</code>.</li>
+                <li>Ported the route-level React structure: breadcrumbs, heading, create CTA, increase-budget banner, campaign table, sorting, settings actions, draft delete modal, and toast feedback.</li>
+                <li>Removed the route breadcrumbs after visual review because the Rails page already has surrounding product context.</li>
+                <li>Removed the POC-level font-family override so the route inherits UE typography.</li>
+                <li>Kept active campaign settings as a direct icon action while draft campaigns use a dropdown for their two available actions.</li>
+                <li>Removed the POC shell max-width so the route uses the full available Rails layout width.</li>
+                <li>Removed padding from the POC shell so the component aligns to the surrounding Rails layout.</li>
+                <li>Moved the spacing adjustment to the Rails page wrapper so the POC route has <code>24px</code> top and inline padding with no bottom padding.</li>
+                <li>Changed campaign-name links to inherit table typography instead of using the POC <code>Text</code> wrapper.</li>
+                <li>Replaced text glyph placeholders with inline SVG paths ported from the Vendor Portal icon set for the screen icons.</li>
+                <li>Moved dropdown menus into a body-level portal so opening row actions does not change the table dimensions.</li>
+                <li>Adjusted row-action submenu typography to inherit the surrounding app font and removed the extra text labels before the action names.</li>
+                <li>Mocked loader/action behavior in the browser with representative campaign data and custom events.</li>
+                <li>Added local POC versions of the imported UI primitives so the third-party Rails app can paint the Vendor Portal component tree without installing the full Vendor Portal dependency stack.</li>
+                <li>Ran the UE Webpack build and verified the rendered page in the in-app browser.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="panel-tailwind">
+            <div class="comparison-grid">
+              <div class="comparison-panel">
+                <h3>UE App</h3>
+                <p>UE uses Tailwind <code>^3.1.8</code> through <code>tailwindcss/tailwind.config.js</code> and a separate Elevate preset under <code>engines/elevate/tailwind.config.js</code>. Its main custom theme modules are legacy JavaScript token files for colors, padding, margin, font family, line height, radius, shadows, and breakpoints.</p>
+              </div>
+              <div class="comparison-panel">
+                <h3>Vendor Portal</h3>
+                <p>Vendor Portal uses Tailwind <code>4.3.0</code> with a CSS-first theme in <code>app/styles/tailwind.css</code>. Tokens are declared with <code>@theme static</code>, then bridged to older Vendor UI names through <code>vendor-ui-compat-layer.css</code>.</p>
+              </div>
+            </div>
+
+            <table class="matrix" summary="Main Tailwind differences between UE and Vendor Portal and how each difference affects the PPC POC styling strategy.">
+              <thead>
+                <tr>
+                  <th>Area</th>
+                  <th>Main Difference</th>
+                  <th>Impact On This POC</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Class generation</td>
+                  <td>UE scans ERB/Slim/HTML plus JS/JSX paths. Its current main Tailwind content glob does not include TS/TSX files under <code>webpack/assets/javascripts</code>. Vendor Portal source is TS/TSX-heavy and Tailwind v4-driven.</td>
+                  <td>Simply replacing <code>vp-</code> CSS with Tailwind classes inside the POC TSX would not be enough unless UE's Tailwind content config is expanded or the classes already exist elsewhere.</td>
+                </tr>
+                <tr>
+                  <td>Spacing scale</td>
+                  <td>Vendor Portal sets <code>--spacing: 1px</code>, so utilities like <code>gap-24</code>, <code>p-24</code>, and compat classes like <code>p-24px</code> mean 24px. UE's custom spacing is split between padding and margin: <code>p-1</code> is 24px, but <code>m-1</code> is 12px, and default Tailwind spacing still applies to generic utilities such as <code>gap-24</code>.</td>
+                  <td>Spacing classes are the riskiest direct copy. The POC's <code>vp-gap-24</code> maps to Vendor Portal intent, but UE's native <code>gap-24</code> would not mean the same thing without a config change.</td>
+                </tr>
+                <tr>
+                  <td>Typography</td>
+                  <td>Both apps use Figtree, but Vendor Portal defines opinionated <code>text-size-*</code> utilities that bundle font size, line height, margin reset, and text-box trimming. UE mostly has font family, weights, and a smaller line-height scale.</td>
+                  <td>Typography should inherit from UE where possible. Directly recreating Vendor Portal's <code>Text</code> utilities caused visible drift earlier, so removing local font overrides was the correct direction.</td>
+                </tr>
+                <tr>
+                  <td>Color naming</td>
+                  <td>Vendor Portal exposes semantic colors such as <code>text-fg-main</code>, <code>text-fg-brand</code>, <code>bg-brand-blue-1</code>, <code>bg-gray-1</code>, and <code>text-link-blue</code>. UE uses older names such as <code>navy</code>, <code>midnight</code>, <code>rorange</code>, <code>success</code>, <code>error</code>, <code>link</code>, and Foundation-like grays.</td>
+                  <td>Some values are close, but names and shade numbers are not portable. A small mapping table is safer than copying Vendor Portal color classes directly.</td>
+                </tr>
+                <tr>
+                  <td>Logical sizing utilities</td>
+                  <td>Vendor Portal components use Tailwind v4 logical utilities such as <code>inline-24</code>, <code>block-20</code>, <code>min-block-40</code>, <code>inline-full</code>, and arbitrary logical values. UE's Tailwind v3 setup does not provide the same logical-property utility surface by default.</td>
+                  <td>Core controls like buttons, icon buttons, menus, tables, and modals cannot be moved over class-for-class without either rewriting those utilities or using UE-native component styles.</td>
+                </tr>
+                <tr>
+                  <td>Radius and shadow</td>
+                  <td>Vendor Portal uses pixel-named compatibility tokens like <code>rounded-4px</code>, <code>rounded-8px</code>, and <code>shadow-2</code>. UE has its own radius names and different shadow values.</td>
+                  <td>Visual matching through UE classes is possible, but exact parity needs either token mapping or accepting UE-native radii/shadows.</td>
+                </tr>
+                <tr>
+                  <td>Base/reset layer</td>
+                  <td>Vendor Portal's base layer resets margins, borders, list styles, and buttons with rules such as <code>button { all: unset; }</code>. UE already has established global layout and vendor-admin styles.</td>
+                  <td>Importing Vendor Portal's Tailwind base into UE would be too broad for this POC. Component-level adaptation is safer than bringing the whole Vendor Portal CSS reset.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Current POC CSS Layer Assessment</h3>
+            <ul>
+              <li><strong>Good candidates to replace with UE/native utilities:</strong> basic flex layout, alignment, justify rules, width, text alignment, cursor, disabled opacity, table text alignment, and the page-level padding wrapper.</li>
+              <li><strong>Needs token mapping before replacement:</strong> gaps, padding values, status chip colors, link blue, brand text, error text, borders, radii, and shadows.</li>
+              <li><strong>Better solved with UE components or deliberate adapters:</strong> table structure, popover/dropdown positioning, modal layout, toast placement, icon button states, and chip semantics.</li>
+              <li><strong>Important blocker:</strong> UE's current Tailwind content config should include TS/TSX before relying on Tailwind classes authored in <code>webpack/assets/javascripts/vp_poc</code>.</li>
+            </ul>
+
+            <div class="callout">
+              <h3>Recommendation</h3>
+              <p>Do not import Vendor Portal's full Tailwind theme or base reset into UE for this POC. The lower-risk path is to progressively remove local <code>vp-</code> classes where UE already has equivalent behavior, then create a small documented token map for the mismatches. For a real production port, the best long-term outcome is either using UE/Elevate-native components for table, buttons, modal, menu, and toast, or publishing the Vendor Portal core UI primitives with their required Tailwind v4 token contract as an explicit dependency.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

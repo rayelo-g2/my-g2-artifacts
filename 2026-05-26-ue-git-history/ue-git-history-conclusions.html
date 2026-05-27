@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UE Git History Conclusions</title>
+    <style type="text/css">
+      :root {
+        --bg: #f6f8fb;
+        --card: #fff;
+        --ink: #1f2a44;
+        --muted: #667085;
+        --line: #d9e2ec;
+        --brand: #173b57;
+        --accent: #2557a7;
+        --success: #067647;
+        --warning: #b54708;
+        --danger: #b42318;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.5;
+        margin: 0;
+      }
+
+      .page {
+        margin: 0 auto;
+        max-width: 1180px;
+        padding: 40px 32px;
+      }
+
+      h1, h2, h3, p { margin-top: 0; }
+
+      h1 {
+        color: var(--brand);
+        font-size: clamp(32px, 4vw, 48px);
+        line-height: 1.05;
+        margin-bottom: 16px;
+      }
+
+      h2 {
+        color: var(--brand);
+        font-size: 18px;
+        line-height: 1.2;
+        margin-bottom: 16px;
+      }
+
+      h3 {
+        color: var(--brand);
+        font-size: 13px;
+        letter-spacing: .08em;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+
+      a { color: var(--accent); }
+
+      code {
+        background: #eef4ff;
+        border: 1px solid #d6e4ff;
+        border-radius: 5px;
+        color: #173b57;
+        padding: 2px 5px;
+      }
+
+      pre {
+        background: #f8fafc;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: #344054;
+        font-size: 13px;
+        margin: 0;
+        overflow-x: auto;
+        padding: 14px;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      li { margin-bottom: 10px; }
+      li:last-child { margin-bottom: 0; }
+
+      .hero,
+      .card,
+      .tabs {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+
+      .hero {
+        box-shadow: 0 18px 48px rgba(31, 42, 68, .08);
+        margin-bottom: 24px;
+        padding: 32px;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 15px;
+        margin-bottom: 0;
+        max-width: 860px;
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .card-accent { border-top: 4px solid var(--accent); }
+      .card-success { border-top: 4px solid var(--success); }
+      .card-warning { border-top: 4px solid var(--warning); }
+      .card-danger { border-top: 4px solid var(--danger); }
+
+      .summary-grid,
+      .comparison-grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-bottom: 20px;
+      }
+
+      .metric {
+        color: var(--brand);
+        font-size: 28px;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 6px;
+      }
+
+      .muted {
+        color: var(--muted);
+        margin-bottom: 0;
+      }
+
+      .matrix {
+        border-collapse: collapse;
+        margin: 16px 0 20px;
+        width: 100%;
+      }
+
+      .matrix th,
+      .matrix td {
+        border: 1px solid var(--line);
+        padding: 12px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .matrix th {
+        background: #eef4ff;
+        color: var(--brand);
+        font-size: 13px;
+      }
+
+      .callout {
+        background: #fff8eb;
+        border: 1px solid #f5c76b;
+        border-radius: 8px;
+        margin-top: 16px;
+        padding: 16px;
+      }
+
+      .tabs {
+        overflow: hidden;
+      }
+
+      .tab-input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .tab-list {
+        background: #f8fafc;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        gap: 4px;
+        padding: 12px 12px 0;
+      }
+
+      .tab-label {
+        border: 1px solid transparent;
+        border-radius: 8px 8px 0 0;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 700;
+        padding: 12px 16px;
+      }
+
+      .tab-panel {
+        display: none;
+        padding: 24px;
+      }
+
+      #tab-conclusions:checked ~ .tab-list label[for="tab-conclusions"],
+      #tab-hotspots:checked ~ .tab-list label[for="tab-hotspots"],
+      #tab-history:checked ~ .tab-list label[for="tab-history"],
+      #tab-method:checked ~ .tab-list label[for="tab-method"] {
+        background: var(--card);
+        border-color: var(--line);
+        border-bottom-color: var(--card);
+        color: var(--brand);
+      }
+
+      #tab-conclusions:checked ~ .tab-panels #panel-conclusions,
+      #tab-hotspots:checked ~ .tab-panels #panel-hotspots,
+      #tab-history:checked ~ .tab-panels #panel-history,
+      #tab-method:checked ~ .tab-panels #panel-method {
+        display: block;
+      }
+
+      @media (max-width: 860px) {
+        .page { padding: 24px 16px; }
+        .summary-grid, .comparison-grid { grid-template-columns: 1fr; }
+        .tab-list {
+          flex-direction: column;
+          padding: 12px;
+        }
+        .tab-label { border-radius: 8px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="hero">
+        <h1>UE Git History Conclusions</h1>
+      </div>
+
+      <div class="summary-grid">
+        <div class="card card-danger">
+          <h2>Highest-Risk Reading Targets</h2>
+          <p class="metric">Product, category, review</p>
+          <p class="muted">The clearest churn-and-bug overlap is in <code>app/models/product.rb</code>, <code>app/controllers/products_controller.rb</code>, <code>app/models/survey_response.rb</code>, <code>app/controllers/categories_controller.rb</code>, and related product/category views.</p>
+        </div>
+
+        <div class="card card-success">
+          <h2>Bus Factor Signal</h2>
+          <p class="metric">No 60% author concentration</p>
+          <p class="muted">The top all-time contributor has 19.4% of non-merge commits, and the top contributor from the last six months has 8.7%. By this simple metric, authorship is broadly distributed.</p>
+        </div>
+
+        <div class="card card-accent">
+          <h2>Commit Rhythm</h2>
+          <p class="metric">Recent activity is up</p>
+          <p class="muted">The average rose from 332 commits/month for 2024-06 through 2025-05 to 491 commits/month for 2025-06 through 2026-04. May 2026 is partial and already has 445 commits as of 2026-05-26.</p>
+        </div>
+
+        <div class="card card-warning">
+          <h2>Firefighting Signal</h2>
+          <p class="metric">61 matches in 1 year</p>
+          <p class="muted">The firefighting query matched 61 recent commits, almost entirely <code>revert</code> messages. That is about 1.0% of 5,912 commits in the same one-year window.</p>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <input class="tab-input" type="radio" name="report-tab" id="tab-conclusions" checked>
+        <input class="tab-input" type="radio" name="report-tab" id="tab-hotspots">
+        <input class="tab-input" type="radio" name="report-tab" id="tab-history">
+        <input class="tab-input" type="radio" name="report-tab" id="tab-method">
+
+        <div class="tab-list">
+          <label class="tab-label" for="tab-conclusions">Conclusions</label>
+          <label class="tab-label" for="tab-hotspots">Hotspots</label>
+          <label class="tab-label" for="tab-history">History Signals</label>
+          <label class="tab-label" for="tab-method">Method</label>
+        </div>
+
+        <div class="tab-panels">
+          <div class="tab-panel" id="panel-conclusions">
+            <div class="card card-accent">
+              <h2>Methodology</h2>
+              <p class="muted">The conclusions combine three history probes: recent file churn from <code>/ue/app</code>, bug-message hotspots from <code>/ue/app</code>, and repository-wide ownership and delivery signals from <code>/ue</code>. Churn shows where code changes repeatedly, bug-message history shows where fixes tend to cluster, and the overlap points to files worth reading before making related changes.</p>
+            </div>
+            <br>
+            <div class="comparison-grid">
+              <div class="card card-danger">
+                <h2>Read These First</h2>
+                <ul>
+                  <li><code>app/models/product.rb</code> is the strongest signal: top churn file in the app over the last year and top bug-message hotspot across history.</li>
+                  <li><code>app/controllers/products_controller.rb</code> sits near the top of both lists, making it a likely high-blast-radius controller.</li>
+                  <li><code>app/models/survey_response.rb</code> has very high bug-message history and still appears in the one-year churn list.</li>
+                  <li><code>app/controllers/categories_controller.rb</code> and <code>app/views/categories/overview.html.slim</code> suggest category pages deserve early inspection.</li>
+                  <li><code>app/controllers/vendor_admin/performance_analytics_controller.rb</code> appears in both lists, but the counts are lower than the core product/category files.</li>
+                </ul>
+              </div>
+
+              <div class="card card-accent">
+                <h2>Interpretation</h2>
+                <ul>
+                  <li>The highest-risk surfaces are not isolated files; they cluster around product pages, reviews, categories, survey responses, users, and external clickthroughs.</li>
+                  <li>The all-time bug query is commit-message dependent. It is useful for triage, but it should be validated against incident history, flaky specs, ownership, and current product plans before prioritizing remediation.</li>
+                  <li>Authorship distribution looks healthy by commit count, but squash merges can blur real authorship. Treat this as a first-pass signal, not a staffing conclusion.</li>
+                  <li>The revert count is not catastrophic relative to total commit volume, but 60+ revert-like commits in a year is enough to justify looking at deploy safety and test confidence around the affected areas.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="callout">
+              <h3>Recommended Next Step</h3>
+              <p>For a focused code read, start with <code>app/models/product.rb</code> and trace outward through <code>ProductsController</code>, the product review views, category overview rendering, and survey response behavior. That path follows the strongest overlap rather than the newest local work.</p>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="panel-hotspots">
+            <div class="card card-accent">
+              <h2>Methodology</h2>
+              <p class="muted">The churn list was generated from <code>/ue/app</code> with <code>git log --format=format: --name-only --since="1 year ago" -- . | grep -v '^$' | sort | uniq -c | sort -nr | head -20</code>. The bug-hotspot list used <code>git log -i -E --grep="fix|bug|broken" --name-only --format='' -- . | grep -v '^$' | sort | uniq -c | sort -nr | head -20</code>. Files appearing in both lists are treated as higher-risk reading targets because they change often and are repeatedly touched by fix-oriented commits.</p>
+            </div>
+            <br>
+            <h2>Overlap Between Churn And Bug Hotspots</h2>
+            <table class="matrix" summary="Files that appear in both the one-year app churn list and the app bug-message hotspot list.">
+              <thead>
+                <tr>
+                  <th>File</th>
+                  <th>One-Year Churn Count</th>
+                  <th>Bug-Message Count</th>
+                  <th>Conclusion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>app/models/product.rb</code></td>
+                  <td>96</td>
+                  <td>149</td>
+                  <td>Top combined risk. Read before touching product behavior.</td>
+                </tr>
+                <tr>
+                  <td><code>app/controllers/products_controller.rb</code></td>
+                  <td>71</td>
+                  <td>108</td>
+                  <td>High churn plus high bug history. Expect broad route and view coupling.</td>
+                </tr>
+                <tr>
+                  <td><code>app/models/survey_response.rb</code></td>
+                  <td>50</td>
+                  <td>113</td>
+                  <td>All-time bug history is especially strong. Validate test coverage before edits.</td>
+                </tr>
+                <tr>
+                  <td><code>app/controllers/categories_controller.rb</code></td>
+                  <td>53</td>
+                  <td>75</td>
+                  <td>Category page behavior is a recurring maintenance area.</td>
+                </tr>
+                <tr>
+                  <td><code>app/models/user.rb</code></td>
+                  <td>37</td>
+                  <td>90</td>
+                  <td>Lower recent churn, but strong historic bug signal.</td>
+                </tr>
+                <tr>
+                  <td><code>app/views/products/reviews.html.slim</code></td>
+                  <td>65</td>
+                  <td>43</td>
+                  <td>Product review UI changes frequently and appears in bug-fix history.</td>
+                </tr>
+                <tr>
+                  <td><code>app/controllers/vendor_admin/performance_analytics_controller.rb</code></td>
+                  <td>59</td>
+                  <td>42</td>
+                  <td>Vendor-admin analytics has enough overlap to inspect around related work.</td>
+                </tr>
+                <tr>
+                  <td><code>app/views/layouts/products/product_experience.html.slim</code></td>
+                  <td>57</td>
+                  <td>38</td>
+                  <td>Shared product layout. Small changes may have wide UI effects.</td>
+                </tr>
+                <tr>
+                  <td><code>app/view_models/caches/category_overview.rb</code></td>
+                  <td>36</td>
+                  <td>37</td>
+                  <td>Category caching/view-model logic is worth reviewing with page rendering.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="comparison-grid">
+              <div class="card card-accent">
+                <h2>Top One-Year App Churn</h2>
+                <table class="matrix" summary="Top changed app files in the last year.">
+                  <thead>
+                    <tr>
+                      <th>Count</th>
+                      <th>File</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>96</td><td><code>app/models/product.rb</code></td></tr>
+                    <tr><td>71</td><td><code>app/controllers/products_controller.rb</code></td></tr>
+                    <tr><td>65</td><td><code>app/views/products/reviews.html.slim</code></td></tr>
+                    <tr><td>59</td><td><code>app/controllers/vendor_admin/performance_analytics_controller.rb</code></td></tr>
+                    <tr><td>57</td><td><code>app/views/layouts/products/product_experience.html.slim</code></td></tr>
+                    <tr><td>53</td><td><code>app/controllers/categories_controller.rb</code></td></tr>
+                    <tr><td>52</td><td><code>app/models/external_clickthroughs/plan.rb</code></td></tr>
+                    <tr><td>50</td><td><code>app/models/survey_response.rb</code></td></tr>
+                    <tr><td>47</td><td><code>app/controllers/solutions_controller.rb</code></td></tr>
+                    <tr><td>43</td><td><code>app/helpers/categories_helper.rb</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="card card-danger">
+                <h2>Top App Bug-Message Hotspots</h2>
+                <table class="matrix" summary="Top app files touched by commits whose messages mention fix, bug, or broken.">
+                  <thead>
+                    <tr>
+                      <th>Count</th>
+                      <th>File</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>149</td><td><code>app/models/product.rb</code></td></tr>
+                    <tr><td>113</td><td><code>app/models/survey_response.rb</code></td></tr>
+                    <tr><td>108</td><td><code>app/controllers/products_controller.rb</code></td></tr>
+                    <tr><td>90</td><td><code>app/models/user.rb</code></td></tr>
+                    <tr><td>75</td><td><code>app/controllers/categories_controller.rb</code></td></tr>
+                    <tr><td>47</td><td><code>app/controllers/survey_responses_controller.rb</code></td></tr>
+                    <tr><td>47</td><td><code>app/controllers/application_controller.rb</code></td></tr>
+                    <tr><td>45</td><td><code>app/views/categories/overview.html.slim</code></td></tr>
+                    <tr><td>43</td><td><code>app/views/products/reviews.html.slim</code></td></tr>
+                    <tr><td>43</td><td><code>app/controllers/user_sessions_controller.rb</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="panel-history">
+            <div class="card card-accent">
+              <h2>Methodology</h2>
+              <p class="muted">Contributor concentration came from <code>git shortlog -sn HEAD --no-merges</code> and the six-month variant with <code>--since="6 months ago"</code>. Monthly rhythm came from <code>git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c</code>. Firefighting signal came from <code>git log --oneline --since="1 year ago" | grep -iE 'revert|hotfix|emergency|rollback'</code>. These commands describe ownership spread, delivery volume, and rollback-style activity.</p>
+            </div>
+            <br>
+            <div class="comparison-grid">
+              <div class="card card-success">
+                <h2>Contributor Concentration</h2>
+                <table class="matrix" summary="Contributor concentration from git shortlog.">
+                  <thead>
+                    <tr>
+                      <th>Window</th>
+                      <th>Contributors</th>
+                      <th>Total Non-Merge Commits</th>
+                      <th>Top Author Share</th>
+                      <th>Top 3 Share</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>All history</td>
+                      <td>191</td>
+                      <td>41,815</td>
+                      <td>19.4%</td>
+                      <td>38.8%</td>
+                    </tr>
+                    <tr>
+                      <td>Last 6 months</td>
+                      <td>81</td>
+                      <td>3,240</td>
+                      <td>8.7%</td>
+                      <td>20.6%</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p class="muted">Top all-time contributors include Michael Wheeler, Hamed Asghari, dkaplan88, Patrick Arnett, and Joseph Park. The last-six-month list is more distributed and includes Michael Wheeler, Deepan Kumar, Patrick Arnett, Alisa, and Justin D Daniel near the top.</p>
+              </div>
+
+              <div class="card card-warning">
+                <h2>Firefighting Commits</h2>
+                <table class="matrix" summary="Firefighting commit signal.">
+                  <thead>
+                    <tr>
+                      <th>Metric</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Commits in last year</td>
+                      <td>5,912</td>
+                    </tr>
+                    <tr>
+                      <td>Revert/hotfix/emergency/rollback matches</td>
+                      <td>61</td>
+                    </tr>
+                    <tr>
+                      <td>Non-<code>auto revert</code> matches</td>
+                      <td>60</td>
+                    </tr>
+                    <tr>
+                      <td>Explicit hotfix/emergency/rollback matches</td>
+                      <td>0</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p class="muted">The signal is revert-heavy rather than hotfix-heavy. That points more toward change rollback frequency than incident-message vocabulary.</p>
+              </div>
+            </div>
+
+            <h2>Recent Monthly Commit Rhythm</h2>
+            <table class="matrix" summary="Monthly commit count for the last two years.">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>Commits</th>
+                  <th>Month</th>
+                  <th>Commits</th>
+                  <th>Month</th>
+                  <th>Commits</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2024-06</td><td>188</td><td>2025-03</td><td>389</td><td>2025-12</td><td>400</td></tr>
+                <tr><td>2024-07</td><td>310</td><td>2025-04</td><td>403</td><td>2026-01</td><td>481</td></tr>
+                <tr><td>2024-08</td><td>285</td><td>2025-05</td><td>312</td><td>2026-02</td><td>449</td></tr>
+                <tr><td>2024-09</td><td>321</td><td>2025-06</td><td>406</td><td>2026-03</td><td>685</td></tr>
+                <tr><td>2024-10</td><td>458</td><td>2025-07</td><td>479</td><td>2026-04</td><td>754</td></tr>
+                <tr><td>2024-11</td><td>321</td><td>2025-08</td><td>391</td><td>2026-05</td><td>445 partial</td></tr>
+                <tr><td>2024-12</td><td>303</td><td>2025-09</td><td>425</td><td></td><td></td></tr>
+                <tr><td>2025-01</td><td>394</td><td>2025-10</td><td>522</td><td></td><td></td></tr>
+                <tr><td>2025-02</td><td>303</td><td>2025-11</td><td>413</td><td></td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tab-panel" id="panel-method">
+            <div class="card card-accent">
+              <h2>Commands Run</h2>
+              <p>Churn and bug-hotspot commands were run from <code>/ue/app</code> so generated files, lockfiles, and root-level configuration would not dominate the result. The commands use an explicit <code>-- .</code> pathspec to keep output scoped to the current directory. The shortlog commands include <code>HEAD</code> because this local Git invocation returned no rows without an explicit revision.</p>
+              <pre><code>cd /ue/app
+git log --format=format: --name-only --since="1 year ago" -- . | grep -v '^$' | sort | uniq -c | sort -nr | head -20
+
+cd /ue
+git shortlog -sn HEAD --no-merges
+git shortlog -sn HEAD --no-merges --since="6 months ago"
+
+cd /ue/app
+git log -i -E --grep="fix|bug|broken" --name-only --format='' -- . | grep -v '^$' | sort | uniq -c | sort -nr | head -20
+
+cd /ue
+git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c
+git log --oneline --since="1 year ago" | grep -iE 'revert|hotfix|emergency|rollback'</code></pre>
+            </div>
+
+            <div class="callout">
+              <h3>Scope Notes</h3>
+              <p>The churn query is limited to files under <code>/ue/app</code> and the last year. The bug-hotspot query is limited to files under <code>/ue/app</code> across all available history. That means a file can have a higher bug-message count than recent churn count.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

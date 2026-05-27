@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vendor Portal to MyG2 Migration POC</title>
+    <style>
+      :root {
+        --bg: #f7f7f4;
+        --paper: #ffffff;
+        --ink: #20242a;
+        --muted: #68707a;
+        --faint: #8a929b;
+        --line: #dadfd8;
+        --line-strong: #b9c2ba;
+        --accent: #235c56;
+        --accent-soft: #e8f0ed;
+        --risk-high: #8f2f23;
+        --risk-medium: #865713;
+        --risk-low: #23644b;
+        --code-bg: #eef2ef;
+        --nav-width: 268px;
+        --content-width: 880px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        background: var(--code-bg);
+        border-radius: 3px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: .92em;
+        overflow-wrap: anywhere;
+        padding: 2px 5px;
+      }
+
+      .page {
+        display: grid;
+        grid-template-columns: var(--nav-width) minmax(0, 1fr);
+        min-height: 100vh;
+        min-width: 0;
+      }
+
+      .side-nav {
+        align-self: start;
+        border-right: 1px solid var(--line);
+        height: 100vh;
+        padding: 32px 28px;
+        position: sticky;
+        top: 0;
+      }
+
+      .nav-title {
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .03em;
+        line-height: 1.35;
+        margin: 0 0 22px;
+        text-transform: uppercase;
+      }
+
+      .nav-title span {
+        color: var(--muted);
+        display: block;
+        font-weight: 500;
+        letter-spacing: 0;
+        margin-top: 6px;
+        text-transform: none;
+      }
+
+      .side-nav ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .side-nav li {
+        margin: 0;
+      }
+
+      .side-nav a {
+        border-left: 2px solid transparent;
+        color: var(--muted);
+        display: block;
+        font-size: 14px;
+        line-height: 1.25;
+        padding: 7px 0 7px 12px;
+      }
+
+      .side-nav a:hover {
+        border-left-color: var(--accent);
+        color: var(--ink);
+        text-decoration: none;
+      }
+
+      .content {
+        min-width: 0;
+        padding: 44px 48px 72px;
+        width: 100%;
+      }
+
+      .content-inner {
+        max-width: var(--content-width);
+        min-width: 0;
+        width: 100%;
+      }
+
+      .hero {
+        margin-bottom: 32px;
+        max-width: 100%;
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        margin: 0 0 12px;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(34px, 5vw, 58px);
+        font-weight: 720;
+        letter-spacing: 0;
+        line-height: 1.02;
+        margin-bottom: 18px;
+        max-width: 760px;
+        overflow-wrap: normal;
+      }
+
+      .lede {
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.55;
+        margin-bottom: 0;
+        max-width: 760px;
+      }
+
+      section {
+        border-top: 1px solid var(--line);
+        max-width: 100%;
+        padding: 34px 0;
+        scroll-margin-top: 28px;
+      }
+
+      section:first-of-type {
+        border-top-color: var(--line-strong);
+      }
+
+      h2 {
+        font-size: 24px;
+        line-height: 1.2;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        color: var(--ink);
+        font-size: 15px;
+        line-height: 1.35;
+        margin-bottom: 8px;
+        margin-top: 24px;
+      }
+
+      p {
+        max-width: 74ch;
+        overflow-wrap: break-word;
+      }
+
+      strong {
+        font-weight: 720;
+      }
+
+      em {
+        color: var(--accent);
+        font-style: italic;
+      }
+
+      .section-intro {
+        color: var(--muted);
+        margin-bottom: 20px;
+      }
+
+      ul,
+      ol {
+        margin-bottom: 0;
+        margin-top: 0;
+        padding-left: 22px;
+      }
+
+      li {
+        margin-bottom: 8px;
+        max-width: 76ch;
+        overflow-wrap: break-word;
+      }
+
+      li:last-child {
+        margin-bottom: 0;
+      }
+
+      .callout {
+        border-left: 3px solid var(--accent);
+        margin: 20px 0 0;
+        padding: 2px 0 2px 18px;
+      }
+
+      .callout p {
+        margin-bottom: 0;
+      }
+
+      .checklist {
+        list-style: none;
+        max-width: 760px;
+        padding-left: 0;
+      }
+
+      .checklist li {
+        align-items: start;
+        display: grid;
+        gap: 12px;
+        grid-template-columns: 16px minmax(0, 1fr);
+        margin-bottom: 0;
+        max-width: none;
+        padding: 9px 0;
+      }
+
+      .check-box {
+        border: 1.5px solid rgba(35, 92, 86, .72);
+        border-radius: 2px;
+        display: block;
+        height: 14px;
+        margin-top: 5px;
+        width: 14px;
+      }
+
+      .checklist strong {
+        display: block;
+        margin-bottom: 2px;
+      }
+
+      .summary-list {
+        background: linear-gradient(90deg, var(--accent-soft), rgba(232, 240, 237, 0));
+        border-radius: 8px;
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 22px;
+        padding: 18px 20px;
+      }
+
+      .summary-list div {
+        border-top: 1px solid rgba(35, 92, 86, .22);
+        padding-top: 14px;
+      }
+
+      .summary-list h3 {
+        color: var(--accent);
+        font-size: 12px;
+        letter-spacing: .08em;
+        margin-top: 0;
+        text-transform: uppercase;
+      }
+
+      .summary-list p {
+        color: var(--muted);
+        margin-bottom: 0;
+      }
+
+      .summary-list strong {
+        color: var(--ink);
+      }
+
+      .summary-list div:nth-child(-n + 2) {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .table-wrap {
+        margin-top: 18px;
+        overflow-x: auto;
+      }
+
+      table {
+        border-collapse: collapse;
+        font-size: 14px;
+        min-width: 720px;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 12px 14px 12px 0;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: var(--ink);
+        font-size: 12px;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+      }
+
+      td {
+        color: #333941;
+      }
+
+      .risk {
+        font-weight: 700;
+      }
+
+      .risk.high {
+        color: var(--risk-high);
+      }
+
+      .risk.medium {
+        color: var(--risk-medium);
+      }
+
+      .risk.low {
+        color: var(--risk-low);
+      }
+
+      .two-column {
+        column-gap: 28px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .rule-list {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .rule-list li {
+        border-top: 1px solid var(--line);
+        margin-bottom: 0;
+        max-width: none;
+        padding: 13px 0;
+      }
+
+      .rule-list strong {
+        display: block;
+        margin-bottom: 2px;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      footer {
+        border-top: 1px solid var(--line);
+        color: var(--faint);
+        font-size: 13px;
+        padding-top: 20px;
+      }
+
+      @media (max-width: 1040px) {
+        .page {
+          display: block;
+        }
+
+        .side-nav {
+          background: var(--bg);
+          border-bottom: 1px solid var(--line);
+          border-right: 0;
+          height: auto;
+          overflow: hidden;
+          padding: 20px 22px;
+          position: static;
+        }
+
+        .side-nav ol {
+          display: flex;
+          gap: 6px 16px;
+          max-width: 100%;
+          min-width: 0;
+          overflow-x: auto;
+          padding-bottom: 4px;
+        }
+
+        .side-nav a {
+          border-left: 0;
+          border-bottom: 2px solid transparent;
+          padding: 6px 0;
+          white-space: nowrap;
+        }
+
+        .side-nav a:hover {
+          border-bottom-color: var(--accent);
+          border-left-color: transparent;
+        }
+
+        .content {
+          padding: 34px 24px 56px;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .summary-list,
+        .two-column {
+          grid-template-columns: 1fr;
+        }
+
+        .content {
+          padding-left: 18px;
+          padding-right: 18px;
+        }
+
+        h1 {
+          font-size: 32px;
+          overflow-wrap: anywhere;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav class="side-nav" aria-label="Report sections">
+        <p class="nav-title">Migration POC <span>Vendor Portal into MyG2</span></p>
+        <ol>
+          <li><a href="#follow-ups">Follow-ups</a></li>
+          <li><a href="#summary">Summary</a></li>
+          <li><a href="#context">Context</a></li>
+          <li><a href="#options">Options</a></li>
+          <li><a href="#scope">Scope</a></li>
+          <li><a href="#approach">Approach</a></li>
+          <li><a href="#learnings">Learnings</a></li>
+          <li><a href="#dependencies">Dependencies</a></li>
+          <li><a href="#tailwind">Tailwind</a></li>
+          <li><a href="#recommendations">Next Steps</a></li>
+          <li><a href="#risks">Risks</a></li>
+          <li><a href="#readiness">Readiness</a></li>
+          <li><a href="#references">References</a></li>
+        </ol>
+      </nav>
+
+      <main class="content">
+        <div class="content-inner">
+          <header class="hero">
+            <p class="eyebrow">Feasibility report</p>
+            <h1>Porting a Vendor Portal React route into MyG2 Admin</h1>
+            <p class="lede">This report documents what the Manage Campaigns POC proved, where it needed adaptation, and what future agents or engineers should check before moving production routes between G2DM and MyG2.</p>
+          </header>
+
+          <section id="follow-ups">
+            <h2>Follow-ups</h2>
+            <p class="section-intro">These are the decisions that matter most before moving from a <em>fast rendering proof</em> to a production-quality migration path.</p>
+            <ul class="checklist">
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Choose the component strategy.</strong> Decide whether migrated routes should use UE-native components, a temporary compatibility layer, or published Vendor Portal UI packages.</span></li>
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Close the dependency gap.</strong> Choose a plan for React 17 versus React 19, Tailwind 3 versus Tailwind 4, React Router, and TypeScript before the next migration attempt.</span></li>
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Define the data boundary.</strong> Decide how Vendor Portal loader/action patterns should move into Rails-based data handling.</span></li>
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Document style ownership.</strong> Build a Tailwind and design-token map so React-based routes do not drift away from Rails views.</span></li>
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Compare the direction.</strong> Revisit the inverse option of moving MyG2 features into Vendor Portal before scaling route work.</span></li>
+            </ul>
+          </section>
+
+          <section id="summary">
+            <h2>Executive Summary</h2>
+            <p>The POC proves one narrow but important point: <strong>Vendor Portal React components can render inside the Rails-based MyG2 Admin app at a fast pace</strong>. Mocked data, a dedicated Webpack entry, and a scoped compatibility layer were enough to paint the Manage Campaigns route and preserve core interactions.</p>
+            <p>It does <em>not</em> prove that production migration is copy-paste. The largest gaps are <strong>framework version drift</strong>, <strong>React Router loader/action expectations</strong>, <strong>Tailwind token differences</strong>, and <strong>duplicated UI primitives</strong>. The next iteration should convert those gaps into explicit migration decisions.</p>
+
+            <div class="summary-list" aria-label="Key summary points">
+              <div>
+                <h3>Feasibility</h3>
+                <p><strong>High for isolated UI proof points.</strong> Medium for production routes until dependency and design-system strategy is settled.</p>
+              </div>
+              <div>
+                <h3>Best Use</h3>
+                <p><strong>Validate rendering and interaction fit first.</strong> Full server integration should come after host-app constraints are understood.</p>
+              </div>
+              <div>
+                <h3>Main Risk</h3>
+                <p><strong>Adapters can become a hidden second design system</strong> if they are not retired, formalized, or replaced.</p>
+              </div>
+              <div>
+                <h3>Decision Need</h3>
+                <p><strong>Pick a migration host and shared UI/dependency plan</strong> before scaling beyond a handful of routes.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="context">
+            <h2>Why This POC Exists</h2>
+            <p>The broader initiative is to create a <strong>useful unified tool by November</strong>. The team is evaluating how to combine capabilities from G2DM, Vendor Portal, and MyG2 without starting a greenfield application.</p>
+            <p>This POC explores one practical path: move selected Vendor Portal routes into MyG2 Admin and make them work inside the existing Rails application shell. It focuses on <em>feasibility, migration friction, and reusable learnings</em> rather than final production architecture.</p>
+            <div class="callout">
+              <p><strong>Report purpose:</strong> help technical stakeholders and migration agents understand what must be inventoried, mocked, adapted, or redesigned when moving a route from one application boundary to another.</p>
+            </div>
+          </section>
+
+          <section id="options">
+            <h2>Strategy Options</h2>
+            <p class="section-intro">The POC should be read as evidence for one option, not as a final architecture decision.</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Option</th>
+                    <th>Potential Advantage</th>
+                    <th>Main Constraint</th>
+                    <th>POC Relevance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Move G2DM/Vendor Portal routes into MyG2</td>
+                    <td>Uses the existing MyG2 Admin host and avoids rebuilding its broad product surface elsewhere.</td>
+                    <td>Requires compatibility work for modern Vendor Portal frontend dependencies.</td>
+                    <td>This POC directly evaluates this route.</td>
+                  </tr>
+                  <tr>
+                    <td>Move MyG2 features into Vendor Portal</td>
+                    <td>Uses the newer React application model and modern dependency stack.</td>
+                    <td>MyG2 has a large number of routes and mature Rails-backed workflows that would need migration.</td>
+                    <td>This remains a comparison path for feasibility and timeline.</td>
+                  </tr>
+                  <tr>
+                    <td>Build a greenfield unified app</td>
+                    <td>Clean architecture and unified design system from day one.</td>
+                    <td>Not realistic under the November timeline.</td>
+                    <td>Useful as a reference ideal, but not a practical near-term plan.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="scope">
+            <h2>POC Scope</h2>
+            <div class="two-column">
+              <div>
+                <h3>In Scope</h3>
+                <ul>
+                  <li>Render the Manage Campaigns UI at <code>https://my.g2.test/g2-seller-solutions/ppc</code>.</li>
+                  <li>Mock loader/action responses because data fidelity was not the goal.</li>
+                  <li>Bring imported UI components far enough to paint the component tree.</li>
+                  <li>Preserve local React interactions: sorting, row actions, modal, toast, and draft deletion.</li>
+                  <li>Approximate Vendor Portal styling inside UE without changing global host styles.</li>
+                </ul>
+              </div>
+              <div>
+                <h3>Out Of Scope</h3>
+                <ul>
+                  <li>Real server integration or production data contracts.</li>
+                  <li>Navigation to unrelated Vendor Portal routes.</li>
+                  <li>Full design-system consolidation.</li>
+                  <li>Installing the complete Vendor Portal dependency graph into UE.</li>
+                  <li>Guaranteeing production accessibility and test coverage for every imported primitive.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section id="approach">
+            <h2>Migration Approach Used</h2>
+            <p>The route was mounted from a Rails view through a dedicated Webpack entry named <code>vendor_portal_ppc_entry</code>. The source route shape was preserved where practical, while <strong>loader/action behavior was replaced with local mocked data</strong> and event handlers.</p>
+            <ul class="rule-list">
+              <li><strong>Route host</strong><span class="muted">The MyG2 endpoint <code>/g2-seller-solutions/ppc</code> became the host for the React mount.</span></li>
+              <li><strong>Component import strategy</strong><span class="muted">Local POC primitives were created under the UE JavaScript tree to stand in for Vendor Portal UI dependencies.</span></li>
+              <li><strong>Data strategy</strong><span class="muted">Server responses were mocked to prove rendering and interaction behavior without coupling to real backend work.</span></li>
+              <li><strong>Navigation strategy</strong><span class="muted">Links to other routes were intentionally blocked or converted to local feedback so the POC stayed route-scoped.</span></li>
+              <li><strong>Styling strategy</strong><span class="muted">Scoped <code>vp-</code> CSS approximated Vendor Portal tokens while allowing the screen to inherit MyG2 typography where possible.</span></li>
+            </ul>
+          </section>
+
+          <section id="learnings">
+            <h2>Findings And Learnings</h2>
+            <p class="section-intro">These are the migration behaviors future agents should account for before opening a code editor.</p>
+            <ul>
+              <li><strong>UE can host the experiment.</strong> React, TypeScript, and Webpack entries already exist, so a sibling React mount is a viable POC path.</li>
+              <li><strong>The source route assumes React Router.</strong> Loader/action/fetcher behavior is a real application boundary, not just a syntax detail.</li>
+              <li><strong>Mocked data removes noise early.</strong> It validates UI feasibility before backend integration makes the work harder to evaluate.</li>
+              <li><strong>Component imports expose risk quickly.</strong> Missing table, popover, modal, and variant utilities were more important than the table data itself.</li>
+              <li><strong>Typography drift is easy to introduce.</strong> The better route was to inherit UE typography and only map the minimum visual differences.</li>
+              <li><strong>Scoped adapters need an exit plan.</strong> They worked for the POC, but they should not become permanent by accident.</li>
+              <li><strong>Route-level reports are part of the artifact.</strong> Later migrations will repeat the same classes of problems unless each adaptation is captured.</li>
+            </ul>
+          </section>
+
+          <section id="dependencies">
+            <h2>Dependency Compatibility</h2>
+            <p class="section-intro">Versions were checked from each app package file. The table calls out where <strong>simple route copying is likely to break</strong>.</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Dependency</th>
+                    <th>UE / MyG2</th>
+                    <th>Vendor Portal</th>
+                    <th>Risk</th>
+                    <th>Migration Note</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>React</td>
+                    <td><code>17.0.2</code></td>
+                    <td><code>19.2.6</code></td>
+                    <td><span class="risk high">High</span></td>
+                    <td>Newer Vendor Portal component assumptions may not hold in UE without upgrade or isolation.</td>
+                  </tr>
+                  <tr>
+                    <td>React DOM</td>
+                    <td><code>17.0.2</code></td>
+                    <td><code>19.2.6</code></td>
+                    <td><span class="risk high">High</span></td>
+                    <td>Mounting and concurrent behavior expectations differ across major versions.</td>
+                  </tr>
+                  <tr>
+                    <td>React Router</td>
+                    <td>Not present</td>
+                    <td><code>7.15.1</code></td>
+                    <td><span class="risk high">High</span></td>
+                    <td>Loader/action/fetcher patterns need mocking, adaptation, or a real router runtime.</td>
+                  </tr>
+                  <tr>
+                    <td>TanStack Table</td>
+                    <td>Not present</td>
+                    <td><code>8.21.3</code></td>
+                    <td><span class="risk medium">Medium</span></td>
+                    <td>Production parity may require installing it or replacing table behavior with UE-native code.</td>
+                  </tr>
+                  <tr>
+                    <td>Base UI</td>
+                    <td>Not present</td>
+                    <td><code>1.4.1</code></td>
+                    <td><span class="risk medium">Medium</span></td>
+                    <td>Primitive-level behavior should not be reimplemented casually beyond POC scope.</td>
+                  </tr>
+                  <tr>
+                    <td>Radix Popover/Dialog</td>
+                    <td>Not present</td>
+                    <td><code>^1.1.14</code> / <code>1.1.15</code></td>
+                    <td><span class="risk medium">Medium</span></td>
+                    <td>Menus and dialogs need a shared primitive strategy to avoid accessibility regressions.</td>
+                  </tr>
+                  <tr>
+                    <td>class-variance-authority</td>
+                    <td>Not present</td>
+                    <td><code>0.7.1</code></td>
+                    <td><span class="risk medium">Medium</span></td>
+                    <td>Variant composition can be ported manually for POC, but that does not scale well.</td>
+                  </tr>
+                  <tr>
+                    <td>Tailwind CSS</td>
+                    <td><code>^3.1.8</code></td>
+                    <td><code>4.3.0</code></td>
+                    <td><span class="risk high">High</span></td>
+                    <td>Token syntax, spacing semantics, content scanning, and logical utilities differ.</td>
+                  </tr>
+                  <tr>
+                    <td>TypeScript</td>
+                    <td><code>4.6.3</code></td>
+                    <td><code>6.0.3</code></td>
+                    <td><span class="risk high">High</span></td>
+                    <td>Newer declaration files can fail under UE's compiler, as seen with type validation.</td>
+                  </tr>
+                  <tr>
+                    <td>Build system</td>
+                    <td>Webpack <code>^5.106.2</code></td>
+                    <td>Vite via <code>npm:rolldown-vite@latest</code></td>
+                    <td><span class="risk medium">Medium</span></td>
+                    <td>Entry and asset conventions need translation when moving route code.</td>
+                  </tr>
+                  <tr>
+                    <td>Node engine</td>
+                    <td><code>^24.0.0</code></td>
+                    <td><code>&gt;=22.19.0</code></td>
+                    <td><span class="risk low">Low</span></td>
+                    <td>The ranges are not identical, but both sit on modern Node versions.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="tailwind">
+            <h2>Tailwind And Styling Comparison</h2>
+            <p>Tailwind was the most visible styling mismatch. Vendor Portal class names often encode <strong>pixel-level design intent</strong> that does not map directly to UE's Tailwind 3 configuration.</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Area</th>
+                    <th>UE / MyG2</th>
+                    <th>Vendor Portal</th>
+                    <th>Practical Impact</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Tailwind version</td>
+                    <td><code>^3.1.8</code> with JavaScript config and Elevate preset.</td>
+                    <td><code>4.3.0</code> with CSS-first <code>@theme static</code>.</td>
+                    <td>Directly copying Tailwind classes can produce missing classes or wrong values.</td>
+                  </tr>
+                  <tr>
+                    <td>Spacing</td>
+                    <td>Custom spacing is split across padding and margin scales.</td>
+                    <td><code>--spacing: 1px</code>, so <code>gap-24</code> means 24px.</td>
+                    <td>Spacing is not portable without a map. This caused much of the local <code>vp-</code> layer.</td>
+                  </tr>
+                  <tr>
+                    <td>Typography</td>
+                    <td>Figtree is available, but UE typography should generally own the page.</td>
+                    <td>Text utilities bundle font size, line height, margin reset, and trim behavior.</td>
+                    <td>Recreating Vendor Portal text wrappers caused visible drift. Inheriting UE typography is safer.</td>
+                  </tr>
+                  <tr>
+                    <td>Logical utilities</td>
+                    <td>Tailwind 3 setup does not expose the same logical-property utility surface.</td>
+                    <td>Components use utilities such as <code>inline-24</code>, <code>block-20</code>, and <code>min-block-40</code>.</td>
+                    <td>Button, icon, menu, and modal sizing need translation.</td>
+                  </tr>
+                  <tr>
+                    <td>Content scanning</td>
+                    <td>Main Tailwind globs do not currently cover every TS/TSX path used by the POC.</td>
+                    <td>Source is TS/TSX-heavy and assumes its own build pipeline.</td>
+                    <td>Using UE Tailwind classes from POC TSX requires content config work or preexisting classes.</td>
+                  </tr>
+                  <tr>
+                    <td>Base reset</td>
+                    <td>UE already has established global Rails and admin styles.</td>
+                    <td>Vendor Portal base rules include broad resets such as <code>button { all: unset; }</code>.</td>
+                    <td>Importing the whole Vendor Portal reset would create broad host-app risk.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="callout">
+              <p><strong>Styling recommendation:</strong> replace local <code>vp-</code> classes with UE-native utilities only where values are known to match. For spacing, colors, radii, shadows, and component states, create a deliberate token map or use UE-native components.</p>
+            </div>
+          </section>
+
+          <section id="recommendations">
+            <h2>Next-Step Recommendations For Quality</h2>
+            <p class="section-intro">This POC optimized for speed: prove that Vendor Portal React components can render in MyG2. The next iteration should optimize for <strong>production quality</strong>, even if it moves more slowly.</p>
+            <ol>
+              <li><strong>Solve dependency-difference risks first.</strong> Decide whether UE should upgrade React, support React 19 in an isolated bundle, or require source-route adaptations. Do the same for Tailwind 3 versus Tailwind 4 and TypeScript 4.6 versus newer declaration files.</li>
+              <li><strong>Move React Router data patterns into a Rails-owned boundary.</strong> Loader/action/fetcher behavior should become explicit Rails endpoints, props, or a documented adapter contract rather than mocked local state.</li>
+              <li><strong>Make the design-system decision before porting more UI.</strong> Avoid a separate React-route style layer that diverges from Rails views. Either map Vendor Portal tokens to UE, use UE-native components, or publish shared primitives with clear ownership.</li>
+              <li><strong>Replace POC shims with owned components.</strong> Tables, popovers, dialogs, toasts, and icon buttons need accessibility expectations, tests, and a maintenance owner if they remain in MyG2.</li>
+              <li><strong>Keep the route inventory, but use it as a quality gate.</strong> Inventory route links, data dependencies, UI primitives, icons, tables, modals, and toast behavior before implementation, then mark which items are solved by Rails, UE components, shared packages, or adapters.</li>
+              <li><strong>Define success beyond rendering.</strong> The next route should be judged on data ownership, visual consistency, accessibility behavior, test coverage, and how much temporary compatibility code remains.</li>
+            </ol>
+          </section>
+
+          <section id="risks">
+            <h2>Risk Register</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Risk</th>
+                    <th>Severity</th>
+                    <th>Why It Matters</th>
+                    <th>Mitigation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>React major-version gap</td>
+                    <td><span class="risk high">High</span></td>
+                    <td>Vendor Portal components are authored against React 19 while UE runs React 17.</td>
+                    <td>Decide on upgrade, isolated bundle strategy, or compatibility constraints.</td>
+                  </tr>
+                  <tr>
+                    <td>Route framework mismatch</td>
+                    <td><span class="risk high">High</span></td>
+                    <td>Loader/action/fetcher code is central to Vendor Portal routes but not native to the Rails page.</td>
+                    <td>Create a route adapter contract or rewrite data boundaries per migrated route.</td>
+                  </tr>
+                  <tr>
+                    <td>Styling drift</td>
+                    <td><span class="risk medium">Medium</span></td>
+                    <td>Tailwind v3/v4 and token differences change spacing, type, color, and sizing semantics.</td>
+                    <td>Use a token map and favor UE typography and layout where appropriate.</td>
+                  </tr>
+                  <tr>
+                    <td>Adapter layer sprawl</td>
+                    <td><span class="risk medium">Medium</span></td>
+                    <td>POC shims can quietly become a second unowned component library.</td>
+                    <td>Require ownership, tests, and a retirement plan for every adapter.</td>
+                  </tr>
+                  <tr>
+                    <td>Timeline pressure</td>
+                    <td><span class="risk medium">Medium</span></td>
+                    <td>The November target rewards route-by-route progress but can hide systemic debt.</td>
+                    <td>Use this report format to force dependency, style, and integration decisions early.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="readiness">
+            <h2>Production Readiness Checklist</h2>
+            <p class="section-intro">A future route should not graduate from POC to production until these items are answered.</p>
+            <ul>
+              <li>Dependency plan approved for React, router, table, popover, modal, toast, and variant utilities.</li>
+              <li>Server data contracts implemented or intentionally adapted to the destination app.</li>
+              <li>Route navigation behavior defined for links outside the migrated surface.</li>
+              <li>Styling token map completed for spacing, typography, color, radius, shadow, and interaction states.</li>
+              <li>Accessibility behavior verified for menus, dialogs, keyboard focus, and status feedback.</li>
+              <li>Tests added for critical interactions and route-specific state transitions.</li>
+              <li>Ownership assigned for every compatibility primitive that remains in the destination app.</li>
+              <li>Report updated with final deviations from the source route.</li>
+            </ul>
+          </section>
+
+          <section id="references">
+            <h2>Artifacts And References</h2>
+            <ul>
+              <li>Source route: <code>vendor-portal-fe/app/routes/ppc/routes/manage-campaigns/index.tsx</code></li>
+              <li>Target route: <code>https://my.g2.test/g2-seller-solutions/ppc</code></li>
+              <li>POC branch: <code>vendor-portal-ppc-poc</code></li>
+              <li>Draft PR: <code>https://github.com/g2crowd/ue/pull/39803</code></li>
+              <li>Previous report: <code>manage-campaigns-port.html</code></li>
+            </ul>
+          </section>
+
+          <footer>
+            This document is a migration artifact for experimentation and feasibility assessment. It is intentionally separate from production documentation.
+          </footer>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
