@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ADR 0002: Core Components Migration</title>
+    <style>
+      :root {
+        --bg: #f7f7f4;
+        --paper: #ffffff;
+        --ink: #20242a;
+        --muted: #68707a;
+        --line: #dadfd8;
+        --line-strong: #b9c2ba;
+        --accent: #235c56;
+        --accent-soft: #e8f0ed;
+        --code-bg: #eef2ef;
+        --content-width: 900px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+        margin: 0;
+      }
+
+      main {
+        max-width: var(--content-width);
+        padding: 44px 48px 72px;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        background: var(--code-bg);
+        border-radius: 3px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: .92em;
+        padding: 2px 5px;
+      }
+
+      .back-link {
+        color: var(--muted);
+        display: inline-block;
+        font-size: 14px;
+        margin-bottom: 28px;
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        margin: 0 0 12px;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(34px, 5vw, 56px);
+        font-weight: 720;
+        letter-spacing: 0;
+        line-height: 1.02;
+        margin-bottom: 18px;
+        max-width: 780px;
+      }
+
+      h2 {
+        font-size: 24px;
+        line-height: 1.2;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        font-size: 16px;
+        line-height: 1.35;
+        margin-bottom: 8px;
+        margin-top: 24px;
+      }
+
+      p {
+        max-width: 76ch;
+      }
+
+      section {
+        border-top: 1px solid var(--line);
+        padding: 30px 0;
+      }
+
+      section:first-of-type {
+        border-top: 0;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 22px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      table {
+        border-collapse: collapse;
+        font-size: 14px;
+        margin-top: 18px;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border: 1px solid var(--line);
+        padding: 11px 12px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: #eef2ef;
+        color: #173d39;
+        font-weight: 720;
+      }
+
+      .lede {
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.55;
+        margin-bottom: 0;
+        max-width: 780px;
+      }
+
+      .meta {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 24px 0 0;
+        padding: 16px;
+      }
+
+      .meta strong {
+        display: block;
+        font-size: 12px;
+        letter-spacing: .08em;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+      }
+
+      .callout {
+        background: var(--accent-soft);
+        border: 1px solid #c7d9d2;
+        border-radius: 8px;
+        margin-top: 18px;
+        padding: 18px 20px;
+      }
+
+      .callout p:last-child {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 720px) {
+        main {
+          padding: 34px 24px 56px;
+        }
+
+        .meta {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="back-link" href="../index.html">Back to frontend architecture report</a>
+      <header>
+        <p class="eyebrow">Architecture Decision Record</p>
+        <h1>ADR 0002: Core Components Migration</h1>
+        <p class="lede">Define the reuse and mapping strategy for shared UI primitives used by migrated G2DM views inside MyG2.</p>
+        <div class="meta">
+          <div><strong>Status</strong>Draft for ticket alignment</div>
+          <div><strong>Date</strong>2026-06-03</div>
+          <div><strong>Project</strong>Unified Seller Experience</div>
+        </div>
+      </header>
+
+      <section>
+        <h2>Context</h2>
+        <p>ADR 0001 establishes that relevant G2DM React views will be mounted inside MyG2 Rails pages. Those views currently depend on shared UI components and visual patterns. The Unified Seller Experience should not preserve the current G2DM UI exactly; the migrated views should feel consistent with MyG2 and Elevate.</p>
+        <p>This creates a dedicated component workstream: identify the core components needed by the first migrated routes, map those usages to existing reusable components, create one implementation subtask per component, and document any functional gaps that need separate follow-up.</p>
+      </section>
+
+      <section>
+        <h2>Decision</h2>
+        <p>Core component migration should be treated as a reuse and mapping task. The components needed by the first migrated routes should be reused rather than created as part of this ticket.</p>
+        <ul>
+          <li>Inventory the core components needed by the first migrated routes.</li>
+          <li>Map each G2DM component usage to the existing reusable component or Elevate reference that should cover it.</li>
+          <li>Create one subtask per component to be migrated or validated for reuse.</li>
+          <li>Reuse existing components for the migration work in this ticket.</li>
+          <li>Keep core UI components presentational: they should receive props and callbacks, not own Rails data fetching or mutations.</li>
+          <li>Use MyG2/Elevate consistency as the visual target, not pixel parity with the current G2DM Vendor Portal.</li>
+        </ul>
+        <div class="callout">
+          <p><strong>Important distinction:</strong> if the mapping exposes missing shared behavior in existing Elevate components, that should be tracked as separate component enhancement work. It is out of scope for this ticket.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Scope</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>In scope</th>
+              <th>Out of scope</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Inventory of shared UI primitives used by migrated G2DM views, such as buttons, inputs, selects, checkboxes, tabs, tables, empty states, alerts, modals, layout primitives, and similar reusable controls.</td>
+              <td>Route-specific feature implementation, business logic, Rails endpoint design, data loading, mutations, and authorization/session behavior.</td>
+            </tr>
+            <tr>
+              <td>Mapping each required component usage to the existing reusable component or Elevate reference that should cover it.</td>
+              <td>Strict visual parity with the current G2DM Vendor Portal UI when that conflicts with MyG2/Elevate consistency.</td>
+            </tr>
+            <tr>
+              <td>Validation that existing reusable components render correctly inside the MyG2 React-in-Rails mounting environment.</td>
+              <td>Creating new React components or modifying existing Elevate components as part of this ticket.</td>
+            </tr>
+            <tr>
+              <td>Documenting functionality gaps discovered during mapping.</td>
+              <td>Implementing those gaps; they should be handled by separate follow-up tickets when needed.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Migration Method</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Output</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Audit</td>
+              <td>List of core component usages required by the first migration candidates.</td>
+              <td>Start from concrete routes instead of trying to migrate every possible component upfront.</td>
+            </tr>
+            <tr>
+              <td>Map</td>
+              <td>Component mapping table: G2DM usage, existing reusable component, Elevate reference, functionality notes, status.</td>
+              <td>No action column is needed because the migration path for this ticket is reuse. Gaps should be captured as notes or follow-up tickets.</td>
+            </tr>
+            <tr>
+              <td>Split</td>
+              <td>One Jira subtask per component to be migrated or validated for reuse.</td>
+              <td>Each subtask should point back to the mapping table and be independently reviewable.</td>
+            </tr>
+            <tr>
+              <td>Validate</td>
+              <td>Existing components render correctly in the React-in-Rails environment.</td>
+              <td>Components should stay reusable and data-agnostic.</td>
+            </tr>
+            <tr>
+              <td>Review</td>
+              <td>Visual and behavioral review against MyG2/Elevate expectations.</td>
+              <td>Review should identify gaps, but gap implementation is out of scope for this ticket.</td>
+            </tr>
+            <tr>
+              <td>Adopt</td>
+              <td>First migrated route using the reused component set.</td>
+              <td>The first route should prove the reused components work in the React-in-Rails architecture.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Acceptance Criteria for Component Work</h2>
+        <ul>
+          <li>A scoped component inventory exists for the first migration candidates.</li>
+          <li>Each component usage has a documented mapping to an existing reusable component, Elevate reference, functionality notes, and status.</li>
+          <li>One Jira subtask exists per component to be migrated or validated for reuse.</li>
+          <li>Each component subtask is independently reviewable and references the relevant mapping entry.</li>
+          <li>Existing reusable components render correctly inside the MyG2 React-in-Rails mounting environment.</li>
+          <li>Components match MyG2/Elevate visual direction and expected behavior for equivalent controls.</li>
+          <li>Components are reusable and data-agnostic: no Rails endpoint calls, authorization checks, or route-specific data loading inside core UI components.</li>
+          <li>Route-specific logic remains in the migrated view/container layer or Rails backend layer, not in shared primitives.</li>
+          <li>Any missing functionality or Elevate component enhancement need is documented as follow-up work outside this ticket.</li>
+          <li>UX/design review confirms the reused components are ready to be used by migrated routes or identifies follow-up gaps.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Relationship to Data Layer Work</h2>
+        <p>The data layer POC is important for migrated routes and views, but it should not be a blocker for purely presentational core component work. Shared UI components should be able to render from props and emit callbacks without knowing how the Rails data layer is implemented.</p>
+        <p>Once the first migrated route is assembled, that route should validate both concerns together: Rails-owned data and actions feeding React views that use the reused component set.</p>
+      </section>
+
+      <section>
+        <h2>Consequences</h2>
+        <h3>Positive</h3>
+        <ul>
+          <li>Keeps the component work focused on inventory, mapping, and reuse rather than route-specific feature work.</li>
+          <li>Prevents accidental coupling between shared UI primitives and Rails data-fetching patterns.</li>
+          <li>Surfaces any Elevate functionality gaps early without absorbing that implementation into this ticket.</li>
+        </ul>
+
+        <h3>Tradeoffs</h3>
+        <ul>
+          <li>Some required behavior may need separate Elevate component enhancement work.</li>
+          <li>Component parity requires UX/design review, not only engineering validation.</li>
+          <li>The component inventory should be route-driven to avoid spending time on components that are not needed for the October migration target.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Ticket Implications</h2>
+        <p>A Jira ticket for this work should avoid saying that components are migrated into the Rails-based Elevate design system or connected to the data layer. More accurate phrasing is:</p>
+        <ul>
+          <li>Define the core component inventory required for early G2DM route migrations.</li>
+          <li>Map each component usage to the existing reusable component and related Elevate visual/behavioral reference.</li>
+          <li>Open one subtask per component to be migrated or validated for reuse.</li>
+          <li>Reuse existing components for the migration work in this ticket.</li>
+          <li>Keep shared components data-agnostic; data integration belongs to views/containers and Rails-owned endpoints.</li>
+          <li>Document any missing shared behavior or Elevate component enhancement as follow-up work outside this ticket.</li>
+          <li>Validate visual and behavioral alignment against MyG2/Elevate, not strict parity with current G2DM.</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

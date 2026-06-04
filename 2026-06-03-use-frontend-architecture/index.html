@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>USE Frontend Architecture</title>
+    <style>
+      :root {
+        --bg: #f7f7f4;
+        --paper: #ffffff;
+        --ink: #20242a;
+        --muted: #68707a;
+        --line: #dadfd8;
+        --line-strong: #b9c2ba;
+        --accent: #235c56;
+        --accent-soft: #e8f0ed;
+        --code-bg: #eef2ef;
+        --nav-width: 268px;
+        --content-width: 920px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+        margin: 0;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        background: var(--code-bg);
+        border-radius: 3px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: .92em;
+        padding: 2px 5px;
+      }
+
+      pre {
+        background: var(--code-bg);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 13px;
+        line-height: 1.55;
+        margin: 18px 0 0;
+        overflow-x: auto;
+        padding: 16px;
+      }
+
+      .page {
+        display: grid;
+        grid-template-columns: var(--nav-width) minmax(0, 1fr);
+        min-height: 100vh;
+      }
+
+      .side-nav {
+        align-self: start;
+        border-right: 1px solid var(--line);
+        height: 100vh;
+        padding: 32px 28px;
+        position: sticky;
+        top: 0;
+      }
+
+      .nav-title {
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .03em;
+        line-height: 1.35;
+        margin: 0 0 22px;
+        text-transform: uppercase;
+      }
+
+      .nav-title span {
+        color: var(--muted);
+        display: block;
+        font-weight: 500;
+        letter-spacing: 0;
+        margin-top: 6px;
+        text-transform: none;
+      }
+
+      .side-nav ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .side-nav a {
+        border-left: 2px solid transparent;
+        color: var(--muted);
+        display: block;
+        font-size: 14px;
+        line-height: 1.25;
+        padding: 7px 0 7px 12px;
+      }
+
+      .side-nav a:hover {
+        border-left-color: var(--accent);
+        color: var(--ink);
+        text-decoration: none;
+      }
+
+      .content {
+        padding: 44px 48px 72px;
+      }
+
+      .content-inner {
+        max-width: var(--content-width);
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        margin: 0 0 12px;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(34px, 5vw, 58px);
+        font-weight: 720;
+        letter-spacing: 0;
+        line-height: 1.02;
+        margin-bottom: 18px;
+        max-width: 780px;
+      }
+
+      h2 {
+        font-size: 24px;
+        line-height: 1.2;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        font-size: 16px;
+        line-height: 1.35;
+        margin-bottom: 8px;
+        margin-top: 24px;
+      }
+
+      p {
+        max-width: 76ch;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 22px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      section {
+        border-top: 1px solid var(--line);
+        padding: 34px 0;
+        scroll-margin-top: 28px;
+      }
+
+      section:first-of-type {
+        border-top-color: var(--line-strong);
+      }
+
+      .lede {
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.55;
+        margin-bottom: 0;
+        max-width: 780px;
+      }
+
+      .callout {
+        background: var(--accent-soft);
+        border: 1px solid #c7d9d2;
+        border-radius: 8px;
+        margin-top: 18px;
+        padding: 18px 20px;
+      }
+
+      .callout p:last-child {
+        margin-bottom: 0;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+
+      .card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+      }
+
+      .card h3 {
+        margin-top: 0;
+      }
+
+      .card p:last-child,
+      .card ul:last-child {
+        margin-bottom: 0;
+      }
+
+      table {
+        border-collapse: collapse;
+        font-size: 14px;
+        margin-top: 18px;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border: 1px solid var(--line);
+        padding: 11px 12px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: #eef2ef;
+        color: #173d39;
+        font-weight: 720;
+      }
+
+      .adr-link {
+        align-items: baseline;
+        display: inline-flex;
+        gap: 10px;
+        font-weight: 720;
+      }
+
+      .adr-link::after {
+        color: var(--accent);
+        content: "Open ADR";
+        font-size: 12px;
+        font-weight: 720;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+
+      @media (max-width: 860px) {
+        .page {
+          display: block;
+        }
+
+        .side-nav {
+          border-bottom: 1px solid var(--line);
+          border-right: 0;
+          height: auto;
+          position: static;
+        }
+
+        .side-nav ol {
+          display: grid;
+          gap: 4px 14px;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .content,
+        .side-nav {
+          padding-left: 24px;
+          padding-right: 24px;
+        }
+
+        .side-nav ol {
+          grid-template-columns: 1fr;
+        }
+
+        h1 {
+          font-size: 34px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav class="side-nav" aria-label="Report navigation">
+        <p class="nav-title">USE Frontend Architecture <span>Living report</span></p>
+        <ol>
+          <li><a href="#summary">Summary</a></li>
+          <li><a href="#decision">Current Decision</a></li>
+          <li><a href="#boundaries">Architecture Boundaries</a></li>
+          <li><a href="#flow">Request Flow</a></li>
+          <li><a href="#workstreams">Workstreams</a></li>
+          <li><a href="#open-questions">Open Questions</a></li>
+          <li><a href="#adrs">ADR Index</a></li>
+        </ol>
+      </nav>
+
+      <main class="content">
+        <div class="content-inner">
+          <header>
+            <p class="eyebrow">Unified Seller Experience</p>
+            <h1>Frontend Architecture Report</h1>
+            <p class="lede">A living architecture hub for the USE frontend migration: the agreed direction, the current boundaries, and the ADRs that will capture decisions as the project evolves.</p>
+          </header>
+
+          <section id="summary">
+            <h2>Summary</h2>
+            <p>The current frontend architecture decision is to host the Unified Seller Experience in MyG2, reuse relevant G2DM React views where practical, and let Rails own routing, authorization, session handling, data loading, and backend actions.</p>
+            <p>G2DM is the existing Vendor Portal / UVP experience. MyG2 is the Rails application where the unified seller experience will live. The project target is to complete the main migration work by October, with November acting as the external deadline and launch-readiness buffer.</p>
+            <div class="callout">
+              <p><strong>Working principle:</strong> reuse the G2DM React implementation to move faster, but adapt the experience to MyG2 and Elevate rather than preserving the current G2DM UI exactly.</p>
+            </div>
+          </section>
+
+          <section id="decision">
+            <h2>Current Decision</h2>
+            <p>The selected approach is React-in-Rails for migrated seller surfaces:</p>
+            <ul>
+              <li>Rails routes define the navigational boundary for migrated MyG2 pages.</li>
+              <li>Rails controllers and Rails-side patterns own authorization, session handling, data loading, and mutations/actions.</li>
+              <li>React views migrated from G2DM are mounted inside Rails-rendered MyG2 page shells.</li>
+              <li>Core component usages are mapped to existing reusable components and validated against Elevate visual style and expected behavior.</li>
+              <li>React is used primarily for reuse and delivery speed, not because every screen needs advanced client-side reactivity.</li>
+            </ul>
+          </section>
+
+          <section id="boundaries">
+            <h2>Architecture Boundaries</h2>
+            <div class="grid">
+              <article class="card">
+                <h3>Rails Owns</h3>
+                <ul>
+                  <li>Routing and page entry points.</li>
+                  <li>Authentication, authorization, and session behavior.</li>
+                  <li>Data access, loading, and mutation endpoints.</li>
+                  <li>Server-side business rules and integration with existing MyG2 patterns.</li>
+                </ul>
+              </article>
+
+              <article class="card">
+                <h3>React Owns</h3>
+                <ul>
+                  <li>Migrated G2DM view rendering inside the page shell.</li>
+                  <li>Interactive UI state local to a mounted view.</li>
+                  <li>Composition of reused components inside migrated G2DM views.</li>
+                  <li>Client-side calls into Rails-owned endpoints.</li>
+                </ul>
+              </article>
+
+              <article class="card">
+                <h3>Elevate Guides</h3>
+                <ul>
+                  <li>Visual style for seller-facing UI.</li>
+                  <li>Expected component behavior and interaction patterns.</li>
+                  <li>Accessibility expectations for shared controls.</li>
+                  <li>Consistency with the broader MyG2 experience.</li>
+                </ul>
+              </article>
+
+              <article class="card">
+                <h3>Not the Goal</h3>
+                <ul>
+                  <li>Rebuilding every G2DM surface as Rails views by default.</li>
+                  <li>Moving MyG2 wholesale into G2DM / UVP.</li>
+                  <li>Introducing React Router as the primary route owner for migrated MyG2 pages.</li>
+                  <li>Preserving the current G2DM UI as the visual target.</li>
+                </ul>
+              </article>
+            </div>
+          </section>
+
+          <section id="flow">
+            <h2>Request Flow</h2>
+            <p>The intended flow keeps Rails as the integration boundary and lets React focus on rendering the migrated experience.</p>
+            <pre>User request
+    |
+    v
+MyG2 Rails route
+    |
+    v
+Rails controller / backend layer
+    - authorization
+    - session handling
+    - data loading
+    - mutations / actions
+    |
+    v
+Rails-rendered MyG2 page shell
+    |
+    v
+Mounted React view migrated from G2DM
+    |
+    v
+Reused core components
+    - mapped to existing reusable components
+    - validated against Elevate visual style and expected behavior</pre>
+          </section>
+
+          <section id="workstreams">
+            <h2>Current Workstreams</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Workstream</th>
+                  <th>Purpose</th>
+                  <th>Current Framing</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Data layer POC</td>
+                  <td>Validate how mounted React views call Rails endpoints for fetch and submit flows.</td>
+                  <td>This unblocks route/view migration. It should not be treated as a dependency for purely presentational core UI components.</td>
+                </tr>
+                <tr>
+                  <td>Component reuse mapping</td>
+                  <td>Identify core component usages and map them to existing reusable components and Elevate references.</td>
+                  <td>This ticket should validate reuse and document gaps. Modifying existing Elevate components is separate follow-up work.</td>
+                </tr>
+                <tr>
+                  <td>Route migration</td>
+                  <td>Move selected G2DM routes into MyG2 using Rails routing and mounted React views.</td>
+                  <td>PPC and PPL are likely early candidates; dashboard, reviews, badges, and listings need product/UX decisions first.</td>
+                </tr>
+                <tr>
+                  <td>Tracking migration</td>
+                  <td>Ensure migrated React-in-Rails surfaces fire the correct G2 tracking events.</td>
+                  <td>Tracking validation should be part of migrated route acceptance criteria where user behavior is instrumented.</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section id="open-questions">
+            <h2>Open Questions</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Area</th>
+                  <th>Question</th>
+                  <th>Concrete next step</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Feature synchronization</td>
+                  <td>How do G2DM and MyG2 stay aligned while product teams continue shipping new work?</td>
+                  <td>Define the synchronization rule for new work during migration.</td>
+                </tr>
+                <tr>
+                  <td>Cutoff planning</td>
+                  <td>When should teams stop building only in G2DM and start requiring MyG2 implementation too?</td>
+                  <td>Produce a cutoff proposal for G2DM-only, dual-build, and MyG2-first work.</td>
+                </tr>
+                <tr>
+                  <td>Migration sequencing</td>
+                  <td>Which routes should move first, and which should wait because they are actively changing?</td>
+                  <td>Create a route migration candidate list marked as move now, wait, or needs discovery.</td>
+                </tr>
+                <tr>
+                  <td>Merged experiences</td>
+                  <td>What should happen with dashboard, reviews, badges, and listings?</td>
+                  <td>Document product and UX decisions required before those areas enter migration planning.</td>
+                </tr>
+                <tr>
+                  <td>Component parity</td>
+                  <td>How do reused components and Rails Elevate references stay visually and functionally aligned?</td>
+                  <td>Define a reuse validation checklist covering style, behavior, accessibility, and any follow-up Elevate component gaps.</td>
+                </tr>
+                <tr>
+                  <td>Authorization/session integration</td>
+                  <td>Which Rails-side patterns should be used for permissions, session handling, and route-level access?</td>
+                  <td>Validate the expected Rails integration pattern on the first migrated route.</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section id="adrs">
+            <h2>ADR Index</h2>
+            <p>ADR subpages should capture specific architecture decisions as they become stable. The overview report should stay concise and link to detailed records instead of absorbing every discussion.</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>ADR</th>
+                  <th>Status</th>
+                  <th>Decision Area</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><a class="adr-link" href="adrs/0001-react-in-rails-migration-approach.html">ADR 0001: React-in-Rails Migration Approach</a></td>
+                  <td>Accepted</td>
+                  <td>Frontend hosting model, routing ownership, and reuse strategy.</td>
+                </tr>
+                <tr>
+                  <td><a class="adr-link" href="adrs/0002-core-components-migration.html">ADR 0002: Core Components Migration</a></td>
+                  <td>Draft</td>
+                  <td>Core component reuse and mapping strategy for migrated G2DM views inside MyG2.</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

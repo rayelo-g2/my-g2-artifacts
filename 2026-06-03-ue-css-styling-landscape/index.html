@@ -1,0 +1,1094 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UE CSS and Styling Landscape</title>
+    <style>
+      :root {
+        --bg: #f7f7f4;
+        --paper: #ffffff;
+        --ink: #20242a;
+        --muted: #68707a;
+        --faint: #8a929b;
+        --line: #dadfd8;
+        --line-strong: #b9c2ba;
+        --accent: #235c56;
+        --accent-soft: #e8f0ed;
+        --risk-high: #8f2f23;
+        --risk-medium: #865713;
+        --risk-low: #23644b;
+        --code-bg: #eef2ef;
+        --nav-width: 268px;
+        --content-width: 900px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        background: var(--code-bg);
+        border-radius: 3px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: .92em;
+        overflow-wrap: anywhere;
+        padding: 2px 5px;
+      }
+
+      pre {
+        background: var(--code-bg);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 13px;
+        line-height: 1.55;
+        margin: 18px 0 0;
+        overflow-x: auto;
+        padding: 16px;
+      }
+
+      .page {
+        display: grid;
+        grid-template-columns: var(--nav-width) minmax(0, 1fr);
+        min-height: 100vh;
+        min-width: 0;
+      }
+
+      .side-nav {
+        align-self: start;
+        border-right: 1px solid var(--line);
+        height: 100vh;
+        padding: 32px 28px;
+        position: sticky;
+        top: 0;
+      }
+
+      .nav-title {
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .03em;
+        line-height: 1.35;
+        margin: 0 0 22px;
+        text-transform: uppercase;
+      }
+
+      .nav-title span {
+        color: var(--muted);
+        display: block;
+        font-weight: 500;
+        letter-spacing: 0;
+        margin-top: 6px;
+        text-transform: none;
+      }
+
+      .side-nav ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .side-nav li {
+        margin: 0;
+      }
+
+      .side-nav a {
+        border-left: 2px solid transparent;
+        color: var(--muted);
+        display: block;
+        font-size: 14px;
+        line-height: 1.25;
+        padding: 7px 0 7px 12px;
+      }
+
+      .side-nav a:hover {
+        border-left-color: var(--accent);
+        color: var(--ink);
+        text-decoration: none;
+      }
+
+      .content {
+        min-width: 0;
+        padding: 44px 48px 72px;
+        width: 100%;
+      }
+
+      .content-inner {
+        max-width: var(--content-width);
+        min-width: 0;
+        width: 100%;
+      }
+
+      .hero {
+        margin-bottom: 32px;
+        max-width: 100%;
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        margin: 0 0 12px;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(34px, 5vw, 58px);
+        font-weight: 720;
+        letter-spacing: 0;
+        line-height: 1.02;
+        margin-bottom: 18px;
+        max-width: 760px;
+        overflow-wrap: normal;
+      }
+
+      .lede {
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.55;
+        margin-bottom: 0;
+        max-width: 780px;
+      }
+
+      section {
+        border-top: 1px solid var(--line);
+        max-width: 100%;
+        padding: 34px 0;
+        scroll-margin-top: 28px;
+      }
+
+      section:first-of-type {
+        border-top-color: var(--line-strong);
+      }
+
+      h2 {
+        font-size: 24px;
+        line-height: 1.2;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        color: var(--ink);
+        font-size: 15px;
+        line-height: 1.35;
+        margin-bottom: 8px;
+        margin-top: 24px;
+      }
+
+      p {
+        max-width: 76ch;
+        overflow-wrap: break-word;
+      }
+
+      strong {
+        font-weight: 720;
+      }
+
+      .section-intro {
+        color: var(--muted);
+        margin-bottom: 20px;
+      }
+
+      ul,
+      ol {
+        margin-bottom: 0;
+        margin-top: 0;
+        padding-left: 22px;
+      }
+
+      li {
+        margin-bottom: 8px;
+        max-width: 78ch;
+        overflow-wrap: break-word;
+      }
+
+      li:last-child {
+        margin-bottom: 0;
+      }
+
+      .summary-list {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+
+      .summary-item,
+      .card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+      }
+
+      .summary-item h3,
+      .card h3 {
+        margin-top: 0;
+      }
+
+      .summary-item p,
+      .card p,
+      .card ul {
+        margin-bottom: 0;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+
+      .callout {
+        border-left: 3px solid var(--accent);
+        margin: 20px 0 0;
+        padding: 2px 0 2px 18px;
+      }
+
+      .callout p {
+        margin-bottom: 0;
+      }
+
+      .table-wrap {
+        margin-top: 18px;
+        max-width: 100%;
+        overflow-x: auto;
+      }
+
+      table {
+        border-collapse: collapse;
+        font-size: 14px;
+        min-width: 720px;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border: 1px solid var(--line);
+        padding: 11px 12px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: #eef2ef;
+        color: #173d39;
+        font-weight: 720;
+      }
+
+      .risk {
+        border-radius: 999px;
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 720;
+        line-height: 1;
+        padding: 5px 8px;
+        white-space: nowrap;
+      }
+
+      .risk.high {
+        background: #f8e8e4;
+        color: var(--risk-high);
+      }
+
+      .risk.medium {
+        background: #f8efd9;
+        color: var(--risk-medium);
+      }
+
+      .risk.low {
+        background: #e5f1ea;
+        color: var(--risk-low);
+      }
+
+      .metric {
+        color: var(--accent);
+        display: block;
+        font-size: 32px;
+        font-weight: 760;
+        line-height: 1.05;
+        margin-bottom: 6px;
+      }
+
+      .note {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .checklist {
+        list-style: none;
+        max-width: 780px;
+        padding-left: 0;
+      }
+
+      .checklist li {
+        align-items: start;
+        display: grid;
+        gap: 12px;
+        grid-template-columns: 16px minmax(0, 1fr);
+        margin-bottom: 0;
+        max-width: none;
+        padding: 9px 0;
+      }
+
+      .check-box {
+        border: 1px solid var(--accent);
+        border-radius: 3px;
+        height: 14px;
+        margin-top: 5px;
+        width: 14px;
+      }
+
+      @media (max-width: 900px) {
+        .page {
+          display: block;
+        }
+
+        .side-nav {
+          border-bottom: 1px solid var(--line);
+          border-right: 0;
+          height: auto;
+          padding: 22px 24px;
+          position: static;
+        }
+
+        .side-nav ol {
+          columns: 2;
+        }
+
+        .content {
+          padding: 34px 24px 56px;
+        }
+
+        .summary-list,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 560px) {
+        h1 {
+          font-size: 34px;
+        }
+
+        .side-nav ol {
+          columns: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav class="side-nav" aria-label="Report navigation">
+        <p class="nav-title">UE styling <span>Investigation, 2026-06-03</span></p>
+        <ol>
+          <li><a href="#summary">Executive Summary</a></li>
+          <li><a href="#landscape">Styling Landscape</a></li>
+          <li><a href="#usage">Usage Signals</a></li>
+          <li><a href="#setup">Setup Files</a></li>
+          <li><a href="#entrypoints">Entrypoints</a></li>
+          <li><a href="#tailwind-upgrade">Tailwind Upgrade</a></li>
+          <li><a href="#ticket">Spike Alignment</a></li>
+          <li><a href="#risks">Risk Register</a></li>
+          <li><a href="#recommendations">Recommendations</a></li>
+        </ol>
+      </nav>
+
+      <main class="content">
+        <div class="content-inner">
+          <header class="hero">
+            <p class="eyebrow">CSS and styling landscape</p>
+            <h1>UE is running several styling systems in parallel</h1>
+            <p class="lede">The dominant layer is a global Sass bundle called <code>nessy_app</code>, but it now coexists with Tailwind, legacy atomics, Foundation, Elevate, engine-local Sprockets CSS, vendor styles, and a small React Emotion surface.</p>
+          </header>
+
+          <section id="summary">
+            <h2>Executive Summary</h2>
+            <p class="section-intro">The app is not on a single styling architecture. It is a layered compatibility system where global Sass, Foundation, Tailwind, and Elevate all share the same markup surface.</p>
+
+            <div class="summary-list" aria-label="Key styling conclusions">
+              <article class="summary-item">
+                <h3>Primary Layer</h3>
+                <p><code>webpack/assets/stylesheets/nessy_app.scss</code> is the main public stylesheet. It imports Tailwind, Foundation, vendor CSS, core styles, forms, and hundreds of component partials.</p>
+              </article>
+              <article class="summary-item">
+                <h3>Migration Direction</h3>
+                <p>Elevate is the newer design-system direction. It uses <code>elv-</code> utilities and component classes, but it explicitly coexists with Nessy rather than replacing it.</p>
+              </article>
+              <article class="summary-item">
+                <h3>Main Risk</h3>
+                <p>Changing or removing <code>nessy_app</code>, Foundation, or the legacy atomic compatibility classes has high blast radius because templates mix all of those class families.</p>
+              </article>
+              <article class="summary-item">
+                <h3>Switching Constraint</h3>
+                <p>Any layer switch must be route-by-route or component-by-component. A broad rewrite would cross Sass, PostCSS, Rails layouts, engine assets, JS widgets, and CSS-in-JS styles.</p>
+              </article>
+              <article class="summary-item">
+                <h3>Tailwind Upgrade Scope</h3>
+                <p>The upgrade objective is Tailwind v4 implemented without disrupting the current UE setup. The candidate paths are Elevate-first, a shared Tailwind 3.4.x stepping stone, a scoped v4 bundle, or a direct main UE upgrade if proven safe.</p>
+              </article>
+              <article class="summary-item">
+                <h3>Upgrade Difficulty</h3>
+                <p>Tailwind v4 is a tooling and browser-support migration. UE currently embeds Tailwind inside a Sass-first Gulp pipeline, which is the central compatibility risk.</p>
+              </article>
+            </div>
+          </section>
+
+          <section id="landscape">
+            <h2>Styling Landscape</h2>
+            <p class="section-intro">These are the differentiable styling solutions found in the app. Some are frameworks, some are conventions, and some are delivery/build layers, but all can affect rendered UI.</p>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Layer</th>
+                    <th>Evidence</th>
+                    <th>Use</th>
+                    <th>Switching Risk</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Sass / SCSS global bundles</strong></td>
+                    <td><code>gulpfile.js</code>, <code>gulp.config.js</code>, <code>webpack/assets/stylesheets</code></td>
+                    <td>Primary styling implementation. 505 SCSS files under the main Webpack stylesheet tree.</td>
+                    <td><span class="risk high">High</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Nessy component CSS and BEM-ish naming</strong></td>
+                    <td><code>nessy_app.scss</code>, <code>components/*</code>, Stylelint selector pattern</td>
+                    <td>Large global component library. 377 files in <code>webpack/assets/stylesheets/components</code>; 306 style files include BEM-like selectors.</td>
+                    <td><span class="risk high">High</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Foundation 6 and XY Grid</strong></td>
+                    <td><code>_foundation_6_settings.scss</code>, <code>_foundation_and_overrides.scss</code>, <code>vendor/assets/stylesheets/foundation</code></td>
+                    <td>Grid, forms, visibility, typography, menus, tabs, reveal, accordions, and JavaScript widget behavior. Extracted class scan found Foundation-like classes in 828 files.</td>
+                    <td><span class="risk high">High</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Tailwind CSS in the main app</strong></td>
+                    <td><code>postcss.config.js</code>, <code>tailwindcss/tailwind.config.js</code>, <code>nessy_app.scss</code></td>
+                    <td>Loaded into <code>nessy_app</code> via <code>@import 'tailwindcss/base'</code>, <code>components</code>, and <code>utilities</code>. Config extends G2 colors, breakpoints, spacing, animation, and compatibility utilities.</td>
+                    <td><span class="risk high">High</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Legacy atomic utility classes</strong></td>
+                    <td><code>webpack/assets/stylesheets/atomic</code>, <code>_atomic_variables.scss</code>, Storybook utility docs</td>
+                    <td>25 atomic SCSS files still compile legacy utility aliases. Storybook says several are backward-compatibility support and recommends Tailwind defaults for new usage.</td>
+                    <td><span class="risk high">High</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Elevate design system</strong></td>
+                    <td><code>engines/elevate</code>, <code>@g2crowd/elevate</code>, <code>elv-</code> classes</td>
+                    <td>Separate engine/workspace with Tailwind 3.4, Rsbuild, ViewComponent, StyleSet, and imported package CSS. Extracted class scan found <code>elv-</code> class usage in 1,595 files.</td>
+                    <td><span class="risk high">High</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Rails Sprockets CSS for engines and admin</strong></td>
+                    <td><code>app/assets/stylesheets/active_admin.css</code>, engine <code>application.css</code> files, engine manifests</td>
+                    <td>ActiveAdmin and many engines still have asset-pipeline CSS manifests. Non-dummy engine source includes 31 CSS files.</td>
+                    <td><span class="risk medium">Medium</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Vendor CSS imports</strong></td>
+                    <td><code>quill</code>, <code>dragula</code>, <code>swiper</code>, <code>notyf</code>, <code>flatpickr</code>, <code>spectrum</code>, <code>select2</code></td>
+                    <td>Imported into global Sass bundles and admin/vendor-admin bundles. Often styled again by local overrides.</td>
+                    <td><span class="risk medium">Medium</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Emotion CSS prop in React</strong></td>
+                    <td><code>@emotion/core</code>, <code>css={...}</code> in React components</td>
+                    <td>26 files, concentrated in review form React components and a few older React surfaces.</td>
+                    <td><span class="risk medium">Medium</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Third-party component CSS through Webpack JS</strong></td>
+                    <td><code>webpack.base.config.js</code>, <code>webpack/assets/javascripts/third_party/write_a_review</code></td>
+                    <td>Webpack has a special rule for <code>/third_party/.*.(css|scss)</code> through style-loader, css-loader, and sass-loader.</td>
+                    <td><span class="risk low">Low</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="usage">
+            <h2>Usage Signals</h2>
+            <p class="section-intro">These counts are directional, not a perfect semantic inventory. The class extractor reads quoted class attributes and conservative Slim shorthand; it will miss some dynamic Ruby or React class assembly.</p>
+
+            <div class="grid">
+              <article class="card">
+                <span class="metric">505</span>
+                <h3>Main SCSS files</h3>
+                <p><code>webpack/assets/stylesheets</code> source files, excluding generated output and dependency directories.</p>
+              </article>
+              <article class="card">
+                <span class="metric">430</span>
+                <h3><code>nessy_app</code> imports</h3>
+                <p>The primary stylesheet imports Tailwind, Foundation, vendor CSS, core styles, forms, and most component partials.</p>
+              </article>
+              <article class="card">
+                <span class="metric">2,599</span>
+                <h3>Utility-class files</h3>
+                <p>Files with extracted Tailwind-like or legacy atomic utility tokens, including <code>flex</code>, spacing, sizing, color, and responsive aliases.</p>
+              </article>
+              <article class="card">
+                <span class="metric">1,856</span>
+                <h3>BEM-token files</h3>
+                <p>Files with extracted class tokens containing <code>__</code> or <code>--</code>, such as <code>topnav__item--logo</code>.</p>
+              </article>
+              <article class="card">
+                <span class="metric">1,595</span>
+                <h3><code>elv-</code> files</h3>
+                <p>Files with extracted Elevate-prefixed classes. Usage is not limited to the Elevate engine.</p>
+              </article>
+              <article class="card">
+                <span class="metric">828</span>
+                <h3>Foundation-like files</h3>
+                <p>Files with extracted classes like <code>grid-x</code>, <code>cell</code>, <code>small-12</code>, <code>button</code>, <code>tabs</code>, or <code>reveal</code>.</p>
+              </article>
+            </div>
+
+            <h3>Source File Counts</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Source tree</th>
+                    <th>Count</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>webpack/assets/stylesheets</code></td>
+                    <td>505 SCSS, 1 CSS</td>
+                    <td>Main app Sass source, excluding generated <code>public/assets</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>vendor/assets/stylesheets</code></td>
+                    <td>110 SCSS, 2 CSS</td>
+                    <td>Foundation, Motion UI, XY Grid, Notyf, Flatpickr, Dragula, and similar vendor assets.</td>
+                  </tr>
+                  <tr>
+                    <td><code>engines/*/app/assets/stylesheets</code></td>
+                    <td>31 CSS</td>
+                    <td>Engine-local Sprockets styles, including Elevate and small engine application manifests.</td>
+                  </tr>
+                  <tr>
+                    <td><code>app/assets/stylesheets</code></td>
+                    <td>1 CSS</td>
+                    <td><code>active_admin.css</code>, a separate admin stylesheet surface.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Main Stylesheet Buckets</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Bucket</th>
+                    <th>Files</th>
+                    <th>Interpretation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>components</code></td><td>377</td><td>The largest local styling surface.</td></tr>
+                  <tr><td><code>atomic</code></td><td>25</td><td>Legacy utility generator layer.</td></tr>
+                  <tr><td><code>tailwind</code></td><td>24</td><td>Custom Tailwind components and utilities layered alongside generated Tailwind.</td></tr>
+                  <tr><td><code>extensions</code></td><td>18</td><td>Foundation/component extension styles.</td></tr>
+                  <tr><td><code>root entrypoints and variables</code></td><td>13</td><td>Bundle entrypoints plus shared variables/settings.</td></tr>
+                  <tr><td><code>mixins</code>, <code>core</code>, <code>forms</code>, <code>migrate</code>, <code>utilities</code></td><td>40</td><td>Shared primitives and migration support.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="setup">
+            <h2>Meaningful Setup Files</h2>
+            <p class="section-intro">These files define the styling pipelines, global settings, asset manifests, and conventions that matter before changing layers.</p>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Area</th>
+                    <th>Files</th>
+                    <th>Why They Matter</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Main CSS build</td>
+                    <td><code>package.json</code>, <code>gulpfile.js</code>, <code>gulp.config.js</code></td>
+                    <td><code>yarn sass:build</code> and <code>yarn sass:watch</code> run Gulp, Dart Sass, PostCSS, Tailwind, Autoprefixer, and Flexibility.</td>
+                  </tr>
+                  <tr>
+                    <td>Main Tailwind</td>
+                    <td><code>postcss.config.js</code>, <code>tailwindcss/tailwind.config.js</code>, <code>tailwindcss/*.js</code></td>
+                    <td>Defines content scanning, G2 color tokens, breakpoints from <code>breakpoints.json</code>, spacing, fonts, shadows, animation, and custom compatibility utilities.</td>
+                  </tr>
+                  <tr>
+                    <td>Sass foundation</td>
+                    <td><code>_foundation_6_settings.scss</code>, <code>_foundation_and_overrides.scss</code>, <code>_variables.scss</code>, <code>_branding.scss</code></td>
+                    <td>Defines Foundation settings, app tokens, branding functions, and global framework includes.</td>
+                  </tr>
+                  <tr>
+                    <td>Asset discovery</td>
+                    <td><code>config/initializers/asset_finders.rb</code>, <code>gems/asset_finders/lib/asset_finders</code></td>
+                    <td><code>webpack_link_tag</code> resolves CSS bundles through <code>css-manifest.json</code> in production and cache-busted <code>/assets/name.css</code> in development.</td>
+                  </tr>
+                  <tr>
+                    <td>JavaScript bundling</td>
+                    <td><code>webpack.base.config.js</code>, <code>webpack.production.config.js</code></td>
+                    <td>Webpack builds JS and only handles CSS for a scoped third-party path. Main app CSS is not a Webpack CSS pipeline.</td>
+                  </tr>
+                  <tr>
+                    <td>Elevate build</td>
+                    <td><code>engines/elevate/package.json</code>, <code>engines/elevate/rsbuild.config.mjs</code>, <code>engines/elevate/postcss.config.js</code>, <code>engines/elevate/tailwind.config.js</code></td>
+                    <td>Separate Rsbuild/PostCSS/Tailwind pipeline that emits <code>/elevate-assets</code> and reads a manifest through <code>Elevate::AssetsManager</code>.</td>
+                  </tr>
+                  <tr>
+                    <td>Elevate CSS source</td>
+                    <td><code>engines/elevate/app/assets/stylesheets/elevate/application.css</code></td>
+                    <td>Imports Tailwind, <code>@g2crowd/elevate/dist/components.css</code>, <code>@g2crowd/elevate/src/css/vendor/select2.css</code>, Swiper, and local component CSS.</td>
+                  </tr>
+                  <tr>
+                    <td>Lint and validation</td>
+                    <td><code>.stylelintrc</code>, <code>.stylelintignore</code>, <code>lib/tasks/stylesheets.rake</code></td>
+                    <td>Stylelint encodes selector naming, but the GitHub action appears commented. The Rake task validates selector-count limits for built CSS.</td>
+                  </tr>
+                  <tr>
+                    <td>Rails/Sprockets CSS</td>
+                    <td><code>app/assets/stylesheets/active_admin.css</code>, engine <code>*_manifest.js</code> files</td>
+                    <td>Separate asset-pipeline styles still exist for ActiveAdmin and small engines.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="entrypoints">
+            <h2>Entrypoints And Load Order</h2>
+            <p class="section-intro">Load order is a core part of the styling architecture. Several systems intentionally override each other.</p>
+
+            <h3>Main Bundles</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Bundle</th>
+                    <th>Direct import count</th>
+                    <th>Primary use</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>nessy_app.scss</code></td>
+                    <td>430</td>
+                    <td>Default public app CSS. Loaded through <code>web_style/stylesheet/_nessy_styles.html.slim</code> and many app layouts.</td>
+                  </tr>
+                  <tr>
+                    <td><code>vendor_admin_assets.scss</code></td>
+                    <td>54</td>
+                    <td>Vendor-admin and MyG2 supplement on top of <code>nessy_app</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>embedded_grid.scss</code></td>
+                    <td>26</td>
+                    <td>Grid embed CSS with reduced component scope.</td>
+                  </tr>
+                  <tr>
+                    <td><code>admin_assets.scss</code></td>
+                    <td>4</td>
+                    <td>Small admin supplement for review builder styling.</td>
+                  </tr>
+                  <tr>
+                    <td><code>admin_overrides.scss</code></td>
+                    <td>2</td>
+                    <td>ActiveAdmin/admin override surface, including moved Select2 styles.</td>
+                  </tr>
+                  <tr>
+                    <td><code>data_assets.scss</code></td>
+                    <td>0</td>
+                    <td>Standalone SCSS for intent reports explorer, written directly in the entry file.</td>
+                  </tr>
+                  <tr>
+                    <td><code>embedded_riblet_assets.scss</code></td>
+                    <td>1</td>
+                    <td>Minimal embedded Riblet loader styling.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Layout Loading Signals</h3>
+            <ul>
+              <li><code>engines/web_style/app/views/web_style/stylesheet/_nessy_styles.html.slim</code> links <code>nessy_app</code> and yields page-specific CSS includes.</li>
+              <li>Vendor-admin layouts generally link <code>nessy_app</code> first and <code>vendor_admin_assets</code> second.</li>
+              <li>Elevate assets are injected separately by <code>elevate_asset_tags</code>, which reads the Elevate manifest and links the built Elevate CSS and JS.</li>
+              <li>Webpack CSS handling is limited to third-party JS imports. The main Sass bundles are built by Gulp, not by Webpack.</li>
+            </ul>
+          </section>
+
+          <section id="tailwind-upgrade">
+            <h2>Tailwind Upgrade Implications</h2>
+            <p class="section-intro">This section narrows the research to the ticket objective: upgrading the current Tailwind layer. It does not assume a styling-layer replacement.</p>
+
+            <div class="summary-list" aria-label="Tailwind upgrade facts">
+              <article class="summary-item">
+                <h3>Current Main Version</h3>
+                <p><code>package.json</code> has <code>tailwindcss: ^3.1.8</code>. The main Tailwind config is <code>tailwindcss/tailwind.config.js</code>.</p>
+              </article>
+              <article class="summary-item">
+                <h3>Current Latest Version</h3>
+                <p><code>npm view tailwindcss version</code> and <code>npm view @tailwindcss/postcss version</code> returned <code>4.3.0</code> on 2026-06-03.</p>
+              </article>
+              <article class="summary-item">
+                <h3>Elevate Is Separate</h3>
+                <p><code>engines/elevate/package.json</code> has <code>tailwindcss: ^3.4.10</code> and uses its own <code>engines/elevate/tailwind.config.js</code>, PostCSS config, Rsbuild pipeline, and <code>elv-</code> conventions.</p>
+              </article>
+              <article class="summary-item">
+                <h3>Browser Support Gate</h3>
+                <p>UE has <code>.browserslistrc</code> set to <code>last 2 versions</code>. Tailwind v4 requires a stricter modern-browser baseline, so analytics/product support policy should be confirmed before implementation.</p>
+              </article>
+            </div>
+
+            <h3>What Changes In Tailwind v4</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Change</th>
+                    <th>UE implication</th>
+                    <th>Risk</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>PostCSS integration moved from <code>tailwindcss</code> to <code>@tailwindcss/postcss</code>.</td>
+                    <td><code>gulpfile.js</code> currently calls <code>tailwindcss(config.tailwind.config)</code> inside <code>gulp-postcss</code>. That cannot be a blind package bump.</td>
+                    <td><span class="risk high">High</span></td>
+                  </tr>
+                  <tr>
+                    <td>Tailwind v4 uses <code>@import "tailwindcss"</code> rather than v3-style <code>@tailwind</code> directives, and it changes the recommended import/config model.</td>
+                    <td><code>nessy_app.scss</code> currently imports <code>tailwindcss/base</code>, <code>tailwindcss/components</code>, and <code>tailwindcss/utilities</code> from inside SCSS.</td>
+                    <td><span class="risk high">High</span></td>
+                  </tr>
+                  <tr>
+                    <td>Tailwind v4 is not designed for Sass/Less/Stylus preprocessing.</td>
+                    <td>UE's main CSS pipeline is Sass-first. Tailwind is mixed into <code>nessy_app.scss</code> before hundreds of Sass partials and vendor imports.</td>
+                    <td><span class="risk high">High</span></td>
+                  </tr>
+                  <tr>
+                    <td>JavaScript config is still possible for compatibility, but v4 prefers CSS-first configuration.</td>
+                    <td>UE has substantial JS config in <code>tailwindcss/*.js</code>, including colors, spacing, breakpoints, and a custom <code>nessyPlugin</code>.</td>
+                    <td><span class="risk medium">Medium</span></td>
+                  </tr>
+                  <tr>
+                    <td>Browser support is Safari 16.4+, Chrome 111+, and Firefox 128+.</td>
+                    <td>Public G2 pages may have a broader browser profile than internal seller/admin pages. This must be checked against traffic before upgrading the shared <code>nessy_app</code> bundle.</td>
+                    <td><span class="risk high">High</span></td>
+                  </tr>
+                  <tr>
+                    <td>Some deprecated utilities were removed or renamed, and several defaults changed.</td>
+                    <td>UE contains many generated compatibility utilities, arbitrary values, opacity utilities, shadow/radius utilities, and dynamic class comments.</td>
+                    <td><span class="risk medium">Medium</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>UE-Specific Upgrade Surface</h3>
+            <ul>
+              <li><code>package.json</code>: main app currently has <code>tailwindcss ^3.1.8</code>, <code>postcss ^8.5.13</code>, <code>postcss-import ^15.0.0</code>, <code>autoprefixer 10.4.4</code>, <code>gulp-postcss 9.0.1</code>, and <code>sass 1.32.12</code>.</li>
+              <li><code>gulpfile.js</code>: main Tailwind runs as one PostCSS plugin after Dart Sass compilation, with <code>postcss-import</code>, <code>tailwindcss/nesting</code>, Tailwind, Autoprefixer, and Flexibility.</li>
+              <li><code>tailwindcss/tailwind.config.js</code>: content includes app views/components, engines, Webpack JS/JSX, Storybook docs, and packs.</li>
+              <li><code>tailwindcss/nessy.plugin.js</code>: custom utilities generate <code>c-*</code>, <code>bg-*-hover</code>, and legacy order aliases from theme colors/screens.</li>
+              <li><code>webpack/assets/stylesheets/tailwind</code>: 24 custom Tailwind component/utility SCSS files using <code>@layer</code> and <code>@apply</code>.</li>
+              <li><code>webpack/assets/stylesheets/components</code>: regular Sass component files also use Tailwind <code>@apply</code>, so Tailwind is not isolated to the <code>tailwind/</code> folder.</li>
+            </ul>
+
+            <h3>Measured Tailwind Upgrade Hotspots</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Signal</th>
+                    <th>Count</th>
+                    <th>Interpretation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Main-app <code>@apply</code></td>
+                    <td>260 occurrences across 40 SCSS files</td>
+                    <td>Compilation must be validated against Tailwind v4's stricter/custom utility behavior.</td>
+                  </tr>
+                  <tr>
+                    <td>Main-app <code>@layer</code></td>
+                    <td>22 files</td>
+                    <td>Custom components/utilities are layered into Tailwind output, mostly under <code>webpack/assets/stylesheets/tailwind</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><code>@apply</code>/<code>@layer</code> files that also use Sass constructs</td>
+                    <td>20 files</td>
+                    <td>These are the highest-risk files if Tailwind v4 processing must be separated from Sass preprocessing.</td>
+                  </tr>
+                  <tr>
+                    <td>Arbitrary-value utility occurrences</td>
+                    <td>821 grep matches</td>
+                    <td>Requires review because v4 changes handling around arbitrary values and variables in some cases.</td>
+                  </tr>
+                  <tr>
+                    <td>Important modifier occurrences</td>
+                    <td>1,940 grep matches</td>
+                    <td>Mostly <code>elv-</code> and utility classes. The prefix/important modifier interaction needs verification when testing v4.</td>
+                  </tr>
+                  <tr>
+                    <td>Dynamic Tailwind comments</td>
+                    <td>8 explicit comments found</td>
+                    <td>Content detection/safelisting needs a test plan because dynamic classes can be invisible to the scanner.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Likely Implementation Paths</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Path</th>
+                    <th>What it means</th>
+                    <th>Pros</th>
+                    <th>Cons</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Elevate-first Tailwind v4</strong></td>
+                    <td>Upgrade <code>engines/elevate</code> to Tailwind v4 while leaving the main <code>nessy_app</code> Tailwind output unchanged.</td>
+                    <td>Best isolation if migrated USE/React work can live behind Elevate assets and <code>elv-</code> conventions.</td>
+                    <td>Does not modernize main UE utilities; still needs proof that Elevate's Rsbuild/PostCSS/import model works cleanly with v4.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Common Tailwind 3.4.x stepping stone</strong></td>
+                    <td>Move main UE from <code>^3.1.8</code> to the same 3.4.x baseline as Elevate before attempting v4.</td>
+                    <td>Lower-risk modernization step; keeps the Sass/PostCSS model; exposes deprecated/custom utility problems before the v4 jump.</td>
+                    <td>Does not satisfy "latest"; may not unblock components that require v4-specific classes.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Split Tailwind into a CSS-first entrypoint</strong></td>
+                    <td>Build Tailwind v4 from a plain CSS entrypoint and keep Sass for Nessy/Foundation separately.</td>
+                    <td>Aligns better with Tailwind v4's intended workflow.</td>
+                    <td>Requires careful CSS load-order design and may expose specificity/order regressions.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Route-scoped v4 pilot</strong></td>
+                    <td>Add a v4 Tailwind bundle for the migrated component surface only, before changing global <code>nessy_app</code>.</td>
+                    <td>Best blast-radius control for DMVPC component migration.</td>
+                    <td>Risks duplicate Preflight/base styles or conflicting utility definitions unless scoped carefully.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Direct main UE v4 upgrade</strong></td>
+                    <td>Install <code>tailwindcss</code> and <code>@tailwindcss/postcss</code> v4 in the main app, update Gulp/PostCSS integration, then resolve breakages.</td>
+                    <td>Most direct path if the current Sass/Gulp pipeline can be made compatible.</td>
+                    <td>Highest uncertainty because Tailwind v4 is not designed for Sass preprocessing and UE imports Tailwind from SCSS.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="callout">
+              <p><strong>Current recommendation:</strong> do not describe this as a simple dependency bump. Use a spike to choose between Elevate-first v4, a shared 3.4.x stepping stone, a scoped v4 bundle, or direct main UE v4. The implementation ticket should be written only after that scenario is selected.</p>
+            </div>
+          </section>
+
+          <section id="ticket">
+            <h2>Spike Alignment</h2>
+            <p class="section-intro">Jira issue <code>DMVPC-1785</code> has been repurposed as <em>Spike: Evaluate non-disruptive path to Tailwind v4 for UE/Elevate</em>. That framing matches the research: decide the safest scenario first, then write the implementation ticket.</p>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Scenario</th>
+                    <th>What the spike should prove</th>
+                    <th>Implementation implication</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Elevate-first v4</td>
+                    <td>Whether <code>engines/elevate</code> can move to Tailwind v4 independently through its Rsbuild/PostCSS pipeline.</td>
+                    <td>Use this if migrated USE/React work can be isolated behind Elevate assets without touching <code>nessy_app</code>.</td>
+                  </tr>
+                  <tr>
+                    <td>Common 3.4.x stepping stone</td>
+                    <td>Whether main UE can safely move from Tailwind <code>^3.1.8</code> to <code>3.4.x</code>, matching Elevate's current baseline.</td>
+                    <td>Use this if aligning versions first reduces risk and exposes compatibility issues before the v4 migration.</td>
+                  </tr>
+                  <tr>
+                    <td>Scoped v4 bundle</td>
+                    <td>Whether Tailwind v4 can be introduced through a constrained CSS entrypoint with safe load order, Preflight behavior, prefixes, and content scanning.</td>
+                    <td>Use this if v4 is needed soon but the global Sass/Gulp bundle is too risky to upgrade first.</td>
+                  </tr>
+                  <tr>
+                    <td>Direct main UE v4</td>
+                    <td>Whether Tailwind v4 can run safely inside the existing Sass-first Gulp/PostCSS pipeline and preserve current output.</td>
+                    <td>Use this only if prototype builds and representative visual smoke pages show acceptable risk.</td>
+                  </tr>
+                  <tr>
+                    <td>Defer v4</td>
+                    <td>Whether browser support, Sass compatibility, or visual-regression risk blocks a near-term v4 rollout.</td>
+                    <td>Use this if the safest next ticket is only Tailwind 3.4.x alignment, test coverage, or pipeline preparation.</td>
+                  </tr>
+                  <tr>
+                    <td>Smoke matrix</td>
+                    <td>Which UE/MyG2/vendor-admin/public/Elevate routes represent the styling blast radius for the chosen path.</td>
+                    <td>Turn the chosen scenario into implementation tickets with explicit build and visual acceptance criteria.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="risks">
+            <h2>Risk Register</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Risk</th>
+                    <th>Severity</th>
+                    <th>Why It Matters</th>
+                    <th>Mitigation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Replacing <code>nessy_app</code> broadly</td>
+                    <td><span class="risk high">High</span></td>
+                    <td>It is the default public CSS bundle and contains Tailwind, Foundation, vendor CSS, core styles, forms, and most local components.</td>
+                    <td>Do not replace globally. Introduce isolated route/component boundaries and measure visual diffs route-by-route.</td>
+                  </tr>
+                  <tr>
+                    <td>Removing Foundation or changing Foundation settings</td>
+                    <td><span class="risk high">High</span></td>
+                    <td>Foundation classes appear across templates, Sass variables depend on its palette/settings, and JS widgets import Foundation for accordion, dropdown, popover, and Magellan behavior.</td>
+                    <td>Inventory component-by-component. Keep a compatibility stylesheet until all markup and widget behavior moves.</td>
+                  </tr>
+                  <tr>
+                    <td>Changing Tailwind config, prefixing, or content paths</td>
+                    <td><span class="risk high">High</span></td>
+                    <td>The main app uses unprefixed Tailwind plus compatibility aliases. Dynamic-class comments already exist, which means purge/content scans can miss runtime classes.</td>
+                    <td>Add safelist tests for known dynamic classes and keep compatibility aliases during migration.</td>
+                  </tr>
+                  <tr>
+                    <td>Upgrading Tailwind v3 to v4 inside the existing Sass/Gulp pipeline</td>
+                    <td><span class="risk high">High</span></td>
+                    <td>Tailwind v4 changes the PostCSS plugin package, import model, browser support baseline, and Sass compatibility assumptions.</td>
+                    <td>Run a dedicated spike before committing to direct v4. Prove build output and visual smoke pages before widening scope.</td>
+                  </tr>
+                  <tr>
+                    <td>Unsupported browser regressions after v4</td>
+                    <td><span class="risk high">High</span></td>
+                    <td>Tailwind v4 depends on modern CSS features and has a stricter browser floor than UE's current <code>last 2 versions</code> Browserslist policy implies.</td>
+                    <td>Check production browser analytics for affected public and seller-admin surfaces before upgrading the shared bundle.</td>
+                  </tr>
+                  <tr>
+                    <td>Confusing main Tailwind with Elevate Tailwind</td>
+                    <td><span class="risk high">High</span></td>
+                    <td>Main Tailwind is configured under <code>tailwindcss/</code> and currently depends on Tailwind 3.1.x. Elevate has its own Tailwind 3.4.x preset and <code>elv-</code> conventions.</td>
+                    <td>Treat them as separate systems unless an explicit consolidation plan handles prefixes, versions, and content paths.</td>
+                  </tr>
+                  <tr>
+                    <td>Dropping legacy atomic aliases</td>
+                    <td><span class="risk high">High</span></td>
+                    <td>Storybook calls several atomics backward-compatibility support, but extracted utility usage is broad. Many templates still mix old aliases and Tailwind defaults.</td>
+                    <td>Deprecate by codemod and lint, not by deletion. Track alias usage before removing generated classes.</td>
+                  </tr>
+                  <tr>
+                    <td>Elevate asset manifest failure</td>
+                    <td><span class="risk medium">Medium</span></td>
+                    <td><code>elevate_asset_tags</code> rescues manifest load errors and returns no tags. In development/test, missing Elevate build output can silently remove Elevate CSS.</td>
+                    <td>Add smoke checks for pages that require Elevate assets and document the <code>elevate:dev</code>/<code>elevate:build</code> dependency.</td>
+                  </tr>
+                  <tr>
+                    <td>Emotion styles bypassing global migration</td>
+                    <td><span class="risk medium">Medium</span></td>
+                    <td>React components with <code>css={...}</code> will not be affected by Sass/Tailwind cleanup. Some combine Emotion with utility classes.</td>
+                    <td>Track CSS-in-JS as a separate migration lane for React surfaces.</td>
+                  </tr>
+                  <tr>
+                    <td>Weak lint enforcement</td>
+                    <td><span class="risk medium">Medium</span></td>
+                    <td>Stylelint config exists, but the GitHub workflow action appears commented. Selector discipline may depend on local convention rather than CI.</td>
+                    <td>Re-enable or replace style linting before large styling migrations.</td>
+                  </tr>
+                  <tr>
+                    <td>Vendor CSS override regressions</td>
+                    <td><span class="risk medium">Medium</span></td>
+                    <td>Quill, Dragula, Swiper, Notyf, Flatpickr, Spectrum, Select2, and ActiveAdmin styles are imported or overridden in multiple places.</td>
+                    <td>Keep vendor imports explicit and verify affected widgets visually after bundle/order changes.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="recommendations">
+            <h2>Recommendations</h2>
+            <ul class="checklist">
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Define the desired target per surface.</strong> Public marketplace, MyG2/vendor-admin, embedded widgets, ActiveAdmin, and Elevate should not necessarily use the same short-term migration path.</span></li>
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Treat Elevate as additive first.</strong> The current code and docs describe coexistence with Nessy, not a wholesale replacement.</span></li>
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Protect compatibility utilities.</strong> Before removing atomics or changing Tailwind aliases, build a usage report that maps old classes to replacement classes.</span></li>
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Add visual smoke coverage around CSS bundles.</strong> Start with one route for <code>nessy_app</code>, one MyG2/vendor-admin route, one embedded grid, one Elevate route, and one ActiveAdmin route.</span></li>
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Revisit Stylelint and selector validation.</strong> If styling migration is coming, CI should enforce the conventions before the migration starts.</span></li>
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Separate build-pipeline work from design-system work.</strong> Moving from Gulp/Sass to another build tool is a different risk than moving from Nessy/Foundation classes to Elevate classes.</span></li>
+            </ul>
+          </section>
+
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
