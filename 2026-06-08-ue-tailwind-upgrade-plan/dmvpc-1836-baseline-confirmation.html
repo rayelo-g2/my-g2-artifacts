@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DMVPC-1836 Tailwind Baseline Confirmation</title>
+    <style>
+      :root {
+        --bg: #f7f7f4;
+        --paper: #ffffff;
+        --ink: #20242a;
+        --muted: #68707a;
+        --line: #dadfd8;
+        --accent: #235c56;
+        --accent-soft: #e8f0ed;
+        --code-bg: #eef2ef;
+        --content-width: 940px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+        margin: 0;
+      }
+
+      main {
+        max-width: var(--content-width);
+        padding: 44px 48px 72px;
+        width: 100%;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        background: var(--code-bg);
+        border-radius: 3px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: .92em;
+        overflow-wrap: anywhere;
+        padding: 2px 5px;
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        margin: 0 0 12px;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(34px, 5vw, 58px);
+        font-weight: 720;
+        letter-spacing: 0;
+        line-height: 1.02;
+        margin-bottom: 18px;
+        max-width: 780px;
+      }
+
+      h2 {
+        border-top: 1px solid var(--line);
+        font-size: 24px;
+        line-height: 1.2;
+        margin-bottom: 10px;
+        margin-top: 34px;
+        padding-top: 28px;
+      }
+
+      h3 {
+        font-size: 15px;
+        margin-bottom: 8px;
+        margin-top: 22px;
+      }
+
+      p,
+      li {
+        max-width: 82ch;
+      }
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      .lede,
+      .section-intro {
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .callout {
+        background: var(--accent-soft);
+        border: 1px solid #c7d9d2;
+        border-radius: 8px;
+        margin: 26px 0;
+        padding: 18px 20px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 24px 0 10px;
+      }
+
+      .card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+      }
+
+      .metric {
+        color: var(--accent);
+        display: block;
+        font-size: 24px;
+        font-weight: 720;
+        line-height: 1.1;
+        margin-bottom: 10px;
+      }
+
+      .table-wrap {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        margin: 18px 0;
+        overflow-x: auto;
+      }
+
+      table {
+        border-collapse: collapse;
+        min-width: 760px;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 12px 14px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: #edf1ee;
+        font-size: 13px;
+        text-transform: uppercase;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      @media (max-width: 760px) {
+        main {
+          padding: 30px 22px 56px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Baseline evidence</p>
+        <h1>DMVPC-1836 baseline is confirmed on the v3 worktree</h1>
+        <p class="lede">This page records the baseline state used before any Tailwind v4 package or pipeline changes. It intentionally keeps v4 implementation out of scope.</p>
+      </header>
+
+      <section>
+        <h2>Baseline Decision</h2>
+        <div class="callout">
+          <p><strong>Use <code>/Users/rayelo/G2/my-g2/ue-unify-tailwind-3</code> as the v4 starting baseline</strong>, unless the branch drifts or the team gives new direction.</p>
+        </div>
+        <ul>
+          <li>Branch: <code>ue-unify-tailwind-3</code>, tracking <code>origin/ue-unify-tailwind-3</code>.</li>
+          <li>Commit: <code>e7167dff84989297474e9f9574f102092b54f1d0</code> (<code>chore: unify Tailwind v3.4.19 dependencies [DMVPC-1837]</code>).</li>
+          <li>Worktree status before and after this baseline pass: clean.</li>
+          <li><code>~/.puma-dev/g2</code> points to this worktree, so <code>*.g2.test</code> requests are wired to the agreed baseline.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Package Versions</h2>
+        <div class="grid">
+          <article class="card">
+            <span class="metric">3.4.19</span>
+            <h3>Root UE</h3>
+            <p><code>package.json</code> declares <code>devDependencies.tailwindcss = 3.4.19</code>.</p>
+          </article>
+          <article class="card">
+            <span class="metric">3.4.19</span>
+            <h3>Elevate</h3>
+            <p><code>engines/elevate/package.json</code> declares <code>dependencies.tailwindcss = 3.4.19</code>.</p>
+          </article>
+          <article class="card">
+            <span class="metric">one version</span>
+            <h3>Yarn Resolution</h3>
+            <p><code>yarn why tailwindcss</code> reports <code>tailwindcss@npm:3.4.19</code> for both <code>@g2crowd/ue</code> and <code>elevate</code>.</p>
+          </article>
+        </div>
+        <div class="callout">
+          <p><strong>Related package correction:</strong> the sibling <code>/Users/rayelo/G2/my-g2/elevate-g2</code> checkout for <code>@g2crowd/elevate</code> is separate from UE's embedded <code>engines/elevate</code> workspace. Its Tailwind v3.4.19 alignment is tracked under <code>DMVPC-1837</code> and opened as Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a>; see <a href="standalone-elevate-package.html">the standalone Elevate note</a>.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Build Outputs</h2>
+        <p class="section-intro">Both CSS-producing build commands passed from the baseline worktree on 2026-06-09.</p>
+        <ul>
+          <li><code>zsh -lic 'yarn sass:build'</code> passed. It emitted the known existing Autoprefixer warnings for <code>fill</code>, <code>start</code>, and <code>end</code>.</li>
+          <li><code>zsh -lic 'yarn workspace elevate build'</code> passed with Rsbuild syntax check passing.</li>
+        </ul>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Output</th>
+                <th>Raw bytes</th>
+                <th>Gzip bytes</th>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>public/assets/nessy_app.css</code></td>
+                <td><code>3,590,962</code></td>
+                <td><code>721,464</code></td>
+                <td>Main UE Tailwind output through the Sass/Gulp/PostCSS path.</td>
+              </tr>
+              <tr>
+                <td><code>public/assets/vendor_admin_assets.css</code></td>
+                <td><code>172,923</code></td>
+                <td><code>26,894</code></td>
+                <td>Vendor/admin bundle generated by the root Sass build.</td>
+              </tr>
+              <tr>
+                <td><code>engines/elevate/public/elevate-assets/application-b2605c52068b1312.digested.css</code></td>
+                <td><code>319,846</code></td>
+                <td><code>41,482</code></td>
+                <td>Canonical post-build Elevate stylesheet. The plain <code>application.css</code> path is not present after the Rsbuild production build.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Smoke Matrix</h2>
+        <p class="section-intro">Curl smoke checks were run against <code>*.g2.test</code> after rebuilding assets. These checks verify route boot and CSS inclusion, not pixel-level visual parity.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Surface</th>
+                <th>Route</th>
+                <th>Result</th>
+                <th>CSS evidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>MyG2 seller home fallback</td>
+                <td><code>https://my.g2.test/g2-seller-solutions/home</code></td>
+                <td>Unauthenticated curl redirected to <code>https://my.g2.test/signup?login=true</code> and returned <code>200</code>.</td>
+                <td>Loaded <code>nessy_app.css</code> and the Elevate digested stylesheet.</td>
+              </tr>
+              <tr>
+                <td>Elevate preview</td>
+                <td><code>https://www.g2.test/rails/view_components/elevate/button/primary_lg</code></td>
+                <td>Returned <code>200</code>, title <code>Elevate</code>.</td>
+                <td>Loaded the Elevate digested stylesheet.</td>
+              </tr>
+              <tr>
+                <td>Vendor/admin representative</td>
+                <td><code>https://www.g2.test/widget_library/vendor_admin/brand_guidelines</code></td>
+                <td>Returned <code>200</code>, title <code>Vendor admin/brand guidelines | Widget Library</code>.</td>
+                <td>Loaded <code>nessy_app.css</code>, <code>vendor_admin_assets.css</code>, and the Elevate digested stylesheet.</td>
+              </tr>
+              <tr>
+                <td>Widget representative</td>
+                <td><code>https://www.g2.test/widget_library/forms/bound_form</code></td>
+                <td>Returned <code>200</code>, title <code>Forms/bound form | Widget Library</code>.</td>
+                <td>Loaded <code>nessy_app.css</code>, <code>vendor_admin_assets.css</code>, and the Elevate digested stylesheet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Limits</h2>
+        <ul>
+          <li>The temporary admin proxy URL <code>https://my.g2.test/admin/proxy?user_id=1709668</code> currently returns <code>410 Gone</code> in this local curl session, so authenticated seller/admin visual smokes were not completed here.</li>
+          <li><code>https://www.g2.test/admin</code> is not a mounted route in this local route set and returns a Rails routing error. The widget-library vendor-admin route above is the concrete admin-style coverage used for this baseline.</li>
+          <li>The standalone <code>elevate-g2/</code> checkout was corrected in a later <code>DMVPC-1837</code> pass. Its package build path is Vite/PostCSS, not the UE embedded Elevate Rsbuild path.</li>
+          <li>No Tailwind v4 implementation or package change was made.</li>
+        </ul>
+      </section>
+
+      <p><a href="index.html">Back to Tailwind upgrade plan</a></p>
+    </main>
+  </body>
+</html>

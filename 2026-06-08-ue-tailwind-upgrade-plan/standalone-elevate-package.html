@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Standalone Elevate Tailwind Package Note</title>
+    <style>
+      :root {
+        --bg: #f7f7f4;
+        --paper: #ffffff;
+        --ink: #20242a;
+        --muted: #68707a;
+        --line: #dadfd8;
+        --accent: #235c56;
+        --accent-soft: #e8f0ed;
+        --code-bg: #eef2ef;
+        --content-width: 920px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+        margin: 0;
+      }
+
+      main {
+        max-width: var(--content-width);
+        padding: 44px 48px 72px;
+        width: 100%;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        background: var(--code-bg);
+        border-radius: 3px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: .92em;
+        overflow-wrap: anywhere;
+        padding: 2px 5px;
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        margin: 0 0 12px;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(34px, 5vw, 58px);
+        font-weight: 720;
+        letter-spacing: 0;
+        line-height: 1.02;
+        margin-bottom: 18px;
+        max-width: 780px;
+      }
+
+      h2 {
+        border-top: 1px solid var(--line);
+        font-size: 24px;
+        line-height: 1.2;
+        margin-bottom: 10px;
+        margin-top: 34px;
+        padding-top: 28px;
+      }
+
+      p,
+      li {
+        max-width: 82ch;
+      }
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      .lede {
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .callout {
+        background: var(--accent-soft);
+        border: 1px solid #c7d9d2;
+        border-radius: 8px;
+        margin: 24px 0;
+        padding: 18px 20px;
+      }
+
+      .table-wrap {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        margin: 18px 0;
+        overflow-x: auto;
+      }
+
+      table {
+        border-collapse: collapse;
+        min-width: 760px;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 12px 14px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: #edf1ee;
+        font-size: 13px;
+        text-transform: uppercase;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      @media (max-width: 760px) {
+        main {
+          padding: 30px 22px 56px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Tailwind package finding</p>
+        <h1>Standalone Elevate also needs Tailwind alignment</h1>
+        <p class="lede">This page records the 2026-06-09 scope update that the standalone <code>@g2crowd/elevate</code> package must be considered alongside the UE Tailwind v3 baseline work.</p>
+      </header>
+
+      <div class="callout">
+        <p><strong>Decision for tracking:</strong> relate the standalone package upgrade to <code>DMVPC-1837</code>. The current UE PR validates root UE and UE's embedded <code>engines/elevate</code> workspace. The standalone <code>@g2crowd/elevate</code> package lives in the <code>elevate-g2/</code> checkout and ships separately through Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a>.</p>
+      </div>
+
+      <section>
+        <h2>Observed Package State</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Signal</th>
+                <th>Finding</th>
+                <th>Implication</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Local checkout</td>
+                <td><code>/Users/rayelo/G2/my-g2/elevate-g2</code></td>
+                <td>This repo is separate from UE and from UE's embedded <code>engines/elevate</code> workspace.</td>
+              </tr>
+              <tr>
+                <td>Remote</td>
+                <td><code>git@github.com:g2crowd/elevate-g2.git</code></td>
+                <td>The package alignment ships in its own repository PR.</td>
+              </tr>
+              <tr>
+                <td>Working tree</td>
+                <td><code>chore/g-19-tailwind-v3-elevate-baseline</code> was created from <code>origin/main</code> at <code>cf97847</code>.</td>
+                <td>The standalone package change is isolated from the UE monorepo PR.</td>
+              </tr>
+              <tr>
+                <td>Tailwind dependency</td>
+                <td><code>package.json</code> now declares <code>devDependencies.tailwindcss: 3.4.19</code> and keeps <code>peerDependencies.tailwindcss: ^3.4.0</code>.</td>
+                <td>The package builds against the exact v3 baseline while preserving a compatible consumer peer range.</td>
+              </tr>
+              <tr>
+                <td>Toolchain alignment</td>
+                <td><code>package.json</code> already declares <code>packageManager: yarn@4.13.0</code>, and <code>.tool-versions</code> pins Node <code>24.14.1</code>.</td>
+                <td>No toolchain migration was needed for this correction.</td>
+              </tr>
+              <tr>
+                <td>Pipeline files</td>
+                <td><code>postcss.config.js</code>, <code>tailwind.build.config.js</code>, <code>vite.config.js</code>, and <code>vitest.config.js</code> are present.</td>
+                <td>The package build path is <code>yarn build</code>: <code>postcss src/css/application.css -o dist/elevate.css</code> plus <code>postcss src/css/components-build.css -o dist/components.css</code>. Site builds use Vite separately.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Final Evidence</h2>
+        <ul>
+          <li><code>yarn.lock</code> now records <code>tailwindcss: "npm:3.4.19"</code> for the package workspace and resolves <code>tailwindcss@npm:3.4.19</code>.</li>
+          <li><code>corepack yarn install</code> passed under Yarn <code>4.13.0</code>. Yarn emitted its existing experimental PnP ESM loader warning.</li>
+          <li><code>corepack yarn build</code> passed and emitted <code>dist/elevate.css</code> plus <code>dist/components.css</code>.</li>
+          <li><code>dist/elevate.css</code> measured <code>172,398</code> raw bytes / <code>22,673</code> gzip bytes.</li>
+          <li><code>dist/components.css</code> measured <code>118,578</code> raw bytes / <code>14,286</code> gzip bytes.</li>
+          <li><code>corepack yarn test</code> passed the available Vitest suite: <code>1</code> file passed, <code>1</code> test passed. Vite emitted its existing CJS Node API deprecation warning.</li>
+          <li>Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> contains the standalone package changes on branch <code>chore/g-19-tailwind-v3-elevate-baseline</code>.</li>
+          <li>The committed <code>yarn.lock</code> is preserved and updated. Generated local install/build artifacts such as <code>.pnp.cjs</code>, <code>.pnp.loader.mjs</code>, <code>.yarn/</code>, <code>node_modules/</code>, and <code>dist/</code> are not part of the PR.</li>
+        </ul>
+      </section>
+
+      <p><a href="index.html">Back to Tailwind upgrade plan</a></p>
+    </main>
+  </body>
+</html>

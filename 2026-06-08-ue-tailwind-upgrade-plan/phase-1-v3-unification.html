@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Phase 1 Tailwind v3 Unification Log</title>
+    <style>
+      :root {
+        --bg: #f7f7f4;
+        --paper: #ffffff;
+        --ink: #20242a;
+        --muted: #68707a;
+        --line: #dadfd8;
+        --accent: #235c56;
+        --accent-soft: #e8f0ed;
+        --code-bg: #eef2ef;
+        --content-width: 900px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+        margin: 0;
+      }
+
+      main {
+        max-width: var(--content-width);
+        padding: 44px 48px 72px;
+        width: 100%;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        background: var(--code-bg);
+        border-radius: 3px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: .92em;
+        overflow-wrap: anywhere;
+        padding: 2px 5px;
+      }
+
+      pre {
+        background: var(--code-bg);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 13px;
+        line-height: 1.55;
+        overflow-x: auto;
+        padding: 16px;
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        margin: 0 0 12px;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(34px, 5vw, 58px);
+        font-weight: 720;
+        letter-spacing: 0;
+        line-height: 1.02;
+        margin-bottom: 18px;
+        max-width: 760px;
+      }
+
+      h2 {
+        border-top: 1px solid var(--line);
+        font-size: 24px;
+        line-height: 1.2;
+        margin-bottom: 10px;
+        margin-top: 34px;
+        padding-top: 28px;
+      }
+
+      h3 {
+        font-size: 15px;
+        margin-bottom: 8px;
+        margin-top: 22px;
+      }
+
+      p,
+      li {
+        max-width: 78ch;
+      }
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      .lede,
+      .section-intro {
+        color: var(--muted);
+      }
+
+      .lede {
+        font-size: 18px;
+      }
+
+      .callout {
+        background: var(--accent-soft);
+        border: 1px solid #c8d9d4;
+        border-radius: 8px;
+        margin-top: 18px;
+        padding: 18px;
+      }
+
+      .callout p {
+        margin-bottom: 0;
+      }
+
+      .table-wrap {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        margin-top: 18px;
+        overflow-x: auto;
+      }
+
+      table {
+        background: var(--paper);
+        border-collapse: collapse;
+        min-width: 760px;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        font-size: 14px;
+        padding: 13px 14px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 760;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      @media (max-width: 720px) {
+        main {
+          padding: 34px 24px 56px;
+        }
+
+        h1 {
+          font-size: 34px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">Phase 1 log</p>
+      <h1>Tailwind v3 unification is validated and in review</h1>
+      <p class="lede">This page records the first implementation pass for aligning Tailwind v3 inside the isolated <code>ue-unify-tailwind-3</code> worktree. A later note adds that the standalone <code>@g2crowd/elevate</code> package checkout also needs Tailwind alignment under <code>DMVPC-1837</code>.</p>
+
+      <div class="callout">
+        <p><strong>Status:</strong> UE package alignment, build validation, authenticated MyG2 seller-home smoke, and a representative embedded Elevate component smoke passed. A narrow Tailwind compatibility fix was added for the legacy <code>.collapse</code> layout class. Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> is open and has Reviewer approval as of 2026-06-09.</p>
+      </div>
+
+      <h2>Code Changes</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Change</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>package.json</code></td>
+              <td><code>tailwindcss</code> changed from <code>^3.1.8</code> to exact <code>3.4.19</code>.</td>
+              <td>Moves main UE Tailwind output to the latest v3 line.</td>
+            </tr>
+            <tr>
+              <td><code>engines/elevate/package.json</code></td>
+              <td><code>tailwindcss</code> changed from <code>^3.4.10</code> to exact <code>3.4.19</code>.</td>
+              <td>Keeps Elevate aligned with the same v3 patch while preserving its separate config and <code>elv-</code> prefix.</td>
+            </tr>
+            <tr>
+              <td><code>yarn.lock</code></td>
+              <td>Lockfile now resolves a single <code>tailwindcss@npm:3.4.19</code> entry for root UE and Elevate.</td>
+              <td>This is the concrete proof that the two current Tailwind versions were unified.</td>
+            </tr>
+            <tr>
+              <td><code>tailwindcss/tailwind.config.js</code></td>
+              <td>Added <code>blocklist: ['collapse']</code>.</td>
+              <td>Prevents Tailwind's global <code>.collapse { visibility: collapse; }</code> utility from hiding legacy Foundation-style layout rows such as the MyG2 seller dashboard shell.</td>
+            </tr>
+            <tr>
+              <td><code>webpack/spec/tailwindcss/tailwind.config.spec.js</code></td>
+              <td>Added a focused guard for the root Tailwind <code>collapse</code> blocklist.</td>
+              <td>Keeps the compatibility fix from being removed without an intentional test update.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Review Status</h2>
+      <ul>
+        <li>Draft PR: <a href="https://github.com/g2crowd/ue/pull/40142">g2crowd/ue#40142</a>.</li>
+        <li>Branch: <code>ue-unify-tailwind-3</code>.</li>
+        <li>Worktree: <code>/Users/rayelo/G2/my-g2/ue-unify-tailwind-3</code>.</li>
+        <li>Reviewer decision on 2026-06-09: approved with no blockers, required changes, suggestions, or nits.</li>
+        <li>Reviewer focus called out the <code>collapse</code> blocklist risk: confirm no legacy surface intentionally relies on Tailwind's unprefixed visibility <code>collapse</code> utility.</li>
+      </ul>
+
+      <h2>Standalone Elevate Package Note</h2>
+      <ul>
+        <li>Scope correction on 2026-06-10: the standalone <code>@g2crowd/elevate</code> package alignment belongs in <code>/Users/rayelo/G2/my-g2/elevate-g2</code>, not the earlier wrong-repo checkout.</li>
+        <li>Correct remote: <code>git@github.com:g2crowd/elevate-g2.git</code>.</li>
+        <li>Standalone package branch: <code>chore/g-19-tailwind-v3-elevate-baseline</code>, created from <code>origin/main</code> at <code>cf97847</code>.</li>
+        <li>Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> pins the package dev dependency to <code>tailwindcss: 3.4.19</code> and keeps the peer dependency at <code>^3.4.0</code>.</li>
+        <li>PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> remains scoped to the UE repo only: root UE plus UE's embedded <code>engines/elevate</code> workspace.</li>
+      </ul>
+
+      <h2>Resolution Check</h2>
+      <pre><code>yarn why tailwindcss
+
+├─ @g2crowd/ue@workspace:.
+│  └─ tailwindcss@npm:3.4.19 (via npm:3.4.19)
+│
+└─ elevate@workspace:engines/elevate
+   └─ tailwindcss@npm:3.4.19 (via npm:3.4.19)</code></pre>
+
+      <h2>Build Validation</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Check</th>
+              <th>Result</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>bundle check</code></td>
+              <td>Passed</td>
+              <td>Ruby dependencies are satisfied in the worktree.</td>
+            </tr>
+            <tr>
+              <td><code>yarn sass:build</code></td>
+              <td>Passed</td>
+              <td>Main Sass/Gulp/PostCSS pipeline compiled <code>nessy_app.css</code> and related bundles. Existing Autoprefixer warnings about <code>fill</code>, <code>start</code>, and <code>end</code> were still present.</td>
+            </tr>
+            <tr>
+              <td><code>yarn js:build</code></td>
+              <td>Passed</td>
+              <td>Webpack compiled successfully. Existing Node deprecation warning for <code>util._extend</code> was still present.</td>
+            </tr>
+            <tr>
+              <td><code>yarn workspace elevate build</code></td>
+              <td>Passed</td>
+              <td>Rsbuild and syntax check passed. Generated Elevate CSS was reported at roughly <code>319.8 kB</code> uncompressed, <code>41.5 kB</code> gzip.</td>
+            </tr>
+            <tr>
+              <td><code>yarn run dev</code></td>
+              <td>Passed</td>
+              <td>Restarted in tmux session <code>ue-assets</code>; Sass, Webpack, and Elevate dev builds all completed.</td>
+            </tr>
+            <tr>
+              <td><code>yarn test webpack/spec/tailwindcss/tailwind.config.spec.js</code></td>
+              <td>Passed</td>
+              <td>Focused guard confirms the root Tailwind config keeps <code>collapse</code> in the blocklist.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Runtime Smoke</h2>
+      <ul>
+        <li><code>~/.puma-dev/g2</code> still points to <code>/Users/rayelo/G2/my-g2/ue-unify-tailwind-3</code>.</li>
+        <li><code>curl -k https://my.g2.test/</code> returned <code>200</code> after redirecting to <code>/signup?login=true</code>.</li>
+        <li><code>curl -k https://my.g2.test/g2-seller-solutions/home</code> also returned <code>200</code> after unauthenticated redirect to <code>/signup?login=true</code>.</li>
+        <li>Authenticated Chromium smoke via <code>https://my.g2.test/admin/proxy?user_id=1709668</code> and product selector reached <code>https://my.g2.test/g2-seller-solutions/home</code>, title <code>Dashboard | My.G2</code>.</li>
+        <li>Before the compatibility fix, the seller dashboard DOM loaded but was visually blank because <code>.row.full-width.collapse</code>, <code>.headnav</code>, and <code>.sidenav</code> computed <code>visibility: collapse</code>.</li>
+        <li>After blocking the Tailwind <code>collapse</code> utility and rebuilding Sass, the same route rendered the seller dashboard, and the affected container computed <code>visibility: visible</code>.</li>
+        <li>Representative Elevate surface: <code>https://www.g2.test/rails/view_components/elevate/button/primary_lg</code> returned <code>200</code>, loaded <code>/elevate-assets/application-b2605c52068b1312.digested.css</code>, and rendered the primary button visibly with no console/page errors. Local <code>/lookbook</code> was not mounted, so the ViewComponent preview route was used instead.</li>
+      </ul>
+
+      <h2>Generated CSS Sizes After Change</h2>
+      <p>The comparison below uses a fresh build from the original <code>/Users/rayelo/G2/my-g2/ue</code> checkout on branch <code>main</code> at <code>c84b56001b</code> and the Phase 1 <code>/Users/rayelo/G2/my-g2/ue-unify-tailwind-3</code> worktree. The original <code>main</code> checkout was <code>78</code> commits behind <code>origin/main</code> when measured; no source files were changed by the build.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Bundle</th>
+              <th>Main raw / gzip</th>
+              <th>Phase 1 raw / gzip</th>
+              <th>Delta</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>public/assets/nessy_app.css</code></td>
+              <td><code>3,588,482</code> / <code>721,296</code> bytes</td>
+              <td><code>3,590,962</code> / <code>721,464</code> bytes</td>
+              <td><code>+2,480</code> raw, <code>+168</code> gzip</td>
+            </tr>
+            <tr>
+              <td><code>public/assets/vendor_admin_assets.css</code></td>
+              <td><code>172,923</code> / <code>26,894</code> bytes</td>
+              <td><code>172,923</code> / <code>26,894</code> bytes</td>
+              <td>No size change</td>
+            </tr>
+            <tr>
+              <td><code>engines/elevate/public/elevate-assets/application.css</code></td>
+              <td><code>330,891</code> / <code>42,639</code> bytes</td>
+              <td><code>319,846</code> / <code>41,482</code> bytes</td>
+              <td><code>-11,045</code> raw, <code>-1,157</code> gzip</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ul>
+        <li>Original <code>main</code> build commands: <code>yarn sass:build</code> and <code>yarn workspace elevate build</code>. Both passed; Sass emitted the same existing Autoprefixer warning family.</li>
+        <li>Gzip values were measured consistently with <code>gzip -c</code> and <code>wc -c</code>, so they differ slightly from Rsbuild's rounded gzip display.</li>
+        <li>In the Phase 1 root CSS, the final <code>collapse</code> blocklist removed the generated <code>.collapse</code> rule and changed the root CSS by only <code>37</code> raw bytes / <code>12</code> gzip bytes from the first Tailwind 3.4.19 build.</li>
+        <li>The original Elevate build emitted <code>application-a30242472e6f3e30.digested.css</code>; the Phase 1 build emitted <code>application-b2605c52068b1312.digested.css</code>.</li>
+      </ul>
+
+      <h2>Next Tasks</h2>
+      <ul>
+        <li>Let Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> finish review and merge.</li>
+        <li>Review and merge the standalone <code>@g2crowd/elevate</code> package alignment in Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</li>
+        <li>If review or CI surfaces a new compatibility issue, keep the fix as narrow as the existing <code>collapse</code> blocklist and record it here.</li>
+        <li>Keep Tailwind v4 exploration separate from the approved v3 baseline work until the required package surfaces are aligned or explicitly waived.</li>
+      </ul>
+
+      <p><a href="index.html">Back to Tailwind upgrade plan</a></p>
+    </main>
+  </body>
+</html>

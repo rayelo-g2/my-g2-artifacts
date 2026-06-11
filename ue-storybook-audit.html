@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UE Storybook Audit</title>
+    <style>
+      :root {
+        --bg: #f7f7f4;
+        --paper: #ffffff;
+        --ink: #20242a;
+        --muted: #68707a;
+        --faint: #8a929b;
+        --line: #dadfd8;
+        --line-strong: #b9c2ba;
+        --accent: #235c56;
+        --accent-soft: #e8f0ed;
+        --bad: #8f2f23;
+        --warn: #865713;
+        --good: #23644b;
+        --code-bg: #eef2ef;
+        --nav-width: 268px;
+        --content-width: 900px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        background: var(--code-bg);
+        border-radius: 3px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: .92em;
+        overflow-wrap: anywhere;
+        padding: 2px 5px;
+      }
+
+      pre {
+        background: var(--code-bg);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 13px;
+        line-height: 1.55;
+        margin: 18px 0 0;
+        overflow-x: auto;
+        padding: 16px;
+      }
+
+      pre code {
+        background: transparent;
+        border-radius: 0;
+        color: inherit;
+        font-size: inherit;
+        padding: 0;
+      }
+
+      .page {
+        display: grid;
+        grid-template-columns: var(--nav-width) minmax(0, 1fr);
+        min-height: 100vh;
+        min-width: 0;
+      }
+
+      .side-nav {
+        align-self: start;
+        border-right: 1px solid var(--line);
+        height: 100vh;
+        padding: 32px 28px;
+        position: sticky;
+        top: 0;
+      }
+
+      .nav-title {
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .03em;
+        line-height: 1.35;
+        margin: 0 0 22px;
+        text-transform: uppercase;
+      }
+
+      .nav-title span {
+        color: var(--muted);
+        display: block;
+        font-weight: 500;
+        letter-spacing: 0;
+        margin-top: 6px;
+        text-transform: none;
+      }
+
+      .side-nav ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .side-nav li {
+        margin: 0;
+      }
+
+      .side-nav a {
+        border-left: 2px solid transparent;
+        color: var(--muted);
+        display: block;
+        font-size: 14px;
+        line-height: 1.25;
+        padding: 7px 0 7px 12px;
+      }
+
+      .side-nav a:hover {
+        border-left-color: var(--accent);
+        color: var(--ink);
+        text-decoration: none;
+      }
+
+      .content {
+        min-width: 0;
+        padding: 44px 48px 72px;
+        width: 100%;
+      }
+
+      .content-inner {
+        max-width: var(--content-width);
+        min-width: 0;
+        width: 100%;
+      }
+
+      .hero {
+        margin-bottom: 32px;
+        max-width: 100%;
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        margin: 0 0 12px;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(34px, 5vw, 58px);
+        font-weight: 720;
+        letter-spacing: 0;
+        line-height: 1.02;
+        margin-bottom: 18px;
+        max-width: 780px;
+        overflow-wrap: normal;
+      }
+
+      h2 {
+        font-size: 24px;
+        line-height: 1.2;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        color: var(--ink);
+        font-size: 15px;
+        line-height: 1.35;
+        margin-bottom: 8px;
+        margin-top: 24px;
+      }
+
+      p {
+        max-width: 76ch;
+        overflow-wrap: break-word;
+      }
+
+      strong {
+        font-weight: 720;
+      }
+
+      section {
+        border-top: 1px solid var(--line);
+        max-width: 100%;
+        padding: 34px 0;
+        scroll-margin-top: 28px;
+      }
+
+      section:first-of-type {
+        border-top-color: var(--line-strong);
+      }
+
+      ul,
+      ol {
+        margin-bottom: 0;
+        margin-top: 0;
+        padding-left: 22px;
+      }
+
+      li {
+        margin-bottom: 8px;
+        max-width: 78ch;
+        overflow-wrap: break-word;
+      }
+
+      li:last-child {
+        margin-bottom: 0;
+      }
+
+      .lede,
+      .section-intro,
+      .note {
+        color: var(--muted);
+      }
+
+      .lede {
+        font-size: 18px;
+        line-height: 1.55;
+        margin-bottom: 0;
+        max-width: 780px;
+      }
+
+      .section-intro {
+        margin-bottom: 20px;
+      }
+
+      .note {
+        font-size: 13px;
+      }
+
+      .summary-list,
+      .grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+
+      .summary-item,
+      .card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+      }
+
+      .summary-item h3,
+      .card h3 {
+        margin-top: 0;
+      }
+
+      .summary-item p,
+      .card p,
+      .card ul {
+        margin-bottom: 0;
+      }
+
+      .metric {
+        color: var(--accent);
+        display: block;
+        font-size: 30px;
+        font-weight: 760;
+        line-height: 1.05;
+        margin-bottom: 8px;
+      }
+
+      .status {
+        border-radius: 999px;
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 720;
+        line-height: 1;
+        padding: 5px 8px;
+        white-space: nowrap;
+      }
+
+      .status.fail {
+        background: #f8e8e4;
+        color: var(--bad);
+      }
+
+      .status.warn {
+        background: #f8efd9;
+        color: var(--warn);
+      }
+
+      .status.pass {
+        background: #e5f1ea;
+        color: var(--good);
+      }
+
+      .callout {
+        background: var(--accent-soft);
+        border: 1px solid #c8d9d4;
+        border-radius: 8px;
+        margin-top: 18px;
+        padding: 18px;
+      }
+
+      .callout p {
+        margin-bottom: 0;
+      }
+
+      .table-wrap {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        margin-top: 18px;
+        overflow-x: auto;
+      }
+
+      table {
+        background: var(--paper);
+        border-collapse: collapse;
+        min-width: 760px;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        font-size: 14px;
+        padding: 13px 14px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 760;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .two-column {
+        columns: 2;
+        column-gap: 36px;
+      }
+
+      @media (max-width: 900px) {
+        .page {
+          display: block;
+        }
+
+        .side-nav {
+          border-bottom: 1px solid var(--line);
+          border-right: 0;
+          height: auto;
+          padding: 22px 24px;
+          position: static;
+        }
+
+        .side-nav ol {
+          columns: 2;
+        }
+
+        .content {
+          padding: 34px 24px 56px;
+        }
+
+        .summary-list,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .two-column {
+          columns: 1;
+        }
+      }
+
+      @media (max-width: 560px) {
+        h1 {
+          font-size: 34px;
+        }
+
+        .side-nav ol {
+          columns: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav class="side-nav" aria-label="Report navigation">
+        <p class="nav-title">UE Storybook <span>Audit, 2026-06-09</span></p>
+        <ol>
+          <li><a href="#summary">Executive Summary</a></li>
+          <li><a href="#instance">Instance Count</a></li>
+          <li><a href="#version">Version</a></li>
+          <li><a href="#run">Run and Build</a></li>
+          <li><a href="#inventory">Story Inventory</a></li>
+          <li><a href="#strategy">Strategic Use</a></li>
+          <li><a href="#maintenance">Maintenance Signal</a></li>
+          <li><a href="#recommendation">Recommendation</a></li>
+        </ol>
+      </nav>
+
+      <main class="content">
+        <div class="content-inner">
+          <header class="hero">
+            <p class="eyebrow">Storybook audit</p>
+            <h1>UE has one Storybook setup, but it is not currently healthy</h1>
+            <p class="lede">The React Storybook surface is still present under <code>ue/.storybook</code> and still answers on port <code>3091</code>, but the preview bundle fails in both dev and static build modes. The stories are mostly a review-form state catalog plus utility docs.</p>
+          </header>
+
+          <section id="summary">
+            <h2>Executive Summary</h2>
+            <p class="section-intro">This audit separates what is still configured, what actually runs, what stories are loaded, and whether the surface looks actively maintained.</p>
+
+            <div class="summary-list" aria-label="Key Storybook findings">
+              <article class="summary-item">
+                <span class="metric">1</span>
+                <h3>Active Setup</h3>
+                <p>There is one active root React Storybook config at <code>.storybook/main.js</code>, using package scripts on port <code>3091</code>.</p>
+              </article>
+              <article class="summary-item">
+                <span class="metric">6.5.16</span>
+                <h3>Installed Version</h3>
+                <p><code>package.json</code> requests <code>@storybook/react</code> <code>^6.5.10</code>; <code>yarn.lock</code> resolves it to <code>6.5.16</code>.</p>
+              </article>
+              <article class="summary-item">
+                <span class="metric">44</span>
+                <h3>Loaded Story Files</h3>
+                <p>The active root globs load 34 MDX docs files and 10 JS stories. One leftover JSON story file sits outside the active globs.</p>
+              </article>
+              <article class="summary-item">
+                <span class="metric">Broken</span>
+                <h3>Runtime State</h3>
+                <p>The server returns HTTP 200 on <code>/</code> and <code>/iframe.html</code>, but Webpack fails compiling the preview bundle.</p>
+              </article>
+            </div>
+
+            <div class="callout">
+              <p><strong>Recommendation:</strong> do not treat this as a supported healthy surface. Repair it only if a current review-form owner confirms the isolated Storybook workflow is still useful; otherwise deprecate it and migrate the valuable examples.</p>
+            </div>
+          </section>
+
+          <section id="instance">
+            <h2>Instance Count</h2>
+            <p class="section-intro">The current runnable Storybook footprint is the root React Storybook config. Other references are either stale, removed, or separate documentation surfaces.</p>
+
+            <div class="grid">
+              <article class="card">
+                <h3>Active root config</h3>
+                <ul>
+                  <li><code>.storybook/main.js</code></li>
+                  <li><code>.storybook/preview.js</code></li>
+                  <li><code>.storybook/preview-head.html</code></li>
+                  <li><code>.storybook/webpack.config.js</code></li>
+                  <li><code>.storybook/README.md</code></li>
+                </ul>
+              </article>
+              <article class="card">
+                <h3>Package scripts</h3>
+                <ul>
+                  <li><code>storybook:start</code>: <code>start-storybook -c .storybook -p 3091</code></li>
+                  <li><code>storybook:dev</code>: <code>npm-run-all -p storybook:start</code></li>
+                  <li><code>build-storybook</code>: <code>node script/update-storybook-css.js &amp;&amp; build-storybook</code></li>
+                </ul>
+              </article>
+            </div>
+
+            <h3>Active story globs</h3>
+            <pre><code>../webpack/doc/Intro.stories.mdx
+../webpack/doc/**/*.stories.mdx
+../webpack/spec/**/*.stories.js</code></pre>
+
+            <h3>Other references</h3>
+            <ul>
+              <li><code>spec/components/stories/application.stories.json</code> exists but is outside the active root globs.</li>
+              <li><code>view_component_storybook/.storybook/*</code> and <code>view_component_storybook/package.json</code> were deleted by <code>7bddd9773a chore: Drop ViewComponent storybook (#33179)</code>.</li>
+              <li><code>lib/gem_ext/view_component_storybook/*</code> still exists and is required by <code>lib/gem_ext.rb</code>, but it is not a separate runnable Storybook app/config.</li>
+              <li><code>engines/elevate/AGENTS.md</code> mentions Lookbook as "Storybook preview" at <code>/lookbook</code>. That is a separate Lookbook/ViewComponent documentation surface, not this React Storybook.</li>
+            </ul>
+          </section>
+
+          <section id="version">
+            <h2>Version</h2>
+            <p class="section-intro">The package range is 6.5.10-compatible, but the lockfile and command banner confirm 6.5.16.</p>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Source</th>
+                    <th>Package</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>package.json</code></td>
+                    <td><code>@storybook/react</code></td>
+                    <td><code>^6.5.10</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>yarn.lock</code></td>
+                    <td><code>@storybook/react@npm:^6.5.10</code></td>
+                    <td><code>6.5.16</code></td>
+                  </tr>
+                  <tr>
+                    <td>Command banner</td>
+                    <td><code>@storybook/react</code></td>
+                    <td><code>v6.5.16</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>package.json</code></td>
+                    <td>Core Storybook addons</td>
+                    <td><code>^6.5.10</code> for a11y, docs, essentials, interactions, and measure</td>
+                  </tr>
+                  <tr>
+                    <td><code>yarn.lock</code></td>
+                    <td>Core Storybook addons</td>
+                    <td>Resolve to <code>6.5.16</code>, except <code>@storybook/addon-postcss@2.0.0</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="note">Also present: <code>storybook-addon-pseudo-states</code> and <code>storybook-addon-recoil-flow</code>. The Recoil addon is installed but not listed in <code>.storybook/main.js</code>.</p>
+          </section>
+
+          <section id="run">
+            <h2>Run and Build Verification</h2>
+            <p class="section-intro">Commands were run from the UE checkout with the local login shell setup because a non-login shell had Node <code>v26.3.0</code> and no <code>yarn</code>.</p>
+
+            <h3>Environment</h3>
+            <pre><code>cd /Users/rayelo/G2/my-g2/ue
+zsh -lic 'ruby -v &amp;&amp; node -v &amp;&amp; yarn -v'</code></pre>
+            <ul>
+              <li><span class="status pass">Passed</span> Ruby <code>3.3.10</code>, Node <code>v24.14.1</code>, Yarn <code>4.13.0</code>.</li>
+            </ul>
+
+            <h3>Dev server</h3>
+            <pre><code>zsh -lic 'yarn storybook:dev'</code></pre>
+            <ul>
+              <li><span class="status fail">Failed</span> Storybook starts and reports <code>@storybook/react v6.5.16</code>, then the preview build fails.</li>
+              <li><span class="status pass">HTTP 200</span> <code>curl http://localhost:3091/</code> returned <code>200</code>.</li>
+              <li><span class="status pass">HTTP 200</span> <code>curl http://localhost:3091/iframe.html</code> returned <code>200</code>.</li>
+              <li><span class="status warn">Interpretation</span> The manager/server answers, but the preview bundle is not usable.</li>
+            </ul>
+
+            <h3>Static build</h3>
+            <pre><code>zsh -lic 'yarn build-storybook'</code></pre>
+            <ul>
+              <li><span class="status fail">Failed</span> Storybook cleaned <code>storybook-static</code>, copied static assets, compiled the manager, then failed compiling the preview.</li>
+              <li>The CSS pre-step generated <code>.storybook/assets/nessy_app.css</code> and rewrote <code>.storybook/preview-head.html</code> from <code>/assets/nessy_app.css</code> to <code>./assets/nessy_app.css</code>.</li>
+              <li>After verification, the generated folders were removed and <code>.storybook/preview-head.html</code> was restored.</li>
+            </ul>
+
+            <h3>Representative errors</h3>
+            <ul>
+              <li><code>ModuleDependencyError: Can't import the named export 'useState' from non EcmaScript module (only default export is available)</code></li>
+              <li><code>ModuleParseError: Module parse failed: Unexpected token</code>, including modern syntax such as <code>??</code>.</li>
+              <li>Parse failures appeared in current dependency code including <code>node_modules/web-vitals/dist/web-vitals.js</code>, <code>node_modules/@testing-library/react/dist/@testing-library/react.esm.js</code>, and Amplitude/session replay dependency code.</li>
+              <li><code>webpack/doc/review_form/Categories.stories.mdx</code> imports <code>productCategories</code> from <code>reviews/store</code>, but <code>reviews/store/index.js</code> no longer exports it. The symbol now exists in <code>reviews/store/products.selectors.js</code>.</li>
+            </ul>
+
+            <p class="note">Browser inspection was attempted, but the in-app browser bridge closed while opening the local Storybook tab. Curl plus Storybook process logs are the runtime evidence for this audit.</p>
+          </section>
+
+          <section id="inventory">
+            <h2>Story Inventory</h2>
+            <p class="section-intro">The active root config loads 44 story files. The broader file search found 45 story-like files, with one ViewComponent-era JSON file outside the active globs.</p>
+
+            <div class="summary-list">
+              <article class="summary-item">
+                <span class="metric">45</span>
+                <h3>Total story-like files</h3>
+                <p>Found with <code>rg --files -g '*.stories.*'</code>.</p>
+              </article>
+              <article class="summary-item">
+                <span class="metric">34</span>
+                <h3>Active MDX docs</h3>
+                <p>Loaded from <code>webpack/doc/**/*.stories.mdx</code>.</p>
+              </article>
+              <article class="summary-item">
+                <span class="metric">10</span>
+                <h3>Active JS stories</h3>
+                <p>Loaded from <code>webpack/spec/**/*.stories.js</code>.</p>
+              </article>
+              <article class="summary-item">
+                <span class="metric">1</span>
+                <h3>Inactive leftover</h3>
+                <p><code>spec/components/stories/application.stories.json</code> is not loaded by root Storybook.</p>
+              </article>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Area</th>
+                    <th>Count</th>
+                    <th>Representative paths</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Intro</td>
+                    <td>1</td>
+                    <td><code>webpack/doc/Intro.stories.mdx</code></td>
+                    <td>Sidebar intro and framing copy.</td>
+                  </tr>
+                  <tr>
+                    <td>Base component docs</td>
+                    <td>1</td>
+                    <td><code>webpack/doc/base/Button.stories.mdx</code></td>
+                    <td>Single base Button docs page.</td>
+                  </tr>
+                  <tr>
+                    <td>Review form Phoenix docs</td>
+                    <td>21</td>
+                    <td><code>webpack/doc/review_form/*.stories.mdx</code></td>
+                    <td>The main useful active story area. Covers review form states, full forms, short forms, legal fields, search boxes, text answers, footer, and header.</td>
+                  </tr>
+                  <tr>
+                    <td>Utility atomics docs</td>
+                    <td>11</td>
+                    <td><code>webpack/doc/utilities/*.stories.mdx</code></td>
+                    <td>Legacy utility/atomic class documentation. Intro copy points some users toward Tailwind defaults.</td>
+                  </tr>
+                  <tr>
+                    <td>Legacy review form JS stories</td>
+                    <td>8</td>
+                    <td><code>webpack/spec/reviews/components/stories/EntireReviewForm/*.stories.js</code></td>
+                    <td>Older NeRF/legacy review form scenarios, plus QA and reward country warning stories.</td>
+                  </tr>
+                  <tr>
+                    <td>Other composite examples</td>
+                    <td>2</td>
+                    <td><code>CompanyDomainBanner.stories.js</code>, <code>compare-reports.stories.js</code></td>
+                    <td>Isolated component/composite examples.</td>
+                  </tr>
+                  <tr>
+                    <td>Not loaded</td>
+                    <td>1</td>
+                    <td><code>spec/components/stories/application.stories.json</code></td>
+                    <td>Leftover ViewComponent Storybook JSON path outside active root globs.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Observed top-level titles</h3>
+            <ul class="two-column">
+              <li><code>Start Here</code></li>
+              <li><code>Components/Base/Button</code></li>
+              <li><code>Review Form/...</code></li>
+              <li><code>Utilities/...</code></li>
+              <li><code>Components/Composite/...</code></li>
+            </ul>
+          </section>
+
+          <section id="strategy">
+            <h2>Strategic Use Signal</h2>
+            <p class="section-intro">Storybook appears to have been a focused development and documentation aid for NeRF/review-form states rather than a broad design-system catalog.</p>
+
+            <div class="grid">
+              <article class="card">
+                <h3>Intended use</h3>
+                <ul>
+                  <li>NeRF/review-form component development in isolated states.</li>
+                  <li>Documentation of edge cases that are hard to reproduce in Rails flows.</li>
+                  <li>Actions addon tracing of event-driven review-form interactions.</li>
+                  <li>Widget Library iframe access to this Storybook via <code>nerf.html.slim</code>.</li>
+                  <li>Utility/atomic CSS documentation.</li>
+                </ul>
+              </article>
+              <article class="card">
+                <h3>Evidence</h3>
+                <ul>
+                  <li><code>.storybook/README.md</code> calls Storybook both a development-time aid and a documentation tool.</li>
+                  <li><code>webpack/assets/javascripts/reviews/components/README.md</code> frames Storybook as the fast way to develop NeRF visual states, edge cases, and factories.</li>
+                  <li><code>engines/widget_library/app/views/widget_library/storybooks/nerf.html.slim</code> points development to <code>http://localhost:3091</code> and non-development to <code>/storybook/</code>.</li>
+                </ul>
+              </article>
+            </div>
+
+            <h3>Counter-signal</h3>
+            <ul>
+              <li>The NeRF README still says to run <code>yarn storybook:nerf</code>, but <code>package.json</code> has no <code>storybook:nerf</code> script.</li>
+              <li>Root <code>.storybook/README.md</code> describes making new Storybook module folders under <code>.storybook</code>, but only the root config remains.</li>
+              <li>Static deployment language says "Not yet", while history shows staging/static work existed later and CI was subsequently removed.</li>
+            </ul>
+          </section>
+
+          <section id="maintenance">
+            <h2>Maintenance Signal</h2>
+            <p class="section-intro">The codebase still carries useful stories, but the operational Storybook surface looks neglected.</p>
+
+            <div class="grid">
+              <article class="card">
+                <h3>Positive or neutral</h3>
+                <ul>
+                  <li>Story files still exist and are tied to review-form scenarios.</li>
+                  <li>Recent commits touched story-related paths, including <code>c2d5d9cba7</code> for font updates and <code>7b9d26b3d7</code> for a review-form layout experiment.</li>
+                  <li>Package scripts and Storybook addon dependencies still exist.</li>
+                </ul>
+              </article>
+              <article class="card">
+                <h3>Negative</h3>
+                <ul>
+                  <li>Local dev and static build both fail today.</li>
+                  <li>The stack is still on Storybook <code>6.5.x</code>, a Webpack 4-era setup.</li>
+                  <li>Current dependency code ships modern syntax that this Storybook path does not transpile correctly.</li>
+                  <li>At least one loaded story has a stale import/export contract.</li>
+                  <li><code>.github/workflows/storybook.yml</code> was removed in <code>2352e8e460 ci: Remove storybook workflow</code>.</li>
+                  <li>ViewComponent Storybook was dropped in <code>7bddd9773a chore: Drop ViewComponent storybook (#33179)</code>.</li>
+                  <li>Docs reference removed scripts and old deployment/status assumptions.</li>
+                </ul>
+              </article>
+            </div>
+
+            <div class="callout">
+              <p><strong>Maintenance read:</strong> Storybook is still present because historical review-form stories remain useful, but it does not look actively maintained as a reliable local or CI workflow.</p>
+            </div>
+          </section>
+
+          <section id="recommendation">
+            <h2>Recommendation</h2>
+            <p class="section-intro">No upgrade or cleanup was made as part of this audit. The next decision should be whether this surface still has an owner.</p>
+
+            <div class="summary-list">
+              <article class="summary-item">
+                <h3>If keeping</h3>
+                <p>Repair Storybook as explicit owned work for review-form state development. Start by moving off the current Webpack 4-era builder path or transpiling modern dependencies, then fix loaded story imports and stale docs.</p>
+              </article>
+              <article class="summary-item">
+                <h3>If not keeping</h3>
+                <p>Deprecate it by default, preserve only still-useful review-form examples, and remove stale Widget Library entry points and docs in a dedicated cleanup issue.</p>
+              </article>
+            </div>
+
+            <h3>Repair path</h3>
+            <ol>
+              <li>Upgrade the Storybook builder path off this Webpack 4-era setup, or explicitly transpile modern dependency packages that now ship <code>??</code>, optional chaining, and modern ESM.</li>
+              <li>Fix loaded story imports, starting with <code>webpack/doc/review_form/Categories.stories.mdx</code>.</li>
+              <li>Decide whether <code>storybook-addon-recoil-flow</code> is needed; remove or wire it.</li>
+              <li>Update docs to replace <code>yarn storybook:nerf</code> with <code>yarn storybook:dev</code> / <code>yarn storybook:start</code>.</li>
+              <li>Reintroduce a minimal CI/static build check if Storybook remains supported.</li>
+              <li>Revisit the Widget Library iframe route so it does not point users to a broken local surface.</li>
+            </ol>
+
+            <h3>Deprecation path</h3>
+            <ol>
+              <li>Mark the root Storybook scripts/docs as deprecated.</li>
+              <li>Preserve or migrate only the review-form scenarios that still carry product value.</li>
+              <li>Remove stale Widget Library Storybook entry points and obsolete docs in a dedicated cleanup issue.</li>
+            </ol>
+
+            <div class="callout">
+              <p><strong>Practical recommendation:</strong> deprecate by default unless a current review-form owner confirms they still want this workflow. If they do, create a focused repair issue before any migration or upgrade work.</p>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

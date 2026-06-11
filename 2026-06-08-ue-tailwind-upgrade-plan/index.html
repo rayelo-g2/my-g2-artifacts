@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UE Tailwind Upgrade Plan</title>
+    <style>
+      :root {
+        --bg: #f7f7f4;
+        --paper: #ffffff;
+        --ink: #20242a;
+        --muted: #68707a;
+        --line: #dadfd8;
+        --line-strong: #b9c2ba;
+        --accent: #235c56;
+        --accent-soft: #e8f0ed;
+        --risk-high: #8f2f23;
+        --risk-medium: #865713;
+        --risk-low: #23644b;
+        --code-bg: #eef2ef;
+        --nav-width: 268px;
+        --content-width: 900px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        background: var(--code-bg);
+        border-radius: 3px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: .92em;
+        overflow-wrap: anywhere;
+        padding: 2px 5px;
+      }
+
+      .page {
+        display: grid;
+        grid-template-columns: var(--nav-width) minmax(0, 1fr);
+        min-height: 100vh;
+        min-width: 0;
+      }
+
+      .side-nav {
+        align-self: start;
+        border-right: 1px solid var(--line);
+        height: 100vh;
+        padding: 32px 28px;
+        position: sticky;
+        top: 0;
+      }
+
+      .nav-title {
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .03em;
+        line-height: 1.35;
+        margin: 0 0 22px;
+        text-transform: uppercase;
+      }
+
+      .nav-title span {
+        color: var(--muted);
+        display: block;
+        font-weight: 500;
+        letter-spacing: 0;
+        margin-top: 6px;
+        text-transform: none;
+      }
+
+      .side-nav ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .side-nav a {
+        border-left: 2px solid transparent;
+        color: var(--muted);
+        display: block;
+        font-size: 14px;
+        line-height: 1.25;
+        padding: 7px 0 7px 12px;
+      }
+
+      .side-nav a:hover {
+        border-left-color: var(--accent);
+        color: var(--ink);
+        text-decoration: none;
+      }
+
+      .content {
+        min-width: 0;
+        padding: 44px 48px 72px;
+        width: 100%;
+      }
+
+      .content-inner {
+        max-width: var(--content-width);
+        min-width: 0;
+        width: 100%;
+      }
+
+      .hero {
+        margin-bottom: 32px;
+        max-width: 100%;
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        margin: 0 0 12px;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(34px, 5vw, 58px);
+        font-weight: 720;
+        letter-spacing: 0;
+        line-height: 1.02;
+        margin-bottom: 18px;
+        max-width: 760px;
+      }
+
+      h2 {
+        font-size: 24px;
+        line-height: 1.2;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        font-size: 15px;
+        line-height: 1.35;
+        margin-bottom: 8px;
+        margin-top: 24px;
+      }
+
+      p {
+        max-width: 76ch;
+        overflow-wrap: break-word;
+      }
+
+      section {
+        border-top: 1px solid var(--line);
+        max-width: 100%;
+        padding: 34px 0;
+        scroll-margin-top: 28px;
+      }
+
+      section:first-of-type {
+        border-top-color: var(--line-strong);
+      }
+
+      ul,
+      ol {
+        margin-bottom: 0;
+        margin-top: 0;
+        padding-left: 22px;
+      }
+
+      li {
+        margin-bottom: 8px;
+        max-width: 78ch;
+      }
+
+      li:last-child {
+        margin-bottom: 0;
+      }
+
+      .lede,
+      .section-intro {
+        color: var(--muted);
+      }
+
+      .lede {
+        font-size: 18px;
+        line-height: 1.55;
+        margin-bottom: 0;
+        max-width: 780px;
+      }
+
+      .summary-list,
+      .grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+
+      .summary-item,
+      .card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+      }
+
+      .summary-item h3,
+      .card h3 {
+        margin-top: 0;
+      }
+
+      .metric {
+        color: var(--accent);
+        display: block;
+        font-size: 30px;
+        font-weight: 760;
+        line-height: 1;
+        margin-bottom: 10px;
+      }
+
+      .table-wrap {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        margin-top: 18px;
+        overflow-x: auto;
+      }
+
+      table {
+        background: var(--paper);
+        border-collapse: collapse;
+        min-width: 760px;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        font-size: 14px;
+        padding: 13px 14px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 760;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .risk {
+        border-radius: 999px;
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        padding: 5px 8px;
+        white-space: nowrap;
+      }
+
+      .risk.high {
+        background: #f7ded9;
+        color: var(--risk-high);
+      }
+
+      .risk.medium {
+        background: #f5e9d2;
+        color: var(--risk-medium);
+      }
+
+      .risk.low {
+        background: #dcece5;
+        color: var(--risk-low);
+      }
+
+      .callout {
+        background: var(--accent-soft);
+        border: 1px solid #c8d9d4;
+        border-radius: 8px;
+        margin-top: 18px;
+        padding: 18px;
+      }
+
+      .callout p {
+        margin-bottom: 0;
+      }
+
+      .checklist {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .checklist li {
+        align-items: flex-start;
+        display: flex;
+        gap: 10px;
+      }
+
+      .check-box {
+        border: 2px solid var(--accent);
+        border-radius: 3px;
+        flex: 0 0 15px;
+        height: 15px;
+        margin-top: 4px;
+        width: 15px;
+      }
+
+      .timeline {
+        list-style: none;
+        margin: 22px 0 0;
+        padding: 0;
+        position: relative;
+      }
+
+      .timeline::before {
+        background: var(--line-strong);
+        content: "";
+        inset: 8px auto 8px 0;
+        left: 7px;
+        position: absolute;
+        width: 2px;
+      }
+
+      .timeline li {
+        margin: 0;
+        max-width: 100%;
+        padding: 0 0 26px 38px;
+        position: relative;
+      }
+
+      .timeline li:last-child {
+        padding-bottom: 0;
+      }
+
+      .timeline-dot {
+        background: var(--paper);
+        border: 2px solid var(--accent);
+        border-radius: 50%;
+        height: 16px;
+        left: 0;
+        position: absolute;
+        top: 3px;
+        width: 16px;
+      }
+
+      .timeline li.is-done .timeline-dot {
+        background: var(--accent);
+      }
+
+      .timeline li.is-future .timeline-dot {
+        border-color: var(--line-strong);
+      }
+
+      .timeline-head {
+        align-items: baseline;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 12px;
+        margin-bottom: 4px;
+      }
+
+      .timeline-head h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .timeline-badge {
+        background: var(--accent-soft);
+        border-radius: 999px;
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .02em;
+        padding: 3px 9px;
+        white-space: nowrap;
+      }
+
+      .timeline li.is-future .timeline-badge {
+        background: var(--code-bg);
+        color: var(--muted);
+      }
+
+      .timeline-meta {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+      }
+
+      .timeline p {
+        margin: 0;
+        max-width: 72ch;
+      }
+
+      @media (max-width: 840px) {
+        .page {
+          display: block;
+        }
+
+        .side-nav {
+          border-bottom: 1px solid var(--line);
+          border-right: 0;
+          height: auto;
+          padding: 24px;
+          position: static;
+        }
+
+        .side-nav ol {
+          columns: 2;
+        }
+
+        .content {
+          padding: 36px 24px 56px;
+        }
+
+        .summary-list,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 560px) {
+        h1 {
+          font-size: 34px;
+        }
+
+        .side-nav ol {
+          columns: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav class="side-nav" aria-label="Report navigation">
+        <p class="nav-title">Tailwind upgrade <span>Plan, 2026-06-08</span></p>
+        <ol>
+          <li><a href="#summary">Summary</a></li>
+          <li><a href="#context">Working Context</a></li>
+          <li><a href="#current-state">Current State</a></li>
+          <li><a href="#unification-approach">v3 Unification</a></li>
+          <li><a href="dmvpc-1836-baseline-confirmation.html">DMVPC-1836 Baseline</a></li>
+          <li><a href="standalone-elevate-package.html">Standalone Elevate</a></li>
+          <li><a href="#findings">Findings Log</a></li>
+          <li><a href="#principles">Principles</a></li>
+          <li><a href="#phases">Phases</a></li>
+          <li><a href="#gates">Validation Gates</a></li>
+          <li><a href="#smoke">Smoke Matrix</a></li>
+          <li><a href="#open-questions">Open Questions</a></li>
+        </ol>
+      </nav>
+
+      <main class="content">
+        <div class="content-inner">
+          <header class="hero">
+            <p class="eyebrow">UE Tailwind upgrade plan</p>
+            <h1>Move to Tailwind v4 iteratively, with v3 unification first</h1>
+            <p class="lede">The safest path is to align UE main Tailwind, UE's embedded Elevate workspace, and the standalone Elevate package on the latest Tailwind v3 line first, then evaluate Tailwind v4 from a stable baseline while touching as little of Nessy, Foundation, Sass, and existing load order as possible.</p>
+          </header>
+
+          <section id="summary">
+            <h2>Summary</h2>
+            <p class="section-intro">This plan turns the styling-landscape research into an implementation sequence for <code>ue-unify-tailwind-3</code> and the follow-up v4 work. Phase 1 is now implemented, validated, and in review as Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a>; the standalone <code>@g2crowd/elevate</code> package alignment is now in review as Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</p>
+
+            <div class="summary-list" aria-label="Key plan points">
+              <article class="summary-item">
+                <h3>First Move</h3>
+                <p>Upgrade the UE Tailwind surfaces and the standalone Elevate package to latest v3, currently <code>3.4.19</code>, without changing the surrounding styling architecture.</p>
+              </article>
+              <article class="summary-item">
+                <h3>Why First</h3>
+                <p>Main UE started on <code>^3.1.8</code>. UE's embedded Elevate workspace and the standalone <code>elevate-g2/</code> checkout started on <code>^3.4.10</code>. Aligning all of them removes version drift before introducing Tailwind v4's larger build-model changes.</p>
+              </article>
+              <article class="summary-item">
+                <h3>Migration Shape</h3>
+                <p>Keep the current Sass, Gulp, PostCSS, Foundation, Nessy, and Elevate asset boundaries intact during the v3 unification PR.</p>
+              </article>
+              <article class="summary-item">
+                <h3>v4 Constraint</h3>
+                <p>Tailwind v4 should be introduced only after the v3 baseline is stable and the team chooses between Elevate-first, scoped bundle, or direct main UE upgrade.</p>
+              </article>
+            </div>
+          </section>
+
+          <section id="context">
+            <h2>Working Context</h2>
+            <p class="section-intro">This page is the working plan for the Tailwind upgrade. The broader styling inventory lives in <a href="../2026-06-03-ue-css-styling-landscape/index.html">UE CSS and Styling Landscape</a>, especially the Tailwind upgrade and risk sections.</p>
+
+            <div class="callout">
+              <p><strong>Process rule:</strong> each meaningful step in the Tailwind upgrade should update this artifact when progress is made, a decision changes, a validation result matters, or a finding would help the next agent continue from a fresh session. Use subpages for detailed evidence so this plan stays readable.</p>
+            </div>
+
+            <h3>Current Local Setup</h3>
+            <ul>
+              <li>Worktree: <code>/Users/rayelo/G2/my-g2/ue-unify-tailwind-3</code>.</li>
+              <li>Branch: <code>ue-unify-tailwind-3</code>, created from latest <code>origin/main</code> when the worktree was set up.</li>
+              <li>Draft PR: <a href="https://github.com/g2crowd/ue/pull/40142">g2crowd/ue#40142</a>.</li>
+              <li>Review state as of 2026-06-09: Reviewer approved the Phase 1 change with no required changes.</li>
+              <li><code>~/.puma-dev/g2</code> points to the isolated worktree.</li>
+              <li><code>tmux</code> session <code>ue-assets</code> runs <code>yarn run dev</code> from the isolated worktree.</li>
+              <li>Local DB migrations were run; generated schema dump diffs were intentionally restored so the branch stayed clean before Tailwind changes.</li>
+              <li>Use the in-app browser at <code>https://my.g2.test</code> for authenticated route checks such as <code>/g2-seller-solutions/home</code>. Use <code>curl -k</code> for low-level boot checks, but do not treat unauthenticated redirects as final visual-route evidence.</li>
+              <li>DMVPC-1836 baseline evidence is recorded in <a href="dmvpc-1836-baseline-confirmation.html">the baseline confirmation page</a>.</li>
+              <li>Standalone Elevate package checkout: <code>/Users/rayelo/G2/my-g2/elevate-g2</code>, remote <code>git@github.com:g2crowd/elevate-g2.git</code>. The standalone package branch <code>chore/g-19-tailwind-v3-elevate-baseline</code> now declares <code>tailwindcss: 3.4.19</code> and is in review as Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</li>
+              <li>Downstream v4 consumer for reference: <code>g2crowd/research-hub</code> (Next.js "AICR-frontend") depends on <code>@g2crowd/elevate@^0.8.0</code> and already runs Tailwind <code>^4</code>. Cloned to <code>/Users/rayelo/G2/my-g2/research-hub</code>. No work needed there now; it informs the v4 path because it shows v4 working without the <code>elv-</code> JS preset (CSS-first <code>@theme</code> token port instead). See the 2026-06-11 finding below.</li>
+            </ul>
+          </section>
+
+          <section id="current-state">
+            <h2>Current State</h2>
+            <p class="section-intro">The working branch is <code>ue-unify-tailwind-3</code> in an isolated worktree at <code>/Users/rayelo/G2/my-g2/ue-unify-tailwind-3</code>. The branch has been validated locally and opened as Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a>.</p>
+
+            <ol class="timeline">
+              <li class="is-done">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <div class="timeline-head">
+                  <h3>Main UE Tailwind pinned</h3>
+                  <span class="timeline-badge">3.4.19</span>
+                </div>
+                <p class="timeline-meta">UE repo · root package</p>
+                <p><code>package.json</code> now declares <code>tailwindcss: 3.4.19</code>. It is integrated through <code>gulpfile.js</code>, <code>postcss.config.js</code>, <code>tailwindcss/tailwind.config.js</code>, and <code>nessy_app.scss</code>.</p>
+              </li>
+              <li class="is-done">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <div class="timeline-head">
+                  <h3>Embedded Elevate workspace pinned</h3>
+                  <span class="timeline-badge">3.4.19</span>
+                </div>
+                <p class="timeline-meta">UE repo · engines/elevate</p>
+                <p><code>engines/elevate/package.json</code> now declares <code>tailwindcss: 3.4.19</code>. This is the Elevate workspace embedded in UE.</p>
+              </li>
+              <li class="is-done">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <div class="timeline-head">
+                  <h3>Standalone Elevate package aligned</h3>
+                  <span class="timeline-badge">3.4.19</span>
+                </div>
+                <p class="timeline-meta">elevate-g2 repo · DMVPC-1837</p>
+                <p>The sibling <code>elevate-g2/</code> checkout for <code>@g2crowd/elevate</code> now has a standalone branch that declares <code>tailwindcss: 3.4.19</code> and validates through its Vite/PostCSS package pipeline. It is in review as Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</p>
+              </li>
+              <li class="is-done">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <div class="timeline-head">
+                  <h3>UE v3 unification approved</h3>
+                  <span class="timeline-badge">PR 40142</span>
+                </div>
+                <p class="timeline-meta">2026-06-09 · awaiting merge</p>
+                <p>Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> contains the UE v3 pins, lockfile update, <code>collapse</code> blocklist fix, and focused Tailwind config guard. Reviewer approved it on 2026-06-09.</p>
+              </li>
+              <li class="is-future">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <div class="timeline-head">
+                  <h3>Tailwind v4 — later target</h3>
+                  <span class="timeline-badge">v4</span>
+                </div>
+                <p class="timeline-meta">Not started · separately gated</p>
+                <p>Tailwind v4 is a separate phase because it changes the PostCSS plugin package, import model, browser floor, and Sass-preprocessing assumptions.</p>
+              </li>
+            </ol>
+          </section>
+
+          <section id="unification-approach">
+            <h2>Tailwind v3 Unification Approach</h2>
+            <p class="section-intro">Unification means both Yarn workspaces resolve the same Tailwind package version. It does not mean merging the main UE and Elevate configs, CSS entrypoints, or generated bundles.</p>
+
+            <div class="callout">
+              <p><strong>Implemented locally:</strong> Phase 1 pins root UE and UE's embedded Elevate workspace to exact <code>3.4.19</code> for a deterministic review. The standalone <code>elevate-g2/</code> package now follows the same exact baseline on a separate package branch under <code>DMVPC-1837</code>; Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> is open for review.</p>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Step</th>
+                    <th>Action</th>
+                    <th>Reason</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Change root <code>package.json</code> from <code>tailwindcss: ^3.1.8</code> to <code>tailwindcss: 3.4.19</code>.</td>
+                    <td>This upgrades the main <code>nessy_app</code> Tailwind generator without touching Sass, Gulp, PostCSS, Foundation, or Nessy source structure.</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Change <code>engines/elevate/package.json</code> from <code>tailwindcss: ^3.4.10</code> to <code>tailwindcss: 3.4.19</code>.</td>
+                    <td>This keeps Elevate on the same v3 patch while preserving its separate Rsbuild/PostCSS pipeline and <code>elv-</code> prefixed preset.</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Run <code>yarn install</code> from the UE root and confirm <code>yarn why tailwindcss</code> reports <code>3.4.19</code> for both <code>@g2crowd/ue</code> and <code>elevate</code>.</td>
+                    <td>The lockfile is the actual proof that the two current Tailwind versions have been unified.</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>Do not add a shared Tailwind config, shared preset, or package <code>resolutions</code> unless Yarn still resolves duplicate Tailwind versions after the direct dependency update.</td>
+                    <td>Keeping the change to dependency alignment reduces blast radius and avoids creating an architecture migration inside the version-unification PR.</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>Rebuild and compare <code>nessy_app.css</code>, <code>vendor_admin_assets.css</code>, and Elevate <code>application.css</code>.</td>
+                    <td>Both bundles can be loaded on shared routes, so generated CSS output matters even when source files do not change.</td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>Relate the standalone <code>elevate-g2/</code> package Tailwind alignment to <code>DMVPC-1837</code> and ship it as a separate repo PR before v4 work starts.</td>
+                    <td>The UE monorepo change does not update the sibling package checkout that provides <code>@g2crowd/elevate</code> assets.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="findings">
+            <h2>Findings Log</h2>
+            <p class="section-intro">Keep durable findings here as the work moves forward. Link to focused subpages when the supporting detail is more than a few lines.</p>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Finding</th>
+                    <th>Implication</th>
+                    <th>Detail</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2026-06-11</td>
+                    <td>A downstream consumer of <code>@g2crowd/elevate</code> already runs Tailwind v4.</td>
+                    <td>The <code>g2crowd/research-hub</code> app ("AICR-frontend", Next.js + TypeScript) declares <code>tailwindcss: ^4</code> and <code>@tailwindcss/postcss: ^4</code> and depends on <code>@g2crowd/elevate@^0.8.0</code>. It proves Tailwind v4 is workable in the Elevate ecosystem, but it does <strong>not</strong> use the package's <code>elv-</code> JS preset under v4 — it uses v4's CSS-first <code>@import "tailwindcss"</code> + <code>@theme inline</code> and hand-ports Elevate design tokens into CSS custom properties. The <code>@g2crowd/elevate</code> dependency is currently vestigial there (no JS import, no <code>elv-</code> classes in source). Cloned to <code>/Users/rayelo/G2/my-g2/research-hub</code> for reference; no change needed in that repo now.</td>
+                    <td>Implication for the v4 path: the <code>elv-</code> JS preset is <em>not yet</em> proven under v4, and the realistic v4 design question for Elevate is whether to port the preset to a v4 CSS-first <code>@theme</code>/<code>@plugin</code> model (as research-hub did ad hoc) or keep a JS preset. Feeds <code>G-12</code> / <code>DMVPC-1839</code>.</td>
+                  </tr>
+                  <tr>
+                    <td>2026-06-09</td>
+                    <td>Standalone <code>@g2crowd/elevate</code> also needs Tailwind alignment.</td>
+                    <td>The sibling <code>/Users/rayelo/G2/my-g2/elevate-g2</code> checkout is aligned on branch <code>chore/g-19-tailwind-v3-elevate-baseline</code>. Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> covers this package; PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> remains scoped to the UE repo and UE's embedded <code>engines/elevate</code> workspace.</td>
+                    <td><a href="standalone-elevate-package.html">Standalone Elevate note</a></td>
+                  </tr>
+                  <tr>
+                    <td>2026-06-09</td>
+                    <td>Phase 1 package unification is validated and in review.</td>
+                    <td>Both root UE and Elevate resolve <code>tailwindcss@3.4.19</code>. Build validation, authenticated MyG2 seller-home smoke, representative Elevate component smoke, and the <code>collapse</code> blocklist guard passed. Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> has Reviewer approval.</td>
+                    <td><a href="phase-1-v3-unification.html">Phase 1 log</a></td>
+                  </tr>
+                  <tr>
+                    <td>2026-06-08</td>
+                    <td>Main UE Tailwind and Elevate Tailwind can be loaded on the same route.</td>
+                    <td>They are not fully route-scoped from each other. Elevate utilities are prefixed with <code>elv-</code>, but base/preflight and bundle load order still matter.</td>
+                    <td><a href="runtime-overlap.html">Runtime overlap evidence</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="principles">
+            <h2>Migration Principles</h2>
+            <ul class="checklist">
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Touch the styling stack as little as possible.</strong> The v3 unification PR should not refactor Nessy, Foundation, Sass partials, asset loading, or CSS architecture unless a Tailwind v3 compatibility issue forces a local change.</span></li>
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Separate version alignment from v4 migration.</strong> Tailwind <code>3.4.19</code> should land as its own reviewable change before any Tailwind v4 package or pipeline work.</span></li>
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Keep main UE and Elevate distinct.</strong> The first goal is version parity, not collapsing Tailwind configs, prefixes, or asset entrypoints.</span></li>
+              <li><span class="check-box" aria-hidden="true"></span><span><strong>Prefer evidence over broad assumptions.</strong> Each phase should have build output, smoke routes, and a narrow regression read before moving to the next phase.</span></li>
+            </ul>
+          </section>
+
+          <section id="phases">
+            <h2>Implementation Phases</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Phase</th>
+                    <th>Scope</th>
+                    <th>Expected Changes</th>
+                    <th>Exit Criteria</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>0. Baseline</strong></td>
+                    <td>Current worktree before package edits.</td>
+                    <td>Record current build behavior, package versions, asset output, and smoke routes.</td>
+                    <td>Confirmed in <a href="dmvpc-1836-baseline-confirmation.html">DMVPC-1836 baseline evidence</a>. Builds pass and representative unauthenticated/dev smoke routes return successfully; authenticated proxy smoke is blocked by the temporary proxy URL returning <code>410</code> locally.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>1. Unify Tailwind v3</strong></td>
+                    <td>Main UE, UE embedded Elevate, and related standalone Elevate package versions.</td>
+                    <td>Update Tailwind dependencies to <code>3.4.19</code> in root UE, UE <code>engines/elevate</code>, and the related standalone <code>elevate-g2/</code> package.</td>
+                    <td>UE repo work is complete locally. Package, build, authenticated MyG2 seller-home smoke, representative Elevate smoke, and focused config guard passed. Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> is approved and awaiting merge. Standalone <code>elevate-g2/</code> alignment is validated in Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>2. Stabilize v3 Compatibility</strong></td>
+                    <td>Only issues exposed by the v3 unification.</td>
+                    <td>Minimal fixes for <code>@apply</code>, <code>@layer</code>, content scanning, safelists, custom plugin output, or generated utilities.</td>
+                    <td>No extra compatibility work is currently known beyond the narrow <code>collapse</code> blocklist fix in Phase 1. Reopen only if review or CI exposes a new v3 issue.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>3. Prototype v4 Path</strong></td>
+                    <td>Spike branch or throwaway prototype.</td>
+                    <td>Evaluate Elevate-first v4, scoped v4 bundle, and direct main UE v4 upgrade against real build constraints.</td>
+                    <td>One recommended v4 path with known package, config, CSS-entrypoint, and browser-support implications.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>4. First v4 Implementation</strong></td>
+                    <td>The selected lowest-risk v4 path.</td>
+                    <td>Implement v4 where the spike recommends, likely Elevate-first or a scoped bundle before global <code>nessy_app</code>.</td>
+                    <td>v4 support exists without destabilizing the legacy Sass/Nessy/Foundation surface.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>5. Expand Deliberately</strong></td>
+                    <td>Additional migrated surfaces.</td>
+                    <td>Move more routes/components only after the first v4 implementation is stable.</td>
+                    <td>Main <code>nessy_app</code> v4 becomes a later, separately gated decision.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="gates">
+            <h2>Validation Gates</h2>
+            <p class="section-intro">These checks keep the v3 work narrow and make v4 safer by exposing problems earlier.</p>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Gate</th>
+                    <th>Command or Evidence</th>
+                    <th>Why It Matters</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Dependency install</td>
+                    <td><code>yarn install</code>, <code>bundle check</code></td>
+                    <td>Confirms the isolated worktree can resolve the package and Ruby dependency graph.</td>
+                  </tr>
+                  <tr>
+                    <td>Main CSS build</td>
+                    <td><code>yarn sass:build</code> or the Sass portion of <code>yarn run dev</code></td>
+                    <td>Validates Tailwind inside the Sass/Gulp/PostCSS pipeline and catches <code>@apply</code>/<code>@layer</code> failures.</td>
+                  </tr>
+                  <tr>
+                    <td>Main JS build</td>
+                    <td><code>yarn js:build</code> or the Webpack portion of <code>yarn run dev</code></td>
+                    <td>Confirms the normal app watcher still compiles after lockfile changes.</td>
+                  </tr>
+                  <tr>
+                    <td>Elevate build</td>
+                    <td><code>yarn workspace elevate build</code>, or the Elevate Rsbuild process from <code>yarn run dev</code></td>
+                    <td>Validates the separate Elevate Tailwind/PostCSS pipeline on the same v3 baseline.</td>
+                  </tr>
+                  <tr>
+                    <td>Generated CSS comparison</td>
+                    <td>Compare output size and inspect meaningful diffs for <code>nessy_app.css</code>, <code>vendor_admin_assets.css</code>, and Elevate CSS.</td>
+                    <td>Tailwind version changes can alter generated utilities without changing source files.</td>
+                  </tr>
+                  <tr>
+                    <td>Visual smoke</td>
+                    <td>Representative routes in the local browser, plus screenshots if the diff looks risky.</td>
+                    <td>Utility output changes are easiest to catch on real pages with mixed Nessy, Foundation, Tailwind, and Elevate classes.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="smoke">
+            <h2>Smoke Matrix</h2>
+            <p class="section-intro">The exact route list can evolve, but the matrix should cover the distinct CSS bundles and class families affected by Tailwind output.</p>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Surface</th>
+                    <th>Candidate Route</th>
+                    <th>Coverage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>MyG2 / seller home</td>
+                    <td><code>https://my.g2.test/g2-seller-solutions/home</code></td>
+                    <td>Current in-browser route, MyG2 layout, global Sass, utility usage, and product navigation.</td>
+                  </tr>
+                  <tr>
+                    <td>Unauthenticated MyG2 fallback</td>
+                    <td><code>https://my.g2.test/signup?login=true</code></td>
+                    <td>Basic Rails boot and public/login-adjacent CSS path.</td>
+                  </tr>
+                  <tr>
+                    <td>Vendor-admin or admin surface</td>
+                    <td>Representative route after proxy login.</td>
+                    <td><code>nessy_app</code> plus <code>vendor_admin_assets</code>, Foundation widgets, and admin overrides.</td>
+                  </tr>
+                  <tr>
+                    <td>Elevate surface</td>
+                    <td><code>https://www.g2.test/rails/view_components/elevate/button/primary_lg</code></td>
+                    <td>Elevate Rsbuild output, <code>elv-</code> classes, and the separate Tailwind config. Local <code>/lookbook</code> was not mounted, so this ViewComponent preview was used for the Phase 1 smoke.</td>
+                  </tr>
+                  <tr>
+                    <td>Embedded or widget route</td>
+                    <td>Representative embedded grid or riblet route if affected by the work.</td>
+                    <td>Reduced CSS entrypoints and load-order assumptions outside the main MyG2 page shell.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="open-questions">
+            <h2>Open Questions</h2>
+            <ul>
+              <li>After PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> lands, should Tailwind v3 stay exactly pinned at <code>3.4.19</code> or move back to matching caret ranges?</li>
+              <li>The standalone <code>@g2crowd/elevate</code> Tailwind alignment is in review as Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code> and should land before Tailwind v4 path work starts.</li>
+              <li>Before v4, what browser-support threshold should apply to MyG2/vendor-admin versus public marketplace pages?</li>
+            </ul>
+
+            <div class="callout">
+              <p><strong>Next action:</strong> let Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> and Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> finish review and merge. Keep Tailwind v4 exploration separate until the v3 baseline across required package surfaces is landed or explicitly waived.</p>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
