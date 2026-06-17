@@ -185,11 +185,11 @@
   <body>
     <main>
       <p class="eyebrow">Phase 1 log</p>
-      <h1>Tailwind v3 unification is validated and in review</h1>
+      <h1>Tailwind v3 unification is validated and merged</h1>
       <p class="lede">This page records the first implementation pass for aligning Tailwind v3 inside the isolated <code>ue-unify-tailwind-3</code> worktree. A later note adds that the standalone <code>@g2crowd/elevate</code> package checkout also needs Tailwind alignment under <code>DMVPC-1837</code>.</p>
 
       <div class="callout">
-        <p><strong>Status:</strong> UE package alignment, build validation, authenticated MyG2 seller-home smoke, and a representative embedded Elevate component smoke passed. A narrow Tailwind compatibility fix was added for the legacy <code>.collapse</code> layout class. Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> is open and has Reviewer approval as of 2026-06-09.</p>
+        <p><strong>Status:</strong> UE package alignment, build validation, authenticated MyG2 seller-home smoke, and a representative embedded Elevate component smoke passed. A narrow Tailwind compatibility fix was added for the legacy <code>.collapse</code> layout class. PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> merged on 2026-06-12.</p>
       </div>
 
       <h2>Code Changes</h2>
@@ -234,7 +234,7 @@
 
       <h2>Review Status</h2>
       <ul>
-        <li>Draft PR: <a href="https://github.com/g2crowd/ue/pull/40142">g2crowd/ue#40142</a>.</li>
+        <li>Merged PR: <a href="https://github.com/g2crowd/ue/pull/40142">g2crowd/ue#40142</a>.</li>
         <li>Branch: <code>ue-unify-tailwind-3</code>.</li>
         <li>Worktree: <code>/Users/rayelo/G2/my-g2/ue-unify-tailwind-3</code>.</li>
         <li>Reviewer decision on 2026-06-09: approved with no blockers, required changes, suggestions, or nits.</li>
@@ -246,7 +246,7 @@
         <li>Scope correction on 2026-06-10: the standalone <code>@g2crowd/elevate</code> package alignment belongs in <code>/Users/rayelo/G2/my-g2/elevate-g2</code>, not the earlier wrong-repo checkout.</li>
         <li>Correct remote: <code>git@github.com:g2crowd/elevate-g2.git</code>.</li>
         <li>Standalone package branch: <code>chore/g-19-tailwind-v3-elevate-baseline</code>, created from <code>origin/main</code> at <code>cf97847</code>.</li>
-        <li>Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> pins the package dev dependency to <code>tailwindcss: 3.4.19</code> and keeps the peer dependency at <code>^3.4.0</code>.</li>
+        <li>PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> pins the package dev dependency to <code>tailwindcss: 3.4.19</code> and keeps the peer dependency at <code>^3.4.0</code>.</li>
         <li>PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> remains scoped to the UE repo only: root UE plus UE's embedded <code>engines/elevate</code> workspace.</li>
       </ul>
 
@@ -360,10 +360,9 @@
 
       <h2>Next Tasks</h2>
       <ul>
-        <li>Let Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> finish review and merge.</li>
-        <li>Review and merge the standalone <code>@g2crowd/elevate</code> package alignment in Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</li>
-        <li>If review or CI surfaces a new compatibility issue, keep the fix as narrow as the existing <code>collapse</code> blocklist and record it here.</li>
-        <li>Keep Tailwind v4 exploration separate from the approved v3 baseline work until the required package surfaces are aligned or explicitly waived.</li>
+        <li>Post-merge <code>DMVPC-1838</code> triage found no remaining v3 compatibility fallout; see the <a href="dmvpc-1838-v3-fallout-closeout.html">closeout note</a>.</li>
+        <li>If future evidence surfaces a new compatibility issue, keep the fix as narrow as the existing <code>collapse</code> blocklist and record it here.</li>
+        <li>Keep Tailwind v4 exploration separate from the merged v3 baseline work.</li>
       </ul>
 
       <p><a href="index.html">Back to Tailwind upgrade plan</a></p>

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DMVPC-1838 Tailwind v3 Fallout Closeout</title>
+    <style>
+      :root {
+        --bg: #f7f7f4;
+        --paper: #ffffff;
+        --ink: #20242a;
+        --muted: #68707a;
+        --line: #dadfd8;
+        --accent: #235c56;
+        --accent-soft: #e8f0ed;
+        --code-bg: #eef2ef;
+        --content-width: 940px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.55;
+        margin: 0;
+      }
+
+      main {
+        max-width: var(--content-width);
+        padding: 44px 48px 72px;
+        width: 100%;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        background: var(--code-bg);
+        border-radius: 3px;
+        color: #173d39;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: .92em;
+        overflow-wrap: anywhere;
+        padding: 2px 5px;
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        margin: 0 0 12px;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(34px, 5vw, 58px);
+        font-weight: 720;
+        letter-spacing: 0;
+        line-height: 1.02;
+        margin-bottom: 18px;
+        max-width: 780px;
+      }
+
+      h2 {
+        border-top: 1px solid var(--line);
+        font-size: 24px;
+        line-height: 1.2;
+        margin-bottom: 10px;
+        margin-top: 34px;
+        padding-top: 28px;
+      }
+
+      p,
+      li {
+        max-width: 82ch;
+      }
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      .lede {
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .callout {
+        background: var(--accent-soft);
+        border: 1px solid #c7d9d2;
+        border-radius: 8px;
+        margin: 24px 0;
+        padding: 18px 20px;
+      }
+
+      .table-wrap {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        margin: 18px 0;
+        overflow-x: auto;
+      }
+
+      table {
+        background: var(--paper);
+        border-collapse: collapse;
+        min-width: 760px;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 12px 14px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: #edf1ee;
+        color: var(--muted);
+        font-size: 13px;
+        text-transform: uppercase;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      @media (max-width: 760px) {
+        main {
+          padding: 30px 22px 56px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Compatibility closeout</p>
+        <h1>DMVPC-1838 found no remaining Tailwind v3 fallout</h1>
+        <p class="lede">This page records the 2026-06-12 post-merge review of the Tailwind v3.4.19 baseline across UE and the standalone Elevate package.</p>
+      </header>
+
+      <div class="callout">
+        <p><strong>Decision:</strong> no new Tailwind v3 compatibility issue remains after both baseline PRs merged. The only v3 fallout found during the baseline work was the legacy <code>.collapse</code> collision, already fixed in UE PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> with a root Tailwind blocklist and a focused config guard.</p>
+      </div>
+
+      <section>
+        <h2>Reviewed Surfaces</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Surface</th>
+                <th>Merge state</th>
+                <th>Evidence reviewed</th>
+                <th>Fallout decision</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Root UE plus embedded <code>engines/elevate</code></td>
+                <td>PR <a href="https://github.com/g2crowd/ue/pull/40142">g2crowd/ue#40142</a> merged on 2026-06-12 at <code>3a5c4b9</code>.</td>
+                <td>Final GitHub checks passed for linters, JS specs, Ruby specs, engine specs, packs checks, precompile assets, system specs, and quality gates. Production rollout comments completed for <code>ue-www</code>, <code>ue-admin</code>, <code>ue-my</code>, and <code>ue-api</code>.</td>
+                <td>No remaining v3 fallout. Review comments were approval/non-blocking; the known <code>collapse</code> issue is already guarded.</td>
+              </tr>
+              <tr>
+                <td>Standalone <code>@g2crowd/elevate</code> in <code>elevate-g2/</code></td>
+                <td>PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> merged on 2026-06-11 at <code>6ae3e50</code>.</td>
+                <td>PR approvals accepted the exact <code>3.4.19</code> dev dependency and compatible <code>&gt;=3.4</code> peer range. The package had already passed <code>corepack yarn install</code>, <code>corepack yarn build</code>, and <code>corepack yarn test</code> in the local evidence log.</td>
+                <td>No v3 fallout. Reviewer's Tailwind v4 dependency-chain note belongs to v4 path planning, not this v3 compatibility closeout.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Local Evidence Reused</h2>
+        <ul>
+          <li>UE local validation from the Phase 1 log covered <code>bundle check</code>, <code>yarn sass:build</code>, <code>yarn js:build</code>, <code>yarn workspace elevate build</code>, <code>yarn run dev</code>, and <code>yarn test webpack/spec/tailwindcss/tailwind.config.spec.js</code>.</li>
+          <li>Runtime smoke covered unauthenticated MyG2 redirects, authenticated MyG2 seller-home render, and a representative embedded Elevate ViewComponent route.</li>
+          <li>Standalone Elevate local validation covered dependency install, PostCSS package build, generated CSS size capture, and the available Vitest suite.</li>
+          <li>The 2026-06-12 post-merge triage did not rerun broad route-by-route visual regression because the task scope was CI, review, and existing local validation evidence rather than broad visual coverage.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Boundary</h2>
+        <ul>
+          <li>Tailwind v4 package and pipeline changes remain out of scope for this closeout.</li>
+          <li>Known v4-consumer findings in other repositories should feed the v4 path decision, not reopen the v3 compatibility task.</li>
+          <li>If a new issue appears later, treat it as new evidence and keep any fix compatibility-only: <code>@apply</code>, <code>@layer</code>, content scanning, safelists, custom plugin output, or generated utility collisions.</li>
+        </ul>
+      </section>
+
+      <p><a href="index.html">Back to Tailwind upgrade plan</a></p>
+    </main>
+  </body>
+</html>

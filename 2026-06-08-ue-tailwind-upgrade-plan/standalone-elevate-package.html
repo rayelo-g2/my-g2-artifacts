@@ -152,12 +152,27 @@
       <header>
         <p class="eyebrow">Tailwind package finding</p>
         <h1>Standalone Elevate also needs Tailwind alignment</h1>
-        <p class="lede">This page records the 2026-06-09 scope update that the standalone <code>@g2crowd/elevate</code> package must be considered alongside the UE Tailwind v3 baseline work.</p>
+        <p class="lede">This page records the standalone <code>@g2crowd/elevate</code> package work across the Tailwind migration: first the v3 baseline alignment, then the Tailwind v4 package release consumed by UE.</p>
       </header>
 
       <div class="callout">
-        <p><strong>Decision for tracking:</strong> relate the standalone package upgrade to <code>DMVPC-1837</code>. The current UE PR validates root UE and UE's embedded <code>engines/elevate</code> workspace. The standalone <code>@g2crowd/elevate</code> package lives in the <code>elevate-g2/</code> checkout and ships separately through Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a>.</p>
+        <p><strong>Current tracking:</strong> the standalone package v3 baseline remains under <code>DMVPC-1837</code> and shipped through PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a>. The first Tailwind v4 package slice is tracked under <code>DMVPC-1840</code> through PR <a href="https://github.com/g2crowd/elevate-g2/pull/55">g2crowd/elevate-g2#55</a>, with UE consumer validation in <a href="https://github.com/g2crowd/ue/pull/40359">g2crowd/ue#40359</a>.</p>
       </div>
+
+      <section>
+        <h2>Tailwind v4 Package Slice</h2>
+        <ul>
+          <li>PR <a href="https://github.com/g2crowd/elevate-g2/pull/55">g2crowd/elevate-g2#55</a> ports the standalone package CSS build to Tailwind v4.</li>
+          <li>The branch <code>chore/g-13-tailwind-v4-slice</code> was squashed to commit <code>0372d98</code>: <code>chore: port Elevate CSS build to Tailwind v4 [DMVPC-1840]</code>.</li>
+          <li>Stable package <code>@g2crowd/elevate@2.0.0</code> is published and consumed by UE PR <a href="https://github.com/g2crowd/ue/pull/40359">g2crowd/ue#40359</a>.</li>
+          <li>The package now exposes <code>@g2crowd/elevate/postcss/legacy-prefix</code> as a temporary consumer migration helper for legacy UE <code>elv-*</code> utility syntax.</li>
+          <li>The Elevate PR body documents breaking changes and links the UE PR as the example migration.</li>
+        </ul>
+
+        <div class="callout">
+          <p><strong>Follow-up:</strong> <code>DMVPC-1871</code> tracks removing or narrowing the legacy prefix compatibility shim after UE utility usage can move toward Tailwind v4 <code>elv:*</code> syntax. Keep semantic component classes such as <code>elv-button</code>, <code>elv-input</code>, and <code>elv-modal</code>.</p>
+        </div>
+      </section>
 
       <section>
         <h2>Observed Package State</h2>
@@ -215,7 +230,7 @@
           <li><code>dist/elevate.css</code> measured <code>172,398</code> raw bytes / <code>22,673</code> gzip bytes.</li>
           <li><code>dist/components.css</code> measured <code>118,578</code> raw bytes / <code>14,286</code> gzip bytes.</li>
           <li><code>corepack yarn test</code> passed the available Vitest suite: <code>1</code> file passed, <code>1</code> test passed. Vite emitted its existing CJS Node API deprecation warning.</li>
-          <li>Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> contains the standalone package changes on branch <code>chore/g-19-tailwind-v3-elevate-baseline</code>.</li>
+          <li>PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> contains the standalone package changes on branch <code>chore/g-19-tailwind-v3-elevate-baseline</code> and merged on 2026-06-11.</li>
           <li>The committed <code>yarn.lock</code> is preserved and updated. Generated local install/build artifacts such as <code>.pnp.cjs</code>, <code>.pnp.loader.mjs</code>, <code>.yarn/</code>, <code>node_modules/</code>, and <code>dist/</code> are not part of the PR.</li>
         </ul>
       </section>

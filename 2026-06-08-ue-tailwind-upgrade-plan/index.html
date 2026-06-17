@@ -470,8 +470,10 @@
           <li><a href="#context">Working Context</a></li>
           <li><a href="#current-state">Current State</a></li>
           <li><a href="#unification-approach">v3 Unification</a></li>
+          <li><a href="#v4-decision">DMVPC-1839 v4 Decision</a></li>
           <li><a href="dmvpc-1836-baseline-confirmation.html">DMVPC-1836 Baseline</a></li>
           <li><a href="standalone-elevate-package.html">Standalone Elevate</a></li>
+          <li><a href="dmvpc-1838-v3-fallout-closeout.html">DMVPC-1838 Closeout</a></li>
           <li><a href="#findings">Findings Log</a></li>
           <li><a href="#principles">Principles</a></li>
           <li><a href="#phases">Phases</a></li>
@@ -491,7 +493,7 @@
 
           <section id="summary">
             <h2>Summary</h2>
-            <p class="section-intro">This plan turns the styling-landscape research into an implementation sequence for <code>ue-unify-tailwind-3</code> and the follow-up v4 work. Phase 1 is now implemented, validated, and in review as Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a>; the standalone <code>@g2crowd/elevate</code> package alignment is now in review as Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</p>
+            <p class="section-intro">This plan turns the styling-landscape research into an implementation sequence for <code>ue-unify-tailwind-3</code> and the follow-up v4 work. Phase 1 is implemented, validated, merged, and deployed through PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a>; the standalone <code>@g2crowd/elevate</code> package v3 alignment merged through PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>. The first v4 slice is now in code review through Elevate PR <a href="https://github.com/g2crowd/elevate-g2/pull/55">g2crowd/elevate-g2#55</a> and UE consumer PR <a href="https://github.com/g2crowd/ue/pull/40359">g2crowd/ue#40359</a>.</p>
 
             <div class="summary-list" aria-label="Key plan points">
               <article class="summary-item">
@@ -508,7 +510,7 @@
               </article>
               <article class="summary-item">
                 <h3>v4 Constraint</h3>
-                <p>Tailwind v4 should be introduced only after the v3 baseline is stable and the team chooses between Elevate-first, scoped bundle, or direct main UE upgrade.</p>
+                <p>The first v4 move is Elevate-first. Elevate v2.0.0 is published and the UE consumer PR validates the stable package while keeping global <code>nessy_app</code> on v3.</p>
               </article>
             </div>
           </section>
@@ -525,23 +527,52 @@
             <ul>
               <li>Worktree: <code>/Users/rayelo/G2/my-g2/ue-unify-tailwind-3</code>.</li>
               <li>Branch: <code>ue-unify-tailwind-3</code>, created from latest <code>origin/main</code> when the worktree was set up.</li>
-              <li>Draft PR: <a href="https://github.com/g2crowd/ue/pull/40142">g2crowd/ue#40142</a>.</li>
-              <li>Review state as of 2026-06-09: Reviewer approved the Phase 1 change with no required changes.</li>
+              <li>Merged PR: <a href="https://github.com/g2crowd/ue/pull/40142">g2crowd/ue#40142</a>.</li>
+              <li>Review state: Reviewer approved the Phase 1 change with no required changes; it merged on 2026-06-12.</li>
               <li><code>~/.puma-dev/g2</code> points to the isolated worktree.</li>
               <li><code>tmux</code> session <code>ue-assets</code> runs <code>yarn run dev</code> from the isolated worktree.</li>
               <li>Local DB migrations were run; generated schema dump diffs were intentionally restored so the branch stayed clean before Tailwind changes.</li>
               <li>Use the in-app browser at <code>https://my.g2.test</code> for authenticated route checks such as <code>/g2-seller-solutions/home</code>. Use <code>curl -k</code> for low-level boot checks, but do not treat unauthenticated redirects as final visual-route evidence.</li>
               <li>DMVPC-1836 baseline evidence is recorded in <a href="dmvpc-1836-baseline-confirmation.html">the baseline confirmation page</a>.</li>
-              <li>Standalone Elevate package checkout: <code>/Users/rayelo/G2/my-g2/elevate-g2</code>, remote <code>git@github.com:g2crowd/elevate-g2.git</code>. The standalone package branch <code>chore/g-19-tailwind-v3-elevate-baseline</code> now declares <code>tailwindcss: 3.4.19</code> and is in review as Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</li>
+              <li>Standalone Elevate package checkout: <code>/Users/rayelo/G2/my-g2/elevate-g2</code>, remote <code>git@github.com:g2crowd/elevate-g2.git</code>. The standalone package branch <code>chore/g-19-tailwind-v3-elevate-baseline</code> declared <code>tailwindcss: 3.4.19</code> and merged as PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</li>
+              <li>Current v4 producer checkout: <code>/Users/rayelo/G2/my-g2/elevate-g2-g-13</code>, branch <code>chore/g-13-tailwind-v4-slice</code>, PR <a href="https://github.com/g2crowd/elevate-g2/pull/55">g2crowd/elevate-g2#55</a>. It merged and published <code>@g2crowd/elevate@2.0.0</code>.</li>
+              <li>Current v4 UE consumer checkout: <code>/Users/rayelo/G2/my-g2/ue-g-13</code>, branch <code>chore/g-13-tailwind-v4-slice</code>, PR <a href="https://github.com/g2crowd/ue/pull/40359">g2crowd/ue#40359</a>. It consumes <code>@g2crowd/elevate@2.0.0</code> and preserves MyG2 Elevate rendering during the migration.</li>
               <li>Downstream v4 consumer for reference: <code>g2crowd/research-hub</code> (Next.js "AICR-frontend") depends on <code>@g2crowd/elevate@^0.8.0</code> and already runs Tailwind <code>^4</code>. Cloned to <code>/Users/rayelo/G2/my-g2/research-hub</code>. No work needed there now; it informs the v4 path because it shows v4 working without the <code>elv-</code> JS preset (CSS-first <code>@theme</code> token port instead). See the 2026-06-11 finding below.</li>
             </ul>
           </section>
 
           <section id="current-state">
             <h2>Current State</h2>
-            <p class="section-intro">The working branch is <code>ue-unify-tailwind-3</code> in an isolated worktree at <code>/Users/rayelo/G2/my-g2/ue-unify-tailwind-3</code>. The branch has been validated locally and opened as Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a>.</p>
+            <p class="section-intro">The v3 baseline has landed in both required repositories. The first v4 implementation slice is no longer just a plan: Elevate PR <a href="https://github.com/g2crowd/elevate-g2/pull/55">g2crowd/elevate-g2#55</a> merged and published <code>@g2crowd/elevate@2.0.0</code>, and UE PR <a href="https://github.com/g2crowd/ue/pull/40359">g2crowd/ue#40359</a> consumes that stable package. The remaining known follow-up is to remove or narrow the temporary legacy <code>elv-</code> prefix compatibility shim, now tracked as <code>DMVPC-1871</code>.</p>
 
             <ol class="timeline">
+              <li class="is-done">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <div class="timeline-head">
+                  <h3>First v4 slice in code review</h3>
+                  <span class="timeline-badge">DMVPC-1840</span>
+                </div>
+                <p class="timeline-meta">Elevate + UE · 2026-06-16</p>
+                <p>Elevate PR <a href="https://github.com/g2crowd/elevate-g2/pull/55">g2crowd/elevate-g2#55</a> has merged and published <code>@g2crowd/elevate@2.0.0</code>. UE PR <a href="https://github.com/g2crowd/ue/pull/40359">g2crowd/ue#40359</a> now consumes the stable package with focused MyG2 validation. <code>DMVPC-1840</code> should stay open until the UE PR merges and staging validates the stable package.</p>
+              </li>
+              <li class="is-future">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <div class="timeline-head">
+                  <h3>Remove legacy prefix shim</h3>
+                  <span class="timeline-badge">DMVPC-1871</span>
+                </div>
+                <p class="timeline-meta">Follow-up · not part of first v4 PR pair</p>
+                <p>The first slice uses <code>@g2crowd/elevate/postcss/legacy-prefix</code> as migration plumbing so existing UE <code>elv-*</code> utility markup keeps rendering. Follow-up <code>DMVPC-1871</code> should codemod UE utility classes toward Tailwind v4 <code>elv:*</code> syntax and remove or greatly narrow the helper.</p>
+              </li>
+              <li class="is-done">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <div class="timeline-head">
+                  <h3>v3 fallout triage closed</h3>
+                  <span class="timeline-badge">DMVPC-1838</span>
+                </div>
+                <p class="timeline-meta">UE and elevate-g2 · 2026-06-12</p>
+                <p>Post-merge review of PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a>, PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a>, CI, reviewer notes, and local validation evidence found no remaining Tailwind v3 compatibility fallout. See the <a href="dmvpc-1838-v3-fallout-closeout.html">closeout note</a>.</p>
+              </li>
               <li class="is-done">
                 <span class="timeline-dot" aria-hidden="true"></span>
                 <div class="timeline-head">
@@ -567,7 +598,7 @@
                   <span class="timeline-badge">3.4.19</span>
                 </div>
                 <p class="timeline-meta">elevate-g2 repo · DMVPC-1837</p>
-                <p>The sibling <code>elevate-g2/</code> checkout for <code>@g2crowd/elevate</code> now has a standalone branch that declares <code>tailwindcss: 3.4.19</code> and validates through its Vite/PostCSS package pipeline. It is in review as Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</p>
+                <p>The sibling <code>elevate-g2/</code> checkout for <code>@g2crowd/elevate</code> has a standalone branch that declares <code>tailwindcss: 3.4.19</code> and validates through its Vite/PostCSS package pipeline. It merged as PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</p>
               </li>
               <li class="is-done">
                 <span class="timeline-dot" aria-hidden="true"></span>
@@ -575,17 +606,17 @@
                   <h3>UE v3 unification approved</h3>
                   <span class="timeline-badge">PR 40142</span>
                 </div>
-                <p class="timeline-meta">2026-06-09 · awaiting merge</p>
-                <p>Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> contains the UE v3 pins, lockfile update, <code>collapse</code> blocklist fix, and focused Tailwind config guard. Reviewer approved it on 2026-06-09.</p>
+                <p class="timeline-meta">2026-06-09 approval · 2026-06-12 merge</p>
+                <p>PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> contains the UE v3 pins, lockfile update, <code>collapse</code> blocklist fix, and focused Tailwind config guard. Reviewer approved it on 2026-06-09; it merged and production rollout comments completed on 2026-06-12.</p>
               </li>
               <li class="is-future">
                 <span class="timeline-dot" aria-hidden="true"></span>
                 <div class="timeline-head">
-                  <h3>Tailwind v4 — later target</h3>
+                  <h3>Main UE Tailwind v4 — later target</h3>
                   <span class="timeline-badge">v4</span>
                 </div>
                 <p class="timeline-meta">Not started · separately gated</p>
-                <p>Tailwind v4 is a separate phase because it changes the PostCSS plugin package, import model, browser floor, and Sass-preprocessing assumptions.</p>
+                <p>Global <code>nessy_app</code> remains outside the first v4 slice. It should move only after the Elevate package and UE consumer path are stable.</p>
               </li>
             </ol>
           </section>
@@ -595,7 +626,7 @@
             <p class="section-intro">Unification means both Yarn workspaces resolve the same Tailwind package version. It does not mean merging the main UE and Elevate configs, CSS entrypoints, or generated bundles.</p>
 
             <div class="callout">
-              <p><strong>Implemented locally:</strong> Phase 1 pins root UE and UE's embedded Elevate workspace to exact <code>3.4.19</code> for a deterministic review. The standalone <code>elevate-g2/</code> package now follows the same exact baseline on a separate package branch under <code>DMVPC-1837</code>; Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> is open for review.</p>
+              <p><strong>Implemented and merged:</strong> Phase 1 pins root UE and UE's embedded Elevate workspace to exact <code>3.4.19</code> for a deterministic baseline. The standalone <code>elevate-g2/</code> package follows the same exact baseline on a separate package branch under <code>DMVPC-1837</code>; PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> is merged.</p>
             </div>
 
             <div class="table-wrap">
@@ -643,6 +674,93 @@
             </div>
           </section>
 
+          <section id="v4-decision">
+            <h2>DMVPC-1839 &mdash; v4 Migration Path Decision</h2>
+            <p class="section-intro">Decision spike (issue <code>G-12</code>). Goal: pick the lowest-risk Tailwind v4 path from the stable <code>3.4.19</code> baseline, grounded in the confirmed producer/consumer package model. Evidence gathered 2026-06-12 against the real checkouts.</p>
+
+            <div class="callout">
+              <h3>Recommendation</h3>
+              <p><strong>Elevate-first v4, via a CSS-first <code>@theme</code> / <code>@plugin</code> port of the Elevate preset</strong> &mdash; <em>not</em> a lift-and-shift of the v3 JS preset. Sequence the work as an <code>elevate-g2</code> PR (v4-ready republish of <code>@g2crowd/elevate</code>) followed by a UE <code>engines/elevate</code> consumer bump. <code>nessy_app</code> moves to v4 as a separate, later slice. Reject the &ldquo;direct main UE upgrade first&rdquo; path and the &ldquo;scoped route-specific v4 bundle&rdquo; path for the reasons in the comparison below.</p>
+            </div>
+
+            <h3>Why the JS preset cannot survive v4 as-is</h3>
+            <p>The v3 contract in <code>elevate-g2/src/tailwind.config.js</code> is built from three v3-only mechanisms, each of which changes form in v4:</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>v3 contract (today)</th><th>v4 reality (verified)</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>prefix: 'elv-'</code> &mdash; literal string prefix concatenated onto class names (<code>elv-flex</code>).</td>
+                    <td>v4 moves prefix to <code>@import "tailwindcss" prefix(elv);</code> and applies it as a <em>variant</em> (<code>elv:flex</code>), not a literal <code>elv-</code> string. Every existing <code>elv-</code> class in shipped markup/components would need re-emitting. This is the single largest break.</td>
+                  </tr>
+                  <tr>
+                    <td><code>tailwindcss-scoped-preflight</code> via <code>isolationStrategy: isolateInsideOfContainer('[elv]')</code> (JS helper import).</td>
+                    <td>Plugin <strong>survives</strong> &mdash; it has a v4 line (<code>4.0.6</code>, dist-tag <code>latest</code>, peer <code>tailwindcss: ^4</code>). But the <code>isolateInsideOfContainer</code> helper is <strong>no longer exported</strong>; v4 uses a CSS-first <code>@plugin</code> form (<code>isolation-strategy: inside; selector: [elv];</code>). Custom isolation-strategy functions are explicitly &ldquo;not available in v4.&rdquo; The exact current call breaks; the intent ports cleanly.</td>
+                  </tr>
+                  <tr>
+                    <td>Whole-theme override map (colors, spacing, radii, type scale) in a JS <code>theme: {}</code> object, consumed by UE via <code>presets: [require('@g2crowd/elevate/tailwind')]</code>.</td>
+                    <td>v4 is CSS-first: tokens belong in <code>@theme</code> custom properties. The JS-preset consumption pattern is deprecated. <code>research-hub</code> already proves the replacement: it runs v4 and hand-ports the Elevate palette into <code>:root</code>/<code>@theme inline</code> custom properties, and its <code>@g2crowd/elevate</code> dependency is <strong>vestigial</strong> (no JS import, no <code>elv-</code> classes, not even installed).</td>
+                  </tr>
+                  <tr>
+                    <td>Build: PostCSS CLI + <code>tailwindcss/nesting</code> + <code>autoprefixer</code>; source uses <code>@import 'tailwindcss/base|components|utilities'</code>.</td>
+                    <td>v4 build is <code>@tailwindcss/postcss</code> (or the Vite/CLI engine) with a single <code>@import "tailwindcss"</code>; nesting/autoprefixer are built in. The elevate-g2 build pipeline must be rewired, not just version-bumped.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Net verdict: the <strong>preset semantics survive</strong> (tokens, dark mode, scoped preflight intent all expressible in v4), but the <strong>delivery mechanism does not</strong>. Elevate-first v4 concretely means re-authoring the preset as a v4 CSS-first <code>@theme</code> + <code>@plugin</code> stylesheet and republishing, exactly the shape <code>research-hub</code> validates &mdash; it is a re-expression, not a lift-and-shift.</p>
+
+            <h3>Path comparison</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Path</th><th>Verdict</th><th>Rationale</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Elevate-first v4</strong> (CSS-first token/preflight port, republish, then UE bump)</td>
+                    <td><strong>Recommended</strong></td>
+                    <td>Matches the producer/consumer model: the preset is the shared contract, so it must be v4-ready before any consumer can move. Proven workable by <code>research-hub</code>. Keeps the blast radius inside the package boundary and lets UE adopt on its own schedule via the peer-controlled version bump. Splits naturally into one <code>elevate-g2</code> PR + one UE consumer PR.</td>
+                  </tr>
+                  <tr>
+                    <td>Scoped / route-specific v4 bundle</td>
+                    <td>Reject</td>
+                    <td>Shared web-style routes (<code>web_style/core.html.slim</code> and others) load <code>nessy_app</code> CSS and Elevate <code>application.css</code> together platform-wide. A scoped v4 bundle would create a third Tailwind runtime overlapping the existing two, multiplying preflight/reset and prefix-collision risk for no durable payoff.</td>
+                  </tr>
+                  <tr>
+                    <td>Direct main UE <code>nessy_app</code> v4 first</td>
+                    <td>Reject (as the <em>first</em> move)</td>
+                    <td><code>nessy_app</code> has no Elevate preset and an unprefixed global utility surface, so a v4 reset/preflight change there is the highest-overlap, hardest-to-isolate change against shared routes. It should be the <em>last</em> slice, after Elevate is v4 and the shared-route behavior is understood. It is on the roadmap, not the entry point.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Affected surfaces for the recommended path</h3>
+            <ul>
+              <li><strong>elevate-g2</strong> (producer): <code>package.json</code> (bump <code>tailwindcss</code> peer to <code>^4</code>, dev to <code>^4</code>, <code>tailwindcss-scoped-preflight</code> <code>^3 &rarr; ^4</code>, drop <code>tailwindcss/nesting</code>+<code>autoprefixer</code> if redundant); <code>src/tailwind.config.js</code> &rarr; CSS-first <code>@theme</code>/<code>@plugin</code> stylesheet (preset re-authored); PostCSS config &rarr; <code>@tailwindcss/postcss</code>; source CSS <code>@import 'tailwindcss/...'</code> &rarr; <code>@import "tailwindcss" prefix(elv)</code>; the <code>./tailwind</code> export + <code>dist/elevate.css</code>/<code>dist/components.css</code> outputs; <strong>version bump + publish</strong> of <code>@g2crowd/elevate</code>.</li>
+              <li><strong>UE engines/elevate</strong> (consumer): bump <code>@g2crowd/elevate</code> to the new v4 release; replace <code>presets: [require('@g2crowd/elevate/tailwind')]</code> JS-preset wiring with the v4 CSS-first import; bump pinned <code>tailwindcss</code> to <code>4.x</code> (this consumer controls the resolved peer); rewire its PostCSS to <code>@tailwindcss/postcss</code>; update <code>application.css</code> import of <code>@g2crowd/elevate/dist/components.css</code>.</li>
+              <li><strong>UE nessy_app</strong>: untouched in this slice; tracked as a later, separate v4 slice.</li>
+              <li><strong>research-hub</strong>: no work; reference data point only.</li>
+            </ul>
+
+            <h3>Shared-route / load-order implications</h3>
+            <p>Because <code>web_style/core.html.slim</code> (plus <code>roi_report_pdf_layout</code> and several Elevate engine layouts) load both stylesheets together, the v4 Elevate bundle must preserve the <code>[elv]</code>-scoped preflight isolation so it does not reset <code>nessy_app</code>-styled DOM. The v4 <code>@plugin</code> <code>isolation-strategy: inside; selector: [elv];</code> is the direct equivalent of today's <code>isolateInsideOfContainer('[elv]')</code> and must be validated against the runtime-overlap fixture before the consumer bump merges.</p>
+
+            <h3>Browser-support note</h3>
+            <p>Tailwind v4 targets modern browsers (Safari 16.4+, Chrome 111+, Firefox 128+) and uses native cascade layers / <code>@property</code> / <code>color-mix()</code>. Confirm this clears the UE supported-browser matrix before the consumer bump; if older browsers are still in support, that is a gating constraint on the UE slice (not the elevate-g2 publish).</p>
+
+            <h3>Delivery slices (feeds G-13)</h3>
+            <ol>
+              <li><strong>Slice A &mdash; elevate-g2 v4 republish:</strong> re-author preset as v4 CSS-first <code>@theme</code>/<code>@plugin</code>, rewire build, bump peer/dev deps, publish a new <code>@g2crowd/elevate</code>. Verify <code>dist/elevate.css</code>/<code>dist/components.css</code> render parity and that scoped preflight still isolates to <code>[elv]</code>.</li>
+              <li><strong>Slice B &mdash; UE engines/elevate consumer bump:</strong> adopt the new release, move to v4 import + <code>@tailwindcss/postcss</code>, validate against the shared-route runtime-overlap fixture and the smoke matrix.</li>
+              <li><strong>Slice C (later, separate) &mdash; nessy_app v4:</strong> only after A+B are stable and shared-route behavior is proven.</li>
+            </ol>
+            <p>Slices A and B are the &ldquo;more than one delivery slice&rdquo; the acceptance criteria anticipated, and map onto the G-13 implementation issue.</p>
+          </section>
+
           <section id="findings">
             <h2>Findings Log</h2>
             <p class="section-intro">Keep durable findings here as the work moves forward. Link to focused subpages when the supporting detail is more than a few lines.</p>
@@ -659,6 +777,30 @@
                 </thead>
                 <tbody>
                   <tr>
+                    <td>2026-06-16</td>
+                    <td>First v4 slice reached reviewable producer and consumer PRs.</td>
+                    <td>Elevate PR <a href="https://github.com/g2crowd/elevate-g2/pull/55">g2crowd/elevate-g2#55</a> ports the package CSS build to Tailwind v4, merged, and published <code>@g2crowd/elevate@2.0.0</code>. UE PR <a href="https://github.com/g2crowd/ue/pull/40359">g2crowd/ue#40359</a> consumes the stable package and validates MyG2 pages. <code>DMVPC-1840</code> is in code review until the UE PR merges and staging validates the stable package.</td>
+                    <td>Validation passed: <code>yarn install --immutable</code>, <code>yarn why @g2crowd/elevate</code>, <code>yarn workspace elevate build</code>, focused <code>bin/rspec</code>, <code>curl -k</code> for <code>/elevate-assets/application.css</code>, and browser smoke on <code>/g2/home</code>, <code>/g2/product_information</code>, <code>/g2/review_levers</code>, and <code>/g2/pricings</code>.</td>
+                  </tr>
+                  <tr>
+                    <td>2026-06-16</td>
+                    <td>The <code>legacy-prefix</code> helper is intentionally temporary.</td>
+                    <td>The first v4 slice uses a PostCSS shim to scan UE for old <code>elv-*</code> utility classes, feed equivalent <code>elv:*</code> candidates to Tailwind v4, and rewrite generated selectors back to old class names. It keeps the PR small, but generates compatibility-only code and blurs component classes from utilities.</td>
+                    <td>Follow-up <code>DMVPC-1871</code> tracks codemodding UE toward Tailwind v4 <code>elv:*</code> utility syntax and removing or narrowing <code>addLegacySources</code>/<code>aliasLegacySelectors</code>. Keep semantic component classes such as <code>elv-button</code>, <code>elv-input</code>, and <code>elv-modal</code>.</td>
+                  </tr>
+                  <tr>
+                    <td>2026-06-12</td>
+                    <td>First v4 implementation slice reached a producer buildable state before the canary existed.</td>
+                    <td><code>elevate-g2</code> worktree <code>elevate-g2-g-13</code> built with Tailwind v4, <code>@tailwindcss/postcss</code>, and <code>tailwindcss-scoped-preflight@4.0.6</code>. This finding is superseded by the 2026-06-16 stable package state above.</td>
+                    <td>The initial UE consumer was temporarily gated by needing a published package. That gate is now cleared by <code>@g2crowd/elevate@2.0.0</code>.</td>
+                  </tr>
+                  <tr>
+                    <td>2026-06-12</td>
+                    <td>Post-merge v3 fallout triage found no remaining compatibility issue.</td>
+                    <td>UE PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> and standalone Elevate PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">#50</a> are merged. UE CI and rollout comments were clean; standalone Elevate had approvals and the existing local install/build/test evidence. The only v3 fallout found during baseline work remains the <code>collapse</code> collision already fixed in UE.</td>
+                    <td><a href="dmvpc-1838-v3-fallout-closeout.html">DMVPC-1838 closeout</a></td>
+                  </tr>
+                  <tr>
                     <td>2026-06-11</td>
                     <td>A downstream consumer of <code>@g2crowd/elevate</code> already runs Tailwind v4.</td>
                     <td>The <code>g2crowd/research-hub</code> app ("AICR-frontend", Next.js + TypeScript) declares <code>tailwindcss: ^4</code> and <code>@tailwindcss/postcss: ^4</code> and depends on <code>@g2crowd/elevate@^0.8.0</code>. It proves Tailwind v4 is workable in the Elevate ecosystem, but it does <strong>not</strong> use the package's <code>elv-</code> JS preset under v4 — it uses v4's CSS-first <code>@import "tailwindcss"</code> + <code>@theme inline</code> and hand-ports Elevate design tokens into CSS custom properties. The <code>@g2crowd/elevate</code> dependency is currently vestigial there (no JS import, no <code>elv-</code> classes in source). Cloned to <code>/Users/rayelo/G2/my-g2/research-hub</code> for reference; no change needed in that repo now.</td>
@@ -667,13 +809,13 @@
                   <tr>
                     <td>2026-06-09</td>
                     <td>Standalone <code>@g2crowd/elevate</code> also needs Tailwind alignment.</td>
-                    <td>The sibling <code>/Users/rayelo/G2/my-g2/elevate-g2</code> checkout is aligned on branch <code>chore/g-19-tailwind-v3-elevate-baseline</code>. Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> covers this package; PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> remains scoped to the UE repo and UE's embedded <code>engines/elevate</code> workspace.</td>
+                    <td>The sibling <code>/Users/rayelo/G2/my-g2/elevate-g2</code> checkout is aligned on branch <code>chore/g-19-tailwind-v3-elevate-baseline</code>. PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> covers this package and is merged; PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> remains scoped to the UE repo and UE's embedded <code>engines/elevate</code> workspace.</td>
                     <td><a href="standalone-elevate-package.html">Standalone Elevate note</a></td>
                   </tr>
                   <tr>
                     <td>2026-06-09</td>
-                    <td>Phase 1 package unification is validated and in review.</td>
-                    <td>Both root UE and Elevate resolve <code>tailwindcss@3.4.19</code>. Build validation, authenticated MyG2 seller-home smoke, representative Elevate component smoke, and the <code>collapse</code> blocklist guard passed. Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> has Reviewer approval.</td>
+                    <td>Phase 1 package unification is validated and merged.</td>
+                    <td>Both root UE and Elevate resolve <code>tailwindcss@3.4.19</code>. Build validation, authenticated MyG2 seller-home smoke, representative Elevate component smoke, and the <code>collapse</code> blocklist guard passed. PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> merged on 2026-06-12.</td>
                     <td><a href="phase-1-v3-unification.html">Phase 1 log</a></td>
                   </tr>
                   <tr>
@@ -720,13 +862,13 @@
                     <td><strong>1. Unify Tailwind v3</strong></td>
                     <td>Main UE, UE embedded Elevate, and related standalone Elevate package versions.</td>
                     <td>Update Tailwind dependencies to <code>3.4.19</code> in root UE, UE <code>engines/elevate</code>, and the related standalone <code>elevate-g2/</code> package.</td>
-                    <td>UE repo work is complete locally. Package, build, authenticated MyG2 seller-home smoke, representative Elevate smoke, and focused config guard passed. Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> is approved and awaiting merge. Standalone <code>elevate-g2/</code> alignment is validated in Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</td>
+                    <td>UE repo work is merged. Package, build, authenticated MyG2 seller-home smoke, representative Elevate smoke, and focused config guard passed. PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> merged on 2026-06-12. Standalone <code>elevate-g2/</code> alignment merged in PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</td>
                   </tr>
                   <tr>
                     <td><strong>2. Stabilize v3 Compatibility</strong></td>
                     <td>Only issues exposed by the v3 unification.</td>
                     <td>Minimal fixes for <code>@apply</code>, <code>@layer</code>, content scanning, safelists, custom plugin output, or generated utilities.</td>
-                    <td>No extra compatibility work is currently known beyond the narrow <code>collapse</code> blocklist fix in Phase 1. Reopen only if review or CI exposes a new v3 issue.</td>
+                    <td>No extra compatibility work is known beyond the narrow <code>collapse</code> blocklist fix in Phase 1. Post-merge <code>DMVPC-1838</code> triage found no remaining v3 fallout.</td>
                   </tr>
                   <tr>
                     <td><strong>3. Prototype v4 Path</strong></td>
@@ -737,14 +879,14 @@
                   <tr>
                     <td><strong>4. First v4 Implementation</strong></td>
                     <td>The selected lowest-risk v4 path.</td>
-                    <td>Implement v4 where the spike recommends, likely Elevate-first or a scoped bundle before global <code>nessy_app</code>.</td>
-                    <td>v4 support exists without destabilizing the legacy Sass/Nessy/Foundation surface.</td>
+                    <td>Implement Elevate-first v4 through one package PR and one UE consumer PR, leaving global <code>nessy_app</code> on v3.</td>
+                    <td>In code review: Elevate PR <a href="https://github.com/g2crowd/elevate-g2/pull/55">#55</a> merged and published <code>@g2crowd/elevate@2.0.0</code>; UE PR <a href="https://github.com/g2crowd/ue/pull/40359">#40359</a> consumes it. Exit once the UE PR merges and staging validates the stable package.</td>
                   </tr>
                   <tr>
                     <td><strong>5. Expand Deliberately</strong></td>
                     <td>Additional migrated surfaces.</td>
-                    <td>Move more routes/components only after the first v4 implementation is stable.</td>
-                    <td>Main <code>nessy_app</code> v4 becomes a later, separately gated decision.</td>
+                    <td>Move more routes/components only after the first v4 implementation is stable. Remove temporary migration shims before expanding the Tailwind v4 footprint where practical.</td>
+                    <td><code>DMVPC-1871</code> tracks removing or narrowing the legacy <code>elv-</code> compatibility shim. Main <code>nessy_app</code> v4 remains a later, separately gated decision.</td>
                   </tr>
                 </tbody>
               </table>
@@ -847,13 +989,13 @@
           <section id="open-questions">
             <h2>Open Questions</h2>
             <ul>
-              <li>After PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> lands, should Tailwind v3 stay exactly pinned at <code>3.4.19</code> or move back to matching caret ranges?</li>
-              <li>The standalone <code>@g2crowd/elevate</code> Tailwind alignment is in review as Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code> and should land before Tailwind v4 path work starts.</li>
+              <li>Before Tailwind v4 work starts, decide whether the v3 baseline should stay exactly pinned at <code>3.4.19</code> or move back to matching caret ranges.</li>
+              <li>The standalone <code>@g2crowd/elevate</code> Tailwind alignment merged as PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> under <code>DMVPC-1837</code>.</li>
               <li>Before v4, what browser-support threshold should apply to MyG2/vendor-admin versus public marketplace pages?</li>
             </ul>
 
             <div class="callout">
-              <p><strong>Next action:</strong> let Draft PR <a href="https://github.com/g2crowd/ue/pull/40142">#40142</a> and Draft PR <a href="https://github.com/g2crowd/elevate-g2/pull/50">g2crowd/elevate-g2#50</a> finish review and merge. Keep Tailwind v4 exploration separate until the v3 baseline across required package surfaces is landed or explicitly waived.</p>
+              <p><strong>Next action:</strong> choose the Tailwind v4 path from the now-merged v3 baseline. Keep v4-consumer findings separate from <code>DMVPC-1838</code>; the post-merge v3 fallout pass found no remaining compatibility issue to fix.</p>
             </div>
           </section>
         </div>
