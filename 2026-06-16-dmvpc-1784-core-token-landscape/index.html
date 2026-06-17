@@ -340,9 +340,8 @@
           <li><a href="#surfaces">Surfaces Inspected</a></li>
           <li><a href="#landscape">Token Landscape</a></li>
           <li><a href="#foundations">Foundation Findings</a></li>
-          <li><a href="#components">Component Landscape</a></li>
           <li><a href="#integration">Integration Path</a></li>
-          <li><a href="#questions">Refinement Questions</a></li>
+          <li><a href="#decisions">Refinement Decisions</a></li>
           <li><a href="#next">Next Steps</a></li>
         </ol>
       </nav>
@@ -363,7 +362,7 @@
 
             <p>The Vendor Portal core component tree can be inventoried and moved, and the Tailwind version mismatch is no longer the central risk. Vendor Portal and UE's embedded Elevate surface are both Tailwind v4-shaped. The remaining risk is token semantics: Vendor Portal still carries G2DM names, pixel-style aliases, logical sizing utilities, custom text utilities, and generated icon assumptions that should not be treated as the final UE API.</p>
 
-            <p>The practical migration path is therefore not "copy the Vendor Portal theme into UE." It is to extend Elevate 2.x where reusable token gaps exist, expose the right Tailwind v4 sources for the React migration location, create a small compatibility strategy for the first route/component scope, then rewrite migrated React components toward Elevate semantics. Compatibility aliases can help the first migration land, but they should be treated as a bridge with an expiration plan.</p>
+            <p>The practical migration path is therefore not "copy the Vendor Portal theme into UE." It is to stage the full core suite inside UE, extend Elevate 2.x where reusable token gaps exist, expose the right Tailwind v4 sources for the React component location, then rewrite migrated components toward Elevate semantics in place. We should not create a Vendor Portal compatibility alias layer; missing values should become durable Elevate token additions when UX confirms them.</p>
 
             <div class="grid three">
               <div class="card">
@@ -387,8 +386,8 @@
             <ul>
               <li><strong>Spacing, shadows, and borders are mostly covered</strong> by Elevate's 4px scale, numeric shadow levels, border widths, and radius scale. The migration work is mainly naming and class rewriting.</li>
               <li><strong>Colors are the largest design-system gap</strong> because G2DM names such as <code>brand-blue</code>, <code>gray-5</code>, <code>steel</code>, and <code>link-blue</code> need UX-approved Elevate pairings, not just mechanical hex copying.</li>
-              <li><strong>Typography needs semantic aliases</strong> if the UX foundation names are expected to survive in code. Elevate has raw type scale values, but the migration needs names such as <code>heading-lg</code>, <code>body-sm</code>, and <code>label-xs</code>.</li>
-              <li><strong>Icons should be scoped by actual migration routes</strong>. Vendor Portal has hundreds of generated icon components, while Jira lists a narrower missing-icon set. Full parity is probably wasteful before route scope is locked.</li>
+              <li><strong>Typography needs semantic variants</strong> if the UX foundation names are expected to survive in code. Elevate has raw type scale values, but the migration needs names such as <code>heading-lg</code>, <code>body-sm</code>, and <code>label-xs</code>.</li>
+              <li><strong>Icons should be copied intentionally</strong>. Vendor Portal has hundreds of generated icon components, while Jira lists a narrower missing-icon set. Start with icons required by the UE-owned core suite and add route-specific icons as imports demand them.</li>
               <li><strong>The new Tailwind v4 integration still needs React source coverage</strong>. UE uses <code>@source</code> for Elevate Rails component/view paths, but the future migrated React/TSX location must be added deliberately.</li>
               <li><strong>UE root Tailwind should still not become the new token home</strong>. The root app keeps legacy Tailwind v3 assumptions; the reusable migration token path should go through Elevate 2.x first.</li>
             </ul>
@@ -420,7 +419,7 @@
                 <tr>
                   <td class="nowrap">DMVPC-1825</td>
                   <td>Typography</td>
-                  <td>Map G2DM type names to G2 names, including <code>H40Regular</code> to <code>Heading Lg</code> and B14/B12 variants to body/label aliases.</td>
+                  <td>Map G2DM type names to G2 names, including <code>H40Regular</code> to <code>Heading Lg</code> and B14/B12 variants to body/label variants.</td>
                 </tr>
                 <tr>
                   <td class="nowrap">DMVPC-1826</td>
@@ -445,7 +444,7 @@
               </tbody>
             </table>
 
-            <p>The parent ticket also says scope should be driven by the first migration candidates, not by every component in the Vendor Portal core library. That matters: a complete token landscape is useful, but component subtasks should stay route-driven.</p>
+            <p>The practical architecture target is broader than a one-route inventory: UE should own a full core React component suite copied from the Vendor Portal core library, and migrated routes should switch their imports to the UE-owned components. Route migrations can still drive priority and validation order, but the destination should be a complete UE core component surface styled with Elevate.</p>
           </section>
 
           <section id="surfaces">
@@ -557,14 +556,14 @@
                 <tr>
                   <th>Status</th>
                   <th>Finding</th>
-                  <th>Needed decision</th>
+                  <th>Direction</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><span class="badge ok">Mostly covered</span></td>
                   <td>Vendor Portal currently uses a 1px Tailwind v4 base (<code>--spacing: 1px</code>) and aliases such as <code>p-24px</code>, <code>gap-8px</code>, <code>inline-400</code>, and <code>min-block-420</code>. Elevate 2.0 uses a 4px grid where key <code>6</code> maps to 24px, exposed in the prefixed v4 form when used as an Elevate utility.</td>
-                  <td>Rewrite to Elevate scale names where possible, for example 24px spacing should become the Elevate 4pt scale token rather than a copied <code>24px</code> alias. Decide whether temporary aliases such as <code>p-24px</code> are allowed during migration, and whether logical <code>inline-*</code>/<code>block-*</code> utilities belong in Elevate 2.x or stay local to the React migration layer.</td>
+                  <td>Rewrite to Elevate scale names wherever possible. If a spacing value or logical utility is missing, add it as a real Elevate token or utility after design-system review rather than preserving the Vendor Portal class name.</td>
                 </tr>
               </tbody>
             </table>
@@ -575,14 +574,14 @@
                 <tr>
                   <th>Status</th>
                   <th>Finding</th>
-                  <th>Needed decision</th>
+                  <th>Direction</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><span class="badge gap">Largest gap</span></td>
                   <td>Vendor Portal uses G2DM names such as <code>brand-blue</code>, <code>brand-blue-1..11</code>, <code>link-blue</code>, <code>gray-1..11</code>, <code>steel</code>, <code>tangerine</code>, and <code>sky</code>. Elevate primitives and semantics are organized around rorange, purple, neutral, blue, green, yellow, plus <code>--elv-bg-*</code>, <code>--elv-text-*</code>, and <code>--elv-border-*</code>.</td>
-                  <td>Use UX's color-pairing/tone-scale Figma foundations to approve the exact mappings. Avoid pretending every G2DM color has a perfect equivalent. Prefer semantic Elevate usage for final component code, with explicit compatibility aliases only when needed to land scoped migration work.</td>
+                  <td>Use UX's color-pairing/tone-scale Figma foundations to approve the exact mappings. Avoid pretending every G2DM color has a perfect equivalent. Prefer semantic Elevate usage for final component code, and add missing colors only as durable Elevate token additions.</td>
                 </tr>
               </tbody>
             </table>
@@ -593,14 +592,14 @@
                 <tr>
                   <th>Status</th>
                   <th>Finding</th>
-                  <th>Needed decision</th>
+                  <th>Direction</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><span class="badge warn">Alias gap</span></td>
                   <td>Vendor Portal relies on <code>text-size-*</code> utilities that bundle size, line-height, margin reset, and text-box trim. Elevate has Figtree and raw font-size/line-height scales, but not an obvious public semantic API for every UX foundation name.</td>
-                  <td>Add or document semantic type aliases such as <code>heading-lg</code>, <code>heading-md</code>, <code>heading-sm</code>, <code>body-lg</code>, <code>body-sm-bold</code>, <code>label-sm</code>, <code>body-xs</code>, and <code>label-xs</code>. Confirm whether text-box trim is required in UE or should be dropped.</td>
+                  <td>Use DMVPC-1825 as the source of truth for type mapping. Decide final public <code>Text</code> variant names during the Text component migration, because that component will define the typography API for the rest of the suite.</td>
                 </tr>
               </tbody>
             </table>
@@ -611,14 +610,14 @@
                 <tr>
                   <th>Status</th>
                   <th>Finding</th>
-                  <th>Needed decision</th>
+                  <th>Direction</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><span class="badge ok">Covered</span></td>
                   <td>Jira maps small, medium, and large shadows to <code>elevation-1</code>, <code>elevation-2</code>, and <code>elevation-3</code>. Elevate 2.0 already has numeric shadow levels and directional variants. <code>re-elevate</code> models the semantic names as <code>shadow-elevation-1/2/3</code>.</td>
-                  <td>Pick the final class/API spelling for migrated React. The pragmatic default is to use Elevate's existing numeric levels, while adding semantic aliases only if UX wants <code>elevation-*</code> to be a stable public token name.</td>
+                  <td>Use Elevate's existing numeric levels unless UX wants <code>elevation-*</code> to become a stable public token name. Any missing shadow token should be added to Elevate rather than shimmed locally.</td>
                 </tr>
               </tbody>
             </table>
@@ -629,14 +628,14 @@
                 <tr>
                   <th>Status</th>
                   <th>Finding</th>
-                  <th>Needed decision</th>
+                  <th>Direction</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><span class="badge ok">Mostly covered</span></td>
-                  <td>Elevate 2.0 already includes useful border widths and radius scale values. Vendor Portal uses pixel aliases such as <code>rounded-2px</code>, <code>rounded-4px</code>, <code>rounded-8px</code>, and <code>rounded-24px</code>, while <code>re-elevate</code> demonstrates possible compatibility mappings.</td>
-                  <td>Use Elevate names for final code. Decide whether pixel aliases are temporary migration-only utilities or a supported public token layer.</td>
+                  <td>Elevate 2.0 already includes useful border widths and radius scale values. Vendor Portal uses pixel-named classes such as <code>rounded-2px</code>, <code>rounded-4px</code>, <code>rounded-8px</code>, and <code>rounded-24px</code>.</td>
+                  <td>Use Elevate names for final code. If a radius or border value is missing from Elevate, add it as a design-system token rather than creating a Vendor Portal compatibility class.</td>
                 </tr>
               </tbody>
             </table>
@@ -647,7 +646,7 @@
                 <tr>
                   <th>Status</th>
                   <th>Finding</th>
-                  <th>Needed decision</th>
+                  <th>Direction</th>
                 </tr>
               </thead>
               <tbody>
@@ -665,68 +664,30 @@
                 <tr>
                   <th>Status</th>
                   <th>Finding</th>
-                  <th>Needed decision</th>
+                  <th>Direction</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><span class="badge warn">Scope-driven</span></td>
+                  <td><span class="badge warn">Suite-driven</span></td>
                   <td>Vendor Portal has 307 generated icon TSX files and 306 SVG source files. DMVPC-1834 lists a narrower missing-icon set. A normalized local check found some listed names already covered by Elevate, some covered by general UE assets, and many missing by simple name match.</td>
-                  <td>Do a usage-driven icon port for the first migration candidates. Establish naming corrections now: <code>Location</code> replaces <code>Geotag</code>, and <code>Profile</code> should not be ported unless UX reverses that decision.</td>
+                  <td>Port icons required by the copied core component suite and the routes that adopt it. Establish naming corrections now: <code>Location</code> replaces <code>Geotag</code>, and <code>Profile</code> should not be ported unless UX reverses that decision.</td>
                 </tr>
               </tbody>
             </table>
-          </section>
-
-          <section id="components">
-            <h2>Component Landscape</h2>
-            <p>The Vendor Portal core library contains 61 top-level component directories. UE embedded Elevate has 41 top-level Rails ViewComponent directories and consumes 38 package CSS component families from Elevate 2.0. That overlap is strong, but the migration target is still React components in UE, so overlap does not automatically mean "done." Each component still needs a decision about API preservation, behavior ownership, accessibility, and whether route-specific state has leaked into the core component.</p>
-
-            <table>
-              <thead>
-                <tr>
-                  <th>Bucket</th>
-                  <th>Vendor Portal components</th>
-                  <th>Migration interpretation</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><span class="badge ok">Likely Elevate equivalent</span></td>
-                  <td>Accordion, Breadcrumb, Button, Checkbox, Chip, Icon, Menu, Modal, Pagination, Popover, Radio, Select, Table, Tabs, Text, TextInput, TextLink, Toast, Tooltip.</td>
-                  <td>Start with reuse mapping. Verify behavior/API differences rather than immediately porting implementation.</td>
-                </tr>
-                <tr>
-                  <td><span class="badge warn">Equivalent pattern, needs judgment</span></td>
-                  <td>AccordionBase, CheckboxField, Combobox, ComboboxField, DatePicker, DatePickerField, Form, HelperMessage, MultiSelectCombobox, RadioField, SelectField, Switch, SwitchField, TextField, Textarea, TextareaField.</td>
-                  <td>Often composed field/control patterns. Need a decision on form abstraction, validation messaging, ARIA behavior, and whether React wrappers should compose Elevate primitives.</td>
-                </tr>
-                <tr>
-                  <td><span class="badge warn">Layout or app shell primitive</span></td>
-                  <td>Columns, Container, Drawer, Inline, ScrollArea, Sidebar, Stack.</td>
-                  <td>These may be useful, but they can also encode layout opinions from Vendor Portal. UE has <code>slide_out_panel</code> and related overlay components, so map behavior before porting a React equivalent.</td>
-                </tr>
-                <tr>
-                  <td><span class="badge gap">No obvious direct equivalent</span></td>
-                  <td>Calendar, ContentSwitcher, EmptyState, FlashMessage, Footnote, G2Logo, GdmLogo, Illustration, Loading, PhoneNumberField, ProgressIndicator, Skeleton, StarRating, Tag, Trend.</td>
-                  <td>Requires route-driven decision: reuse UE/Elevate pattern, port as a presentational React component, or create a new Elevate enhancement ticket.</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div class="callout">
-              <p><strong>Component subtasks should not be generated from the 61-dir list alone.</strong> DMVPC-1784 asks for one subtask per component required by the first migration candidates. The full list is a landscape; the delivery backlog should be scoped by actual route usage.</p>
-            </div>
           </section>
 
           <section id="integration">
             <h2>Integration Path</h2>
             <ol>
-              <li><strong>Lock the first migration candidates.</strong> Use route-level imports/usages to create the component inventory. The prior Manage Campaigns POC is a useful precedent, but the current target routes should be confirmed.</li>
+              <li><strong>Create the UE core component home.</strong> Pick the destination path for the UE-owned React core suite and make it the import target for migrated Vendor Portal routes.</li>
+              <li><strong>Copy the full core suite as the starting point.</strong> Move/copy the components from <code>re-elevate</code> or Vendor Portal into UE, preserving enough structure to make import switching predictable.</li>
+              <li><strong>Do not copy the old styling contract.</strong> Bring the React components and supporting assets needed for behavior, but do not bring Vendor Portal global CSS, reset, token files, or <code>re-elevate</code> token CSS into UE.</li>
               <li><strong>Normalize the UX foundation mappings.</strong> Convert Jira/Figma foundation decisions into a token map with source, target, status, and owner. Colors and typography need explicit UX review before engineering hardens names.</li>
-              <li><strong>Promote stable gaps into Elevate 2.x.</strong> Add reusable token definitions and aliases in <code>elevate-g2</code>, not directly in UE root Tailwind. Since UE consumes Elevate 2.0, future token work should become a small 2.x package increment rather than a separate UE-only token layer.</li>
+              <li><strong>Promote stable gaps into Elevate 2.x.</strong> Add reusable token definitions in <code>elevate-g2</code>, not directly in UE root Tailwind. Since UE consumes Elevate 2.0, future token work should become a small 2.x package increment rather than a separate UE-only token layer.</li>
               <li><strong>Expose the React migration source path to Tailwind v4.</strong> UE currently uses <code>@source</code> for Elevate Rails component/view paths. Once the React component home is chosen, add that path explicitly so Tailwind v4 emits the required Elevate utilities.</li>
-              <li><strong>Port components by dependency order.</strong> Start with low-level primitives such as Text, Icon, Button, inputs, helper text, and layout primitives before composed controls such as Modal, Select, Combobox, DatePicker, Toast, and Table.</li>
+              <li><strong>Migrate styling in place by dependency order.</strong> Start with low-level primitives such as Text, Icon, Button, inputs, helper text, and layout primitives before composed controls such as Modal, Select, Combobox, DatePicker, Toast, and Table.</li>
+              <li><strong>Switch route imports incrementally.</strong> As Vendor Portal routes move into UE, replace imports from Vendor Portal core with imports from the UE-owned core suite.</li>
               <li><strong>Validate in UE's React-in-Rails environment.</strong> The migration must render inside MyG2/UE, not only in a standalone Vite app. Keep route data, endpoint calls, authorization, and session behavior outside core UI components.</li>
             </ol>
 
@@ -736,26 +697,26 @@
             <h3>What not to do</h3>
             <ul>
               <li>Do not import Vendor Portal's full Tailwind theme or reset into UE.</li>
-              <li>Do not add one-off token definitions into route-local React CSS unless they are explicitly temporary.</li>
+              <li>Do not add one-off token definitions into route-local React CSS; missing reusable values should be added to Elevate.</li>
               <li>Do not use UE root Tailwind legacy spacing/color modules as the long-term API for Elevate React components, even though the Elevate engine itself has moved to Tailwind v4.</li>
-              <li>Do not port the full Vendor Portal icon set before the first-route usage audit proves it is needed.</li>
+              <li>Do not port the full Vendor Portal icon set blindly; start with icons required by the UE-owned core suite and add route-specific icons as route migrations need them.</li>
             </ul>
           </section>
 
-          <section id="questions">
-            <h2>Refinement Questions</h2>
-            <p>These are the questions I would bring into the refinement session before turning the investigation into implementation tickets.</p>
+          <section id="decisions">
+            <h2>Refinement Decisions</h2>
+            <p>These decisions were made after reviewing the report and should guide the next implementation tickets.</p>
 
             <ol>
-              <li><strong>Which routes are the first migration candidates now?</strong> DMVPC-1784 says scope should be driven by first candidates. We should not create component subtasks from the whole core folder unless that is now the desired scope.</li>
-              <li><strong>Should migrated React components preserve Vendor Portal public APIs?</strong> If yes, we need wrapper/adaptor work. If no, route migration can absorb prop/API changes while moving to Elevate semantics.</li>
-              <li><strong>Where should the React core components live inside UE?</strong> Options include a UE webpack package area, an engine-local React surface, or a package-style shared module. This directly affects the Tailwind v4 <code>@source</code> entry that must be added in the Elevate build.</li>
-              <li><strong>Are compatibility aliases allowed, and for how long?</strong> Names like <code>brand-blue</code>, <code>gray-5</code>, <code>text-size-14px</code>, and <code>rounded-4px</code> can lower migration risk but will become debt if they are treated as permanent design-system names. We need to decide whether any aliases belong in Elevate 2.x or only in a temporary migration stylesheet.</li>
-              <li><strong>What is the source of truth for color pairings?</strong> Jira says not every color has an exact match and calls out Jordi. Engineering should not finalize the color token map without that review.</li>
-              <li><strong>Should typography be semantic in code?</strong> If UX expects <code>Heading Md</code> and <code>Body Xs</code> language to be stable, Elevate should expose those names rather than making every component compose raw font sizes and weights.</li>
-              <li><strong>How much icon parity do we want?</strong> Route-scoped porting is leaner. Full Vendor Portal parity gives safety but adds generation/naming/ownership work immediately.</li>
-              <li><strong>What exact Tailwind v4 source paths need to be added?</strong> The timeline question is mostly answered for the Elevate engine. The open question is whether migrated React files live under existing scanned paths or require new <code>@source</code> entries for JS/JSX/TS/TSX.</li>
-              <li><strong>What visual proof is expected before merge?</strong> Options: Storybook in the migrated React surface, Lookbook/engine previews, route screenshots in MyG2, or a combination.</li>
+              <li><strong>Core suite location:</strong> the UE-owned React core suite should live under <code>ue/webpack/assets/javascripts/unified_seller_experience/core</code>.</li>
+              <li><strong>API compatibility:</strong> preserve Vendor Portal component APIs by default. Change APIs only when they directly expose old styling concepts, such as typography variants on <code>Text</code>.</li>
+              <li><strong>Import strategy:</strong> use the clean <code>unified_seller_experience/core</code> namespace while keeping component folder/export names close to Vendor Portal to reduce route migration churn.</li>
+              <li><strong>No compatibility aliases:</strong> do not create a Vendor Portal token compatibility layer. Components should be restyled directly against Elevate tokens/classes. Missing values should become real Elevate token additions.</li>
+              <li><strong>Color source of truth:</strong> color mappings are owned by UX/Elevate foundations. Engineering should not infer final mappings from Vendor Portal hex values or <code>re-elevate</code>.</li>
+              <li><strong>Typography:</strong> use DMVPC-1825 as the mapping source. Final <code>Text</code> variant names should be decided during the Text component migration.</li>
+              <li><strong>Icons:</strong> start with Icon component infrastructure and one representative icon. Wait for the final UX/Figma SVG list before compiling the final icon set.</li>
+              <li><strong>Tailwind source coverage:</strong> Tailwind v4 should scan <code>ue/webpack/assets/javascripts/unified_seller_experience/core/**/*.{js,jsx,ts,tsx}</code>, the USE stories, and Storybook config as needed.</li>
+              <li><strong>Visual proof:</strong> Storybook is the primary visual proof for core components. Route screenshots are required when migrated routes switch imports to the UE-owned suite.</li>
             </ol>
           </section>
 
@@ -771,9 +732,14 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>Confirm first route/component scope</td>
-                  <td>Route-driven component usage table with import paths and frequency.</td>
-                  <td>Frontend architecture and product migration owner.</td>
+                  <td>Choose UE core component home</td>
+                  <td>Use <code>ue/webpack/assets/javascripts/unified_seller_experience/core</code> with the <code>unified_seller_experience/core</code> import namespace.</td>
+                  <td>Frontend architecture and UE platform owner.</td>
+                </tr>
+                <tr>
+                  <td>Stage full core suite in UE</td>
+                  <td>Copied React component suite from <code>re-elevate</code> or Vendor Portal, without Vendor Portal CSS/token files.</td>
+                  <td>Frontend architecture and migration implementers.</td>
                 </tr>
                 <tr>
                   <td>Finalize foundation token map</td>
@@ -782,29 +748,29 @@
                 </tr>
                 <tr>
                   <td>Create Elevate 2.x token PR</td>
-                  <td>Reusable token additions, semantic aliases, and temporary compatibility layer if approved, published as the next package increment after 2.0.</td>
+                  <td>Reusable token additions approved by UX/Elevate, published as the next package increment after 2.0. No Vendor Portal compatibility token layer.</td>
                   <td>Elevate maintainers.</td>
                 </tr>
                 <tr>
                   <td>Create UE integration PR</td>
-                  <td>UE embedded Elevate consumes any post-2.0 package update and adds Tailwind v4 <code>@source</code> coverage for the chosen React component path.</td>
+                  <td>UE embedded Elevate consumes any post-2.0 package update and adds Tailwind v4 <code>@source</code> coverage for the USE core component and story paths.</td>
                   <td>UE frontend/platform owner.</td>
                 </tr>
                 <tr>
                   <td>Split component subtasks</td>
-                  <td>One Jira subtask per scoped component with mapping, gaps, acceptance criteria, and validation target.</td>
+                  <td>One Jira subtask per component or component family, focused on replacing Vendor Portal classes with Elevate-backed classes and validating behavior.</td>
                   <td>DMVPC-1784 owner and UX reviewer.</td>
                 </tr>
                 <tr>
                   <td>Port and validate in dependency order</td>
-                  <td>Migrated presentational components, route integration screenshots, and missing behavior follow-up tickets.</td>
+                  <td>Elevate-styled UE core components, Storybook coverage, route integration screenshots, and missing behavior follow-up tickets.</td>
                   <td>Frontend implementers and reviewers.</td>
                 </tr>
               </tbody>
             </table>
 
             <div class="callout">
-              <p><strong>Bottom line:</strong> Elevate 2.0 and Tailwind v4 remove the biggest tooling uncertainty for the UE component migration. The remaining work is sharper: separate final Elevate tokens, temporary migration aliases, and Vendor Portal legacy names, then add the React source path to the Tailwind v4 build before cutting the component backlog.</p>
+              <p><strong>Bottom line:</strong> Elevate 2.0 and Tailwind v4 remove the biggest tooling uncertainty for the UE component migration. The target is a full UE-owned React core suite under <code>unified_seller_experience/core</code> that routes can import directly. The remaining work is sharper: replace Vendor Portal styling with Elevate tokens, add missing values to Elevate as durable tokens, and add the USE React source paths to the Tailwind v4 build before migrating components in place.</p>
             </div>
           </section>
         </div>
