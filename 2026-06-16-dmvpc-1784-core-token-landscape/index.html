@@ -333,7 +333,7 @@
   <body>
     <div class="page">
       <nav class="side-nav" aria-label="Report sections">
-        <p class="nav-title">DMVPC-1784<span>Core token landscape</span></p>
+        <p class="nav-title"><a href="https://g2crowd.atlassian.net/browse/DMVPC-1784">DMVPC-1784</a><span>Core token landscape</span></p>
         <ol>
           <li><a href="#summary">Summary</a></li>
           <li><a href="#jira">Jira Scope</a></li>
@@ -350,7 +350,7 @@
         <div class="content-inner">
           <header class="hero">
             <p class="eyebrow">Investigation report - revised June 17, 2026</p>
-            <h1>Core UI Component Token Landscape for DMVPC-1784</h1>
+            <h1>Core UI Component Token Landscape for <a href="https://g2crowd.atlassian.net/browse/DMVPC-1784">DMVPC-1784</a></h1>
             <p class="lede">A migration-readiness investigation for moving G2DM Vendor Portal React core components into UE, with UE consuming Elevate 2.0 on Tailwind v4.</p>
           </header>
 
@@ -395,7 +395,7 @@
 
           <section id="jira">
             <h2>Jira Scope</h2>
-            <p>DMVPC-1784 is <strong>Core UI Components migration</strong>, under DMVPC-1778, <strong>[USE] Frontend Architecture PoC | Unified Seller Experience</strong>. The ticket text is explicit that this work is about inventory, mapping, reuse validation, and splitting component work into independently reviewable subtasks. It is not meant to hide new Elevate component behavior changes inside the migration.</p>
+            <p><a href="https://g2crowd.atlassian.net/browse/DMVPC-1784">DMVPC-1784</a> is <strong>Core UI Components migration</strong>, under <a href="https://g2crowd.atlassian.net/browse/DMVPC-1778">DMVPC-1778</a>, <strong>[USE] Frontend Architecture PoC | Unified Seller Experience</strong>. The ticket text is explicit that this work is about inventory, mapping, reuse validation, and splitting component work into independently reviewable subtasks. It is not meant to hide new Elevate component behavior changes inside the migration.</p>
 
             <table>
               <thead>
@@ -407,37 +407,37 @@
               </thead>
               <tbody>
                 <tr>
-                  <td class="nowrap">DMVPC-1823</td>
+                  <td class="nowrap"><a href="https://g2crowd.atlassian.net/browse/DMVPC-1823">DMVPC-1823</a></td>
                   <td>Spacing</td>
                   <td>G2 uses a 4pt grid like G2DM, with some additional spaces that may need to be added.</td>
                 </tr>
                 <tr>
-                  <td class="nowrap">DMVPC-1824</td>
+                  <td class="nowrap"><a href="https://g2crowd.atlassian.net/browse/DMVPC-1824">DMVPC-1824</a></td>
                   <td>Colors and tone scales</td>
                   <td>UX has Figma color-pairing and tone-scale references. Not all colors have exact matches; Jordi review is required.</td>
                 </tr>
                 <tr>
-                  <td class="nowrap">DMVPC-1825</td>
+                  <td class="nowrap"><a href="https://g2crowd.atlassian.net/browse/DMVPC-1825">DMVPC-1825</a></td>
                   <td>Typography</td>
                   <td>Map G2DM type names to G2 names, including <code>H40Regular</code> to <code>Heading Lg</code> and B14/B12 variants to body/label variants.</td>
                 </tr>
                 <tr>
-                  <td class="nowrap">DMVPC-1826</td>
+                  <td class="nowrap"><a href="https://g2crowd.atlassian.net/browse/DMVPC-1826">DMVPC-1826</a></td>
                   <td>Shadows</td>
                   <td>Map <code>Shadow Small</code>, <code>Shadow Medium</code>, and <code>Shadow Large</code> to <code>elevation-1</code>, <code>elevation-2</code>, and <code>elevation-3</code>.</td>
                 </tr>
                 <tr>
-                  <td class="nowrap">DMVPC-1827</td>
+                  <td class="nowrap"><a href="https://g2crowd.atlassian.net/browse/DMVPC-1827">DMVPC-1827</a></td>
                   <td>Borders</td>
                   <td>G2DM borders are expected to have clear G2 equivalents in Figma.</td>
                 </tr>
                 <tr>
-                  <td class="nowrap">DMVPC-1829</td>
+                  <td class="nowrap"><a href="https://g2crowd.atlassian.net/browse/DMVPC-1829">DMVPC-1829</a></td>
                   <td>Icons update</td>
                   <td>Remove <code>Geotag</code>, use <code>Location</code>; remove <code>Profile</code> because it does not exist in Figma.</td>
                 </tr>
                 <tr>
-                  <td class="nowrap">DMVPC-1834</td>
+                  <td class="nowrap"><a href="https://g2crowd.atlassian.net/browse/DMVPC-1834">DMVPC-1834</a></td>
                   <td>Missing icons</td>
                   <td>Check listed icons against Elevate and whether they are actually used by Vendor Portal before creating parity work.</td>
                 </tr>
@@ -460,38 +460,38 @@
               <tbody>
                 <tr>
                   <td>Vendor Portal core</td>
-                  <td><code>/Users/rayelo/G2/vendor-portal-fe/app/components/core</code></td>
+                  <td><a href="file:///Users/rayelo/G2/vendor-portal-fe/app/components/core"><code>/Users/rayelo/G2/vendor-portal-fe/app/components/core</code></a></td>
                   <td>Source React component tree. Uses Vendor Portal Tailwind v4 tokens and generated icons.</td>
                 </tr>
                 <tr>
                   <td>Vendor Portal styles</td>
-                  <td><code>/Users/rayelo/G2/vendor-portal-fe/app/styles</code></td>
+                  <td><a href="file:///Users/rayelo/G2/vendor-portal-fe/app/styles"><code>/Users/rayelo/G2/vendor-portal-fe/app/styles</code></a></td>
                   <td>Current token contract: <code>tailwind.css</code>, compatibility aliases, typed color map, and custom utilities.</td>
                 </tr>
                 <tr>
                   <td>re-elevate</td>
-                  <td><code>/Users/rayelo/G2/my-g2/re-elevate</code></td>
+                  <td><a href="file:///Users/rayelo/G2/my-g2/re-elevate"><code>/Users/rayelo/G2/my-g2/re-elevate</code></a></td>
                   <td>Standalone prototype containing copied core components and a Tailwind v4 token experiment.</td>
                 </tr>
                 <tr>
                   <td>Elevate package</td>
-                  <td><code>/Users/rayelo/G2/my-g2/elevate-g2</code></td>
+                  <td><a href="file:///Users/rayelo/G2/my-g2/elevate-g2"><code>/Users/rayelo/G2/my-g2/elevate-g2</code></a></td>
                   <td>Design-system package source repo. Elevate 2.0 is the published package UE consumes for this component migration.</td>
                 </tr>
                 <tr>
                   <td>UE embedded Elevate</td>
-                  <td><code>/Users/rayelo/G2/my-g2/ue/engines/elevate</code></td>
+                  <td><a href="file:///Users/rayelo/G2/my-g2/ue/engines/elevate"><code>/Users/rayelo/G2/my-g2/ue/engines/elevate</code></a></td>
                   <td>Consumes <code>@g2crowd/elevate</code> 2.0.0, builds the Elevate engine with Tailwind v4, and exposes ViewComponents/styles inside UE.</td>
                 </tr>
                 <tr>
                   <td>UE root Tailwind</td>
-                  <td><code>/Users/rayelo/G2/my-g2/ue/tailwindcss</code></td>
+                  <td><a href="file:///Users/rayelo/G2/my-g2/ue/tailwindcss"><code>/Users/rayelo/G2/my-g2/ue/tailwindcss</code></a></td>
                   <td>Root app Tailwind remains legacy v3 in package metadata. Useful context, but not the preferred home for new reusable Elevate tokens.</td>
                 </tr>
                 <tr>
                   <td>Prior artifacts</td>
-                  <td><code>/Users/rayelo/G2/my-g2/artifacts</code></td>
-                  <td>Previous Vendor Portal React POC, UE CSS landscape, USE frontend architecture, and Tailwind upgrade plan.</td>
+                  <td><a href="../index.html"><code>/Users/rayelo/G2/my-g2/artifacts</code></a></td>
+                  <td>Previous <a href="../2026-05-26-vendor-portal-react-poc/migration-feasibility-report.html">Vendor Portal React POC</a>, <a href="../2026-06-03-ue-css-styling-landscape/index.html">UE CSS landscape</a>, <a href="../2026-06-03-use-frontend-architecture/index.html">USE frontend architecture</a>, and <a href="../2026-06-08-ue-tailwind-upgrade-plan/index.html">Tailwind upgrade plan</a>.</td>
                 </tr>
               </tbody>
             </table>
@@ -599,7 +599,7 @@
                 <tr>
                   <td><span class="badge warn">Alias gap</span></td>
                   <td>Vendor Portal relies on <code>text-size-*</code> utilities that bundle size, line-height, margin reset, and text-box trim. Elevate has Figtree and raw font-size/line-height scales, but not an obvious public semantic API for every UX foundation name.</td>
-                  <td>Use DMVPC-1825 as the source of truth for type mapping. Decide final public <code>Text</code> variant names during the Text component migration, because that component will define the typography API for the rest of the suite.</td>
+                  <td>Use <a href="https://g2crowd.atlassian.net/browse/DMVPC-1825">DMVPC-1825</a> as the source of truth for type mapping. Decide final public <code>Text</code> variant names during the Text component migration, because that component will define the typography API for the rest of the suite.</td>
                 </tr>
               </tbody>
             </table>
@@ -670,7 +670,7 @@
               <tbody>
                 <tr>
                   <td><span class="badge warn">Suite-driven</span></td>
-                  <td>Vendor Portal has 307 generated icon TSX files and 306 SVG source files. DMVPC-1834 lists a narrower missing-icon set. A normalized local check found some listed names already covered by Elevate, some covered by general UE assets, and many missing by simple name match.</td>
+                  <td>Vendor Portal has 307 generated icon TSX files and 306 SVG source files. <a href="https://g2crowd.atlassian.net/browse/DMVPC-1834">DMVPC-1834</a> lists a narrower missing-icon set. A normalized local check found some listed names already covered by Elevate, some covered by general UE assets, and many missing by simple name match.</td>
                   <td>Port icons required by the copied core component suite and the routes that adopt it. Establish naming corrections now: <code>Location</code> replaces <code>Geotag</code>, and <code>Profile</code> should not be ported unless UX reverses that decision.</td>
                 </tr>
               </tbody>
@@ -713,7 +713,7 @@
               <li><strong>Import strategy:</strong> use the clean <code>unified_seller_experience/core</code> namespace while keeping component folder/export names close to Vendor Portal to reduce route migration churn.</li>
               <li><strong>No compatibility aliases:</strong> do not create a Vendor Portal token compatibility layer. Components should be restyled directly against Elevate tokens/classes. Missing values should become real Elevate token additions.</li>
               <li><strong>Color source of truth:</strong> color mappings are owned by UX/Elevate foundations. Engineering should not infer final mappings from Vendor Portal hex values or <code>re-elevate</code>.</li>
-              <li><strong>Typography:</strong> use DMVPC-1825 as the mapping source. Final <code>Text</code> variant names should be decided during the Text component migration.</li>
+              <li><strong>Typography:</strong> use <a href="https://g2crowd.atlassian.net/browse/DMVPC-1825">DMVPC-1825</a> as the mapping source. Final <code>Text</code> variant names should be decided during the Text component migration.</li>
               <li><strong>Icons:</strong> start with Icon component infrastructure and one representative icon. Wait for the final UX/Figma SVG list before compiling the final icon set.</li>
               <li><strong>Tailwind source coverage:</strong> Tailwind v4 should scan <code>ue/webpack/assets/javascripts/unified_seller_experience/core/**/*.{js,jsx,ts,tsx}</code>, the USE stories, and Storybook config as needed.</li>
               <li><strong>Visual proof:</strong> Storybook is the primary visual proof for core components. Route screenshots are required when migrated routes switch imports to the UE-owned suite.</li>
@@ -759,7 +759,7 @@
                 <tr>
                   <td>Split component subtasks</td>
                   <td>One Jira subtask per component or component family, focused on replacing Vendor Portal classes with Elevate-backed classes and validating behavior.</td>
-                  <td>DMVPC-1784 owner and UX reviewer.</td>
+                  <td><a href="https://g2crowd.atlassian.net/browse/DMVPC-1784">DMVPC-1784</a> owner and UX reviewer.</td>
                 </tr>
                 <tr>
                   <td>Port and validate in dependency order</td>
